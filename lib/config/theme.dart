@@ -114,6 +114,8 @@ class AppTheme {
 }
 class Hinputtheme{
    static  InputDecorationTheme lightInput = InputDecorationTheme(
+    
+    
       labelStyle: TextStyle(
         color: ColorManager.greyText,  // Set the color of the label (when not focused)
       ),
@@ -123,18 +125,13 @@ class Hinputtheme{
           color: ColorManager.primary, // Border color when focused
         ),
       ),
-      enabledBorder: OutlineInputBorder(
+       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(
-        color: ColorManager.greyText,  // Set the color of the label (when not focused)
-        ),
+        
+         borderSide: BorderSide( color: const Color.fromARGB(255, 208, 214, 222), // Border color
+            width: 1.2,)
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(
-        color: ColorManager.greyText,  // Set the color of the label (when not focused)
-        ),
-      ),
+     
       hintStyle: TextStyle(
         color: ColorManager.greyText,  // Set the color of the label (when not focused)
       ),
@@ -148,16 +145,16 @@ class Htexttheme {
     displayLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: Colors.black),
     displayMedium: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: Colors.black),
     displaySmall: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: ColorManager.primary),
-    headlineLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: Colors.black),
+    headlineLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: ColorManager.primary),
     headlineMedium: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: Colors.black),
     headlineSmall: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: Colors.black),
-    titleLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: Colors.black),
+    titleLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: ColorManager.TextColor),
     titleMedium: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: Colors.black),
     titleSmall: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: Colors.black),
     bodyLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w300, color: Colors.black),
     bodyMedium: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: ColorManager.greyText),
     bodySmall: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w300, color: Colors.black),
-    labelLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: Colors.black),
+    labelLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.normal, color: ColorManager.TextColor),
     labelMedium: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w300, color: ColorManager.greyText),
     labelSmall: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w300, color: Colors.black),
   );

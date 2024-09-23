@@ -7,6 +7,8 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  carousel_slider: ^5.0.0
+  easy_sidemenu: ^0.6.0
   flutter:
     sdk: flutter
   fluttericon: ^2.0.0
