@@ -83,13 +83,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,color: ColorManager.primary)
                     ),
                   ),
-                  Tab(
-                    child: Text(
-                      "Services",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,color: ColorManager.primary)
-                    
-                    ),
-                  ),
+                 
                 ],
               ),
                SizedBox(height: 20,),
@@ -257,12 +251,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: SingleChildScrollView(
-                        child: Text('3'),
-                      ),
-                    ),
+                 
               
                   ],
                 ),
