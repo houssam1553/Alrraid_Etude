@@ -72,7 +72,7 @@ class _DashboardTabState extends State<DashboardTab>
                 return SidebarItem(
                   index: 0, // Ensure unique index
                   title: 'Dashboard',
-                  icon: Icons.home,
+                  icon: Icons.bar_chart_outlined,
                   selectedColor: ColorManager.primary,
                   unselectedColor: Colors.white,
                   sidebarController: sidebarController,
@@ -84,28 +84,12 @@ class _DashboardTabState extends State<DashboardTab>
                 return SidebarItem(
                   index: 1, // Ensure unique index
                   title: 'Settings',
-                  icon: Icons.bar_chart_outlined,
+                  icon: Icons.person,
                   selectedColor: ColorManager.primary,
                   unselectedColor: Colors.white,
                   sidebarController: sidebarController,
-                  children: [
-                    SidebarItem(
-                      index: 2, // Ensure unique index
-                      title: 'User Settings',
-                      icon: Icons.person,
-                      selectedColor: ColorManager.primary,
-                      unselectedColor: Colors.white,
-                      sidebarController: sidebarController,
-                    ),
-                    SidebarItem(
-                      index: 3, // Ensure unique index
-                      title: 'App Settings',
-                      icon: Icons.settings_applications,
-                      selectedColor: ColorManager.primary,
-                      unselectedColor: Colors.white,
-                      sidebarController: sidebarController,
-                    ),
-                  ],
+                 
+                  
                 );
               },
             ),

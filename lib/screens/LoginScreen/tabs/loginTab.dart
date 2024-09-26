@@ -1,8 +1,8 @@
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/loginController.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
-import 'package:arraid/widgets/loginForm.dart';
-import 'package:arraid/widgets/loginHeadline.dart';
+import 'package:arraid/commun%20widgets/loginForm.dart';
+import 'package:arraid/commun%20widgets/loginHeadline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
