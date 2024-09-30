@@ -1,3 +1,4 @@
+import 'package:arraid/screens/HomeScreen/profileInfoScreen.dart';
 import 'package:arraid/screens/HomeScreen/tabs/cming.dart';
 import 'package:arraid/screens/HomeScreen/tabs/dashboardTab.dart';
 import 'package:arraid/screens/HomeScreen/tabs/profileSettingsTab.dart';
@@ -35,8 +36,9 @@ class NavigationController extends GetxController {
   final HomeTabs = [
  landingScreen(),
  DashboardTab(),
- //Cming(),
+
  ProfileSettingsTab(),
+ ProfileInfoscreen()
   ];
 
   void changeTabIndex(int index) {
@@ -48,7 +50,7 @@ class NavigationController extends GetxController {
   void changeTabIndex1(int index) {
     if (index >= 0 && index < HomeTabs.length) {
       selectedIndex2.value = index;
-    }
+    }else{    selectedIndex2.value = 3;}
   }
 
  void goToSigninTab() {
@@ -66,7 +68,11 @@ class NavigationController extends GetxController {
   void goToResettab() {
     selectedIndex1.value = 3;
   }
-  void gotoProfile() {
+  void gotoProfileSett() {
     selectedIndex2.value = 2;
   }
+    void gotoProfile() {
+    selectedIndex2.value = 3;
+  }
+
 }

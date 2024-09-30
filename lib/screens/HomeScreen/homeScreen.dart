@@ -31,9 +31,11 @@ class _HomeScreeenState extends State<Homescreen> {
      
       bottomNavigationBar: Obx(() => BottomNavigationBar(
         showUnselectedLabels: false,
-        currentIndex: /* navigationController.selectedIndex2.value >= 2 ? 1 :  */navigationController.selectedIndex2.value,
+        currentIndex:  navigationController.selectedIndex2.value >= 3 ? 1 : navigationController.selectedIndex2.value,
         onTap: (index) {
+      
           navigationController.changeTabIndex1(index);
+         print(navigationController.selectedIndex2.value);
         },
         items: [
             BottomNavigationBarItem(

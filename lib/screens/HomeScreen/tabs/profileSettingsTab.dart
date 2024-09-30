@@ -21,7 +21,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
     return Scaffold(
       backgroundColor: ColorManager.lightPrimary,
       body: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Container(
           padding: EdgeInsets.only(
             top: height * 0.0956,

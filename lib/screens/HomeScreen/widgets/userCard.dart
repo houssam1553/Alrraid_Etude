@@ -1,10 +1,12 @@
 import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserCard extends StatefulWidget {
+
   final String assetImage;
   final String title;
   final String subtitle;
@@ -32,6 +34,8 @@ class UserCard extends StatefulWidget {
 }
 
 class _UserCardState extends State<UserCard> {
+         final navigationController = Get.put(NavigationController());
+
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.find<UserController>();
@@ -104,9 +108,10 @@ class _UserCardState extends State<UserCard> {
         ),
       ),
       TextButton(
-        onPressed: () {
-          // Trigger more logic
-        },
+        onPressed: (){
+              navigationController.gotoProfile();}
+          
+        ,
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,  // Remove default padding
           minimumSize: Size(0, 0),   // Reduce button size
