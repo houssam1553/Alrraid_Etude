@@ -38,8 +38,8 @@ class SidebarItem extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       sidebarController.changeIndex(index);
-                      print(isExpanded);
-                     isExpanded ? null : sidebarController.selectChildIndex(index);
+                     
+                     sidebarController.selectChildIndex(index);
 
 
                     },

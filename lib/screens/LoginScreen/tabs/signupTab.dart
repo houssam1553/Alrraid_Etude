@@ -2,9 +2,9 @@ import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 
 import 'package:arraid/controllers/signupController.dart';
-import 'package:arraid/commun%20widgets/signupForm.dart';
-import 'package:arraid/commun%20widgets/signupHeadline.dart';
-import 'package:arraid/commun%20widgets/socialBox.dart';
+import 'package:arraid/screens/LoginScreen/widgets/signupForm.dart';
+import 'package:arraid/screens/LoginScreen/widgets/signupHeadline.dart';
+import 'package:arraid/screens/LoginScreen/widgets/socialBox.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
@@ -22,7 +22,8 @@ class _SignuptabState extends State<SignupTab> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-    final signupController = Get.put(Signupcontroller());
+     final SignupController signupController = Get.find<SignupController>();
+  
         final navigationController = Get.put(NavigationController());
 
     return Center(

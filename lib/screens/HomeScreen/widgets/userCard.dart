@@ -200,12 +200,12 @@ class _UserCardState extends State<UserCard> {
                                Text(
                                   widget.subtitle,
                                   style: const TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 13.0,
                                     fontWeight: FontWeight.bold,
                                     color: ColorManager.primary,
                                   ),
                                 ),
-                                const SizedBox(height: 4.0),
+                                
                               TextButton(
   onPressed: () async {
     // Find the position of the button
@@ -217,7 +217,7 @@ class _UserCardState extends State<UserCard> {
       context: context,
       position: RelativeRect.fromLTRB(
         buttonPosition.dx, // X position
-        buttonPosition.dy + button.size.height -20, // Y position (below the button)
+        buttonPosition.dy + button.size.height -27, // Y position (below the button)
         buttonPosition.dx + button.size.width, // Width
         buttonPosition.dy, // Height (for reference)
       ),
@@ -246,7 +246,7 @@ class _UserCardState extends State<UserCard> {
   return Text(
     userController.users[widget.index]["organization"]!,
     style: const TextStyle(
-      fontSize: 14.0,
+      fontSize: 12.0,
       fontWeight: FontWeight.bold,
       color: ColorManager.greyText,
     ),

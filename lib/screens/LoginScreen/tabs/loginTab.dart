@@ -1,8 +1,8 @@
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/loginController.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
-import 'package:arraid/commun%20widgets/loginForm.dart';
-import 'package:arraid/commun%20widgets/loginHeadline.dart';
+import 'package:arraid/screens/LoginScreen/widgets/loginForm.dart';
+import 'package:arraid/screens/LoginScreen/widgets/loginHeadline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +18,8 @@ class _LogintabState extends State<Logintab> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-    final loginController = Get.put(LoginController());
+     final LoginController loginController = Get.find<LoginController>();
+
     final navigationController = Get.put(NavigationController());
 
 

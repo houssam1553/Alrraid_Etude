@@ -1,4 +1,4 @@
-import 'package:arraid/screens/HomeScreen/profileInfoScreen.dart';
+import 'package:arraid/screens/HomeScreen/userMoreInfo/profileInfoScreen.dart';
 import 'package:arraid/screens/HomeScreen/tabs/cming.dart';
 import 'package:arraid/screens/HomeScreen/tabs/dashboardTab.dart';
 import 'package:arraid/screens/HomeScreen/tabs/profileSettingsTab.dart';

@@ -1,6 +1,6 @@
 import 'package:arraid/config/colors.dart';
 
-import 'package:arraid/commun%20widgets/socialBox.dart';
+import 'package:arraid/screens/LoginScreen/widgets/socialBox.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 

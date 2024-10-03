@@ -27,21 +27,21 @@ class _UsersContainerState extends State<UsersContainer> {
       "name": "John Doe",
       "email": "example@gmail.com",
       "organization": "Organization A",
-      "subtitle": "Software Engineer",
+      "subtitle": " Software Engineer",
       "image": "assets/images/user1.png"
     },
     {
       "name": "Jane Smith",
       "email": "example@gmail.com",
       "organization": "Organization B",
-      "subtitle": "Product Manager",
+      "subtitle": " Product Manager",
       "image": "assets/images/user2.png"
     },
     {
       "name": "Sam Wilson",
       "email": "example@gmail.com",
       "organization": "Organization C",
-      "subtitle": "UI/UX Designer",
+      "subtitle": " UI/UX Designer",
       "image": "assets/images/user3.png"
     },
   ];

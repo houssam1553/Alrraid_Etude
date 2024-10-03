@@ -22,29 +22,41 @@ class DashboardTab extends StatefulWidget {
 }
 
 class _DashboardTabState extends State<DashboardTab>
-    with AutomaticKeepAliveClientMixin {
+{
   late final SidebarController sidebarController;
 
-  late final SideMenuController sideMenuController;
+
 
   @override
   void initState() {
     super.initState();
+    
 
     sidebarController = Get.put(SidebarController());
-    sideMenuController = SideMenuController(); // Initialize here
+    sidebarController.sideMenuController.dispose();
+    print("sideMenu"+sidebarController.sideMenuController.currentPage.toString());
+    
+   // sideMenuController = SideMenuController(); 
+  
+  // sidebarController.selectedIndex =  sideMenuController.currentPage  ;
+    // Initialize here
   }
-
-  @override
-  bool get wantKeepAlive => true; // Keep this state alive when navigating
+@override
+  void dispose() {
+    // TODO: implement dispose
+    sidebarController.selectedIndex.value = 0;
+    super.dispose();
+  }
+ /*  @override
+  bool get wantKeepAlive => true; */ // Keep this state alive when navigating
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-    super.build(
-        context); // Ensure state is retained with AutomaticKeepAliveClientMixin
+    /* super.build(
+        context);  */// Ensure state is retained with AutomaticKeepAliveClientMixin
     return Row(
       children: [
         SideMenu(
@@ -66,7 +78,7 @@ class _DashboardTabState extends State<DashboardTab>
               )
             ],
           ),
-          controller: sideMenuController, // Use the initialized controller
+          controller:sidebarController.sideMenuController, // Use the initialized controller
           items: [
             SideMenuItem(
               builder: (context, displayMode) {
