@@ -19,18 +19,28 @@ class _LandingScreenState extends State<landingScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
-            setState(() {
-              isLoading = true; // Show loader when the page starts loading
-            });
+            if (mounted) {
+              setState(() {
+                isLoading = true; // Show loader when the page starts loading
+              });
+            }
           },
           onPageFinished: (String url) {
-            setState(() {
-              isLoading = false; // Hide loader when the page finishes loading
-            });
+            if (mounted) {
+              setState(() {
+                isLoading = false; // Hide loader when the page finishes loading
+              });
+            }
           },
         ),
       )
       ..loadRequest(Uri.parse('https://alrraid.com/fr'));
+  }
+
+  @override
+  void dispose() {
+    controller.clearCache(); // Clear cache if necessary
+    super.dispose();
   }
 
   @override
@@ -47,7 +57,10 @@ class _LandingScreenState extends State<landingScreen> {
             WebViewWidget(controller: controller),
             if (isLoading) // Show loading indicator while WebView is loading
               Center(
-                child: CircularProgressIndicator(color: ColorManager.primary,backgroundColor: ColorManager.greyText,),
+                child: CircularProgressIndicator(
+                  color: ColorManager.primary,
+                  backgroundColor: ColorManager.greyText,
+                ),
               ),
           ],
         ),

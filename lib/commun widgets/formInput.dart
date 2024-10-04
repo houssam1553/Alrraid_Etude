@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class formInput extends StatelessWidget {
-  const formInput({
+   formInput({
     super.key,
     required this.height,
     required this.label,
     required this.hint,
-    required this.textEditingController,
+     this.textEditingController,
     required this.inputType,
     required this.obscureText,
     required this.togglePasswordVisibility,
@@ -18,7 +18,7 @@ class formInput extends StatelessWidget {
   final String label;
   final String hint;
   final double height;
-  final TextEditingController textEditingController;
+   TextEditingController? textEditingController;
   final InputType inputType; // Use enum for input type
   final bool obscureText; // Obscure text visibility
   final VoidCallback togglePasswordVisibility; // Function to toggle password visibility
