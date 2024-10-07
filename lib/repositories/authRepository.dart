@@ -1,13 +1,20 @@
 
 import 'dart:convert';
 
+import 'package:arraid/config/exceptions.dart';
 import 'package:arraid/models/userModel.dart';
 import 'package:arraid/services/apiService.dart';
 
-class AuthRepository {
-  final ApiService apiService;
+import 'package:arraid/services/localService.dart';
 
-  AuthRepository(this.apiService);
+class AuthRepository {
+  final ApiService apiService = ApiService("http://192.168.1.65:3002");
+
+  AuthRepository(ApiService find);
+   User? currentUser;
+
+
+ // AuthRepository(this.apiService);
 
   Future<User> fetchUser(String id) async {
     final response = await apiService.getRequest('/users/$id');
@@ -20,33 +27,62 @@ class AuthRepository {
     }
   }
 
-  Future<User> login(String email, String password) async {
-    final response = await apiService.postRequest('/login', {
-      'email': email,
-      'password': password,
-    });
+ Future<User> login(String email, String password) async {
+  final response = await apiService.postRequest('/api/users/login', {
+    'email': email,
+    'password': password,
+  });
 
-    if (response.statusCode == 200) {
-      // Parse and return the logged-in user
-      return User.fromJson(response.data);
-    } else {
-      throw Exception('Failed to login');
-    }
+  if (response.statusCode == 200) {
+    String token = response.data['token'];
+    await LocalService.saveToken(token);
+
+    User user = User.fromJson(response.data);
+    await LocalService.saveUser(user); // Save user locally
+    
+    currentUser = user; // Store in memory as well
+    return user;
+  } else {
+    throw AuthException(response.data['error'] ?? 'Unknown error', response.statusCode);
   }
+}
+
+
     Future<User> signUp(String email, String password, String firstName, String lastName) async {
-    final response = await apiService.postRequest('/signup', {
+    final response = await apiService.postRequest('/api/users/add', {
       'email': email,
       'password': password,
-      'first_name': firstName,
-      'last_name': lastName,
+      'firstName': firstName,
+      'lastName': lastName,
     });
 
-    if (response.statusCode == 201) { // Assuming 201 is the success status for creation
+    if (response.statusCode == 200) { 
+       String token = response.data['token'];
+      await LocalService.saveToken(token);// Assuming 200 is the success status for creation
       return User.fromJson(response.data);
     } else {
-      throw Exception('Failed to sign up: ${response.data['error'] ?? 'Unknown error'}');
+       throw AuthException(response.data['error'] ?? 'Unknown error', response.statusCode);
+    }
+  }
+    // Verify code
+  Future<void> verifyCode(String code, String token) async {
+    final response = await apiService.postRequest('/api/users/verify-code', {
+      'code': code,
+      'token': token,
+    });
+
+    if (response.statusCode == 201) {
+      // Code verified successfully
+       String token = response.data['token'];
+      await LocalService.saveToken(token);
+      return response.data; // Optionally return token or user data
+    } else if (response.statusCode == 401) {
+      // Incorrect code
+      throw AuthException(response.data['msg'] ?? 'Code incorrect', response.statusCode);
+    } else {
+      // Handle other error cases
+      throw AuthException('Unknown error during code verification', response.statusCode);
     }
   }
 
-  // Add more authentication-related methods here (e.g., signup, logout, etc.)
 }

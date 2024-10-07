@@ -1,3 +1,4 @@
+import 'package:arraid/config/bindings/appBindings.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 
@@ -22,6 +23,12 @@ class _SignuptabState extends State<SignupTab> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
+   @override
+  void initState() {
+    super.initState();
+   //  SignupBindings().dependencies();// Initialize the bindings here
+  }
+
      final SignupController signupController = Get.find<SignupController>();
   
         final navigationController = Get.put(NavigationController());

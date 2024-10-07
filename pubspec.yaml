@@ -13,17 +13,31 @@ dependencies:
   fl_chart: ^0.69.0
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.1
   fluttericon: ^2.0.0
   get: ^4.6.6
   iconsax: ^0.0.8
   iconsax_flutter: ^1.0.0
   lottie: ^3.1.2
+  pin_code_fields: ^8.0.1
+  pin_code_text_field: ^1.8.0
+  shared_preferences: ^2.3.2
   webview_flutter: ^4.9.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.1
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/arraidLogoLauncher.png"
+  adaptive_icon_background: "#F8F9FA"
+  adaptive_icon_foreground: "assets/images/arraidLogoLauncher.png"
+
+
 
 flutter:
   fonts:

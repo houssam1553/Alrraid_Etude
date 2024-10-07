@@ -1,21 +1,27 @@
+import 'package:arraid/config/colors.dart';
+import 'package:arraid/models/userModel.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/profileInfoScreen.dart';
 import 'package:arraid/screens/HomeScreen/tabs/cming.dart';
 import 'package:arraid/screens/HomeScreen/tabs/dashboardTab.dart';
 import 'package:arraid/screens/HomeScreen/tabs/profileSettingsTab.dart';
 import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:arraid/screens/LoginScreen/profileScreen.dart';
+import 'package:arraid/screens/LoginScreen/tabs/codeTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/forgotTab.dart';
 import 'package:arraid/screens/LoginScreen/landingScreen.dart';
 import 'package:arraid/screens/LoginScreen/tabs/loginTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/resetTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/signupTab.dart';
+import 'package:arraid/services/LocalService.dart';
+import 'package:flutter/material.dart';
  // New ProfileTab for Profile section
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
   var selectedIndex1 = 0.obs;
-  var selectedIndex2 = 1.obs;
+
 
 
 
@@ -31,27 +37,18 @@ class NavigationController extends GetxController {
     SignupTab(),
     ForgotpassTab(),
     Resettab(),
+    Codetab()
   ];
 
-  final HomeTabs = [
- landingScreen(),
- DashboardTab(),
-
- ProfileSettingsTab(),
- ProfileInfoscreen()
-  ];
+   
+  
 
   void changeTabIndex(int index) {
     if (index >= 0 && index < bottomTabs.length) {
       selectedIndex.value = index;
     }
   }
-  
-  void changeTabIndex1(int index) {
-    if (index >= 0 && index < HomeTabs.length) {
-      selectedIndex2.value = index;
-    }else{    selectedIndex2.value = 3;}
-  }
+
 
  void goToSigninTab() {
     selectedIndex1.value = 0; // Example, assign profile tabs index
@@ -68,11 +65,9 @@ class NavigationController extends GetxController {
   void goToResettab() {
     selectedIndex1.value = 3;
   }
-  void gotoProfileSett() {
-    selectedIndex2.value = 2;
+   void goToCodetab() {
+    selectedIndex1.value = 4;
   }
-    void gotoProfile() {
-    selectedIndex2.value = 3;
-  }
+ 
 
 }

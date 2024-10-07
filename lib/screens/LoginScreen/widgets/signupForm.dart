@@ -57,7 +57,7 @@ class signupForm extends StatelessWidget {
      
         label: ' Last name',
         hint: "Your last name",
-          textEditingController: signupController.firstNameController, inputType: InputType.name, togglePasswordVisibility: () {  },
+          textEditingController: signupController.lastNameController, inputType: InputType.name, togglePasswordVisibility: () {  },
       ),),
     
   ],

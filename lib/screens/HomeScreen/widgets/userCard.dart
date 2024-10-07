@@ -1,5 +1,6 @@
 import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class UserCard extends StatefulWidget {
 }
 
 class _UserCardState extends State<UserCard> {
-         final navigationController = Get.put(NavigationController());
+         final navigationController = Get.put(HomeNavigationController());
 
   @override
   Widget build(BuildContext context) {

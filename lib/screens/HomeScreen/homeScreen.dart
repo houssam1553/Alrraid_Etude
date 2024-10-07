@@ -1,4 +1,5 @@
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class Homescreen extends StatefulWidget {
 class _HomeScreeenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
-    final navigationController = Get.put(NavigationController());
+    final navigationController = Get.put(HomeNavigationController());
       Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
@@ -25,67 +26,30 @@ class _HomeScreeenState extends State<Homescreen> {
       backgroundColor: ColorManager.lightPrimary,
       
    
-      body: Obx(() => navigationController.HomeTabs[navigationController.selectedIndex2.value]),
+   
 
-      
-     
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-        showUnselectedLabels: false,
-        currentIndex:  navigationController.selectedIndex2.value >= 3 ? 1 : navigationController.selectedIndex2.value,
-        onTap: (index) {
-      
-          navigationController.changeTabIndex1(index);
-         print(navigationController.selectedIndex2.value);
-        },
-        items: [
-            BottomNavigationBarItem(
-            icon: Icon(Iconsax.home_24),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                navigationController.selectedIndex2.value == 1
-                    ? ColorManager.primary // Color when selected
-                    : ColorManager.darkGrey, // Color when unselected
-                BlendMode.srcIn,
-              ),
-              child: SizedBox(
-                height: 22,
-                width: 22,
-                child: Image.asset(
-                  'assets/images/dashboardIcon.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                navigationController.selectedIndex2.value == 2
-                    ? ColorManager.primary
-                    : ColorManager.darkGrey,
-                BlendMode.srcIn,
-              ),
-              child: SizedBox(
-                height: 22,
-                width: 22,
-                child: Image.asset(
-                  'assets/images/userIcon.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: ColorManager.primary,
-        unselectedItemColor: ColorManager.darkGrey,
-        backgroundColor: ColorManager.lightGrey,
-        iconSize: 22,
-      )),
+  body: Obx(() => navigationController.HomeTabs.isNotEmpty
+          ? navigationController.HomeTabs[navigationController.selectedIndex.value]
+          : Center(child: CircularProgressIndicator())), // Show loading if HomeTabs is empty
+          
+      bottomNavigationBar: Obx(() {
+        // Only show BottomNavigationBar if there are items to show
+        return navigationController.bottomNavigationItems.isNotEmpty
+            ? BottomNavigationBar(
+                showUnselectedLabels: false,
+                currentIndex: navigationController.selectedIndex.value >= 3 ? 1 : navigationController.selectedIndex.value,
+                onTap: (index) {
+                  navigationController.changeTabIndex1(index);
+                },
+                items: navigationController.bottomNavigationItems,
+                selectedItemColor: ColorManager.primary,
+                unselectedItemColor: ColorManager.darkGrey,
+                backgroundColor: ColorManager.lightGrey,
+                iconSize: 22,
+              )
+            : SizedBox.shrink(); // Hide the BottomNavigationBar if there are no items
+      }),
+
 
     );
   }
