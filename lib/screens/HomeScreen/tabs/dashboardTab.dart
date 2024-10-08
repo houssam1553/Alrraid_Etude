@@ -195,7 +195,7 @@ class _DashboardTabState extends State<DashboardTab>
                       NeverScrollableScrollPhysics(), // Prevent manual swiping if handled by side menu
                   children: [
                     dashboardPage(height: height, width: width),
-                                                            usersPage(height: height, width: width),
+                                                           UsersPage(height: height, width: width),
                     Center(child: Text('Dashboard2')),
                     Center(child: Text('Settings1')),
                     Center(child: Text('Settings2')),

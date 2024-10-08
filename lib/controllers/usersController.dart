@@ -1,45 +1,58 @@
-
+import 'package:arraid/models/userListModel.dart';
+import 'package:arraid/repositories/homeRepository.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
-  var expandedCardIndex = Rxn<int>();  // Index of the expanded card
-  var editingCardIndex = Rxn<int>(); 
- final users = [
-    {
-      "name": "John Doe",
-      "email": "example@gmail.com",
-      "organization": "Organization A",
-      "subtitle": "Software Engineer",
-      "image": "assets/images/user1.png"
-    }.obs,  // Make this RxMap
-    {
-      "name": "Jane Smith",
-      "email": "example@gmail.com",
-      "organization": "Organization B",
-      "subtitle": "Product Manager",
-      "image": "assets/images/user2.png"
-    }.obs,  // Make this RxMap
-    {
-      "name": "Sam Wilson",
-      "email": "example@gmail.com",
-      "organization": "Organization C",
-      "subtitle": "UI/UX Designer",
-      "image": "assets/images/user3.png"
-    }.obs,  // Make this RxMap
-  ].obs;  // Index of the editing card
+ 
+  final Homerepository homeRepository;
 
+  UserController(this.homeRepository);
+
+  var expandedCardIndex = Rxn<int>();  // Index of the expanded card
+  var editingCardIndex = Rxn<int>();  // Index of the editing card
+  final users = RxList<Userlistmodel>(); 
+  var isLoading = true.obs; 
+   // List of user data
+
+  // Method to load users from the repository
+ Future<List<Userlistmodel>> loadUsers() async {
+    isLoading.value = true; 
+  try {
+
+    List<Userlistmodel> fetchedUsers = await homeRepository.fetchUsers();
+    users.clear(); // Clear the existing list
+    users.addAll(fetchedUsers); 
+    print(users[1].platforms );
+    // Add fetched users to the observable list
+    return fetchedUsers;
+  } catch (e) {
+    print("Error loading users: $e");
+    Get.snackbar("Server Error", "could not retreive users ",snackPosition: SnackPosition.TOP);
+    return [];
+        } finally {
+      isLoading.value = false; // Set loading to false when done
+    }
+  // Return an empty list in case of an error
+  
+}
+  @override
+  void onInit() {
+    loadUsers(); // Load users when the controller is initialized
+    super.onInit();
+  }
+
+  // Toggle card expansion
   void toggleExpand(int index) {
-    // If the clicked card is already expanded, collapse it; otherwise, expand the new card
     expandedCardIndex.value = (expandedCardIndex.value == index) ? null : index;
 
-    // When expanding a new card, reset the edit state
+    // Reset edit state when expanding a new card
     if (editingCardIndex.value != null && editingCardIndex.value != index) {
       editingCardIndex.value = null;
     }
   }
 
+  // Toggle edit mode
   void toggleEdit(int index) {
-    // Toggle the edit mode for the clicked card
     if (editingCardIndex.value == index) {
       editingCardIndex.value = null;  // Exit edit mode if clicked again
     } else {
@@ -47,8 +60,12 @@ class UserController extends GetxController {
       expandedCardIndex.value = null;  // Collapse the card when editing starts
     }
   }
-    void updateOrganization(int index, String newOrganization) {
-    users[index]["organization"] = newOrganization;
-  }
 
+  // Update the organization field for a specific user
+/*   void updateOrganization(int index, String newOrganization) {
+    if (index >= 0 && index < users.length) {
+      final updatedUser = users[index].copyWith(platforms: [newOrganization]);
+      users[index] = updatedUser;
+    }
+  } */
 }

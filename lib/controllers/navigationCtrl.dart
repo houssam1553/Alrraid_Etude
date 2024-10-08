@@ -1,4 +1,6 @@
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/loginController.dart';
+import 'package:arraid/controllers/signupController.dart';
 import 'package:arraid/models/userModel.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/profileInfoScreen.dart';
 import 'package:arraid/screens/HomeScreen/tabs/cming.dart';
@@ -20,7 +22,10 @@ import 'package:iconsax/iconsax.dart';
 
 class NavigationController extends GetxController {
   var selectedIndex = 0.obs;
+
   var selectedIndex1 = 0.obs;
+  final loginController = Get.find<LoginController>();
+  
 
 
 
@@ -51,11 +56,17 @@ class NavigationController extends GetxController {
 
 
  void goToSigninTab() {
-    selectedIndex1.value = 0; // Example, assign profile tabs index
+    selectedIndex1.value = 0; 
+         
+    
+    // Example, assign profile tabs index
   }
   // Methods to navigate to profile-related tabs
   void goToSignUpTab() {
-    selectedIndex1.value = 1; // Example, assign profile tabs index
+    selectedIndex1.value = 1;
+           // loginController.clearTextFields();
+
+       // Example, assign profile tabs index
   }
 
   void goToForgotPasswordTab() {

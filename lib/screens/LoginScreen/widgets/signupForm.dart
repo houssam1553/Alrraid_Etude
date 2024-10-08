@@ -1,17 +1,12 @@
-import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/commun%20widgets/formInput.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/config/enums.dart';
-import 'package:arraid/config/validator.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
-
 import 'package:arraid/controllers/signupController.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
-class signupForm extends StatelessWidget {
+class signupForm extends StatefulWidget {
   const signupForm({
     super.key,
     required this.height,
@@ -26,73 +21,83 @@ class signupForm extends StatelessWidget {
   final NavigationController navigationController;
 
   @override
+  _signupFormState createState() => _signupFormState();
+}
+
+class _signupFormState extends State<signupForm> {
+  @override
+  void dispose() {
+    // Clear the controllers when the form is disposed
+    widget.signupController.firstNameController.clear();
+    widget.signupController.lastNameController.clear();
+    widget.signupController.emailController.clear();
+    widget.signupController.passwordController.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: signupController.signupFormKey,
-      // key: loginController.loginFormKey,
+      key: widget.signupController.signupFormKey,
       child: Column(
         children: <Widget>[
-          SizedBox(height: height * 0.0210),
-        Row(
-  children: [
-    SizedBox(
-      width: width*0.4,
-      child: formInput(
-          height: height,
-        obscureText: false,
-          label: ' First name',
-          hint: "Your first name",
-          textEditingController: signupController.firstNameController, inputType: InputType.name, togglePasswordVisibility: () {  },
-        ),
-    ),
-    
-    SizedBox(width: width * 0.0309),
-    SizedBox(
-      width: width*0.4,
-      child:
-   formInput(
-        height: height,
-        obscureText: false,
-
-     
-        label: ' Last name',
-        hint: "Your last name",
-          textEditingController: signupController.lastNameController, inputType: InputType.name, togglePasswordVisibility: () {  },
-      ),),
-    
-  ],
-),
-
-
-          SizedBox(height: height * 0.0309),
+          SizedBox(height: widget.height * 0.0210),
+          Row(
+            children: [
+              SizedBox(
+                width: widget.width * 0.4,
+                child: formInput(
+                  height: widget.height,
+                  obscureText: false,
+                  label: 'First name',
+                  hint: "Your first name",
+                  textEditingController:
+                      widget.signupController.firstNameController,
+                  inputType: InputType.name,
+                  togglePasswordVisibility: () {},
+                ),
+              ),
+              SizedBox(width: widget.width * 0.0309),
+              SizedBox(
+                width: widget.width * 0.4,
+                child: formInput(
+                  height: widget.height,
+                  obscureText: false,
+                  label: 'Last name',
+                  hint: "Your last name",
+                  textEditingController:
+                      widget.signupController.lastNameController,
+                  inputType: InputType.name,
+                  togglePasswordVisibility: () {},
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: widget.height * 0.0309),
           formInput(
-             height: height,
+            height: widget.height,
             togglePasswordVisibility: () {},
             obscureText: false,
             label: "Email",
             hint: "Your email address",
-            textEditingController: signupController.emailController,
+            textEditingController: widget.signupController.emailController,
             inputType: InputType.email,
-          
           ),
-
-          SizedBox(height: height * 0.0309),
-        
-        Obx(
+          SizedBox(height: widget.height * 0.0309),
+          Obx(
             () => formInput(
-            height: height,
+              height: widget.height,
               label: "Password",
               hint: "Your password",
-              textEditingController: signupController.passwordController,
+              textEditingController:
+                  widget.signupController.passwordController,
               inputType: InputType.password,
-              obscureText: signupController.obscurePassword
-                  .value, // Bind the obscure text to the controller
+              obscureText: widget.signupController.obscurePassword.value,
               togglePasswordVisibility:
-                  signupController.togglePasswordVisibility,
+                  widget.signupController.togglePasswordVisibility,
             ),
           ),
-          SizedBox(height: height * 0.0197),
-
+          SizedBox(height: widget.height * 0.0197),
           Row(
             children: [
               Transform.scale(
@@ -102,22 +107,22 @@ class signupForm extends StatelessWidget {
                   onChanged: (bool value1) {},
                 ),
               ),
-              Text(" Remember me",
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: ColorManager.TextColor,
-                        letterSpacing: 0.5,
-                        fontWeight: FontWeight.normal,
-                      )),
+              Text(
+                "Remember me",
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: ColorManager.TextColor,
+                      letterSpacing: 0.5,
+                      fontWeight: FontWeight.normal,
+                    ),
+              ),
             ],
           ),
-          // Align text to the left
-
-          SizedBox(height: height * 0.03),
+          SizedBox(height: widget.height * 0.03),
           SizedBox(
-            height: height * 0.0557,
-            width: width * 0.8743,
+            height: widget.height * 0.0557,
+            width: widget.width * 0.8743,
             child: ElevatedButton(
-              onPressed:signupController.signUp,
+              onPressed: widget.signupController.signUp,
               child: Text(
                 "SIGN UP",
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -128,25 +133,29 @@ class signupForm extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: height * 0.0172),
+          SizedBox(height: widget.height * 0.0172),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(" Allready have an account?",
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.normal,
-                        )),
+                Text(
+                  "Already have an account?",
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
+                      ),
+                ),
                 TextButton(
-                    onPressed: () {
-                      navigationController.goToSigninTab();
-                    },
-                    child: Text(
-                      " Sign in",
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  onPressed: () {
+                    widget.navigationController.goToSigninTab();
+                  },
+                  child: Text(
+                    "Sign in",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: ColorManager.primary),
-                    ))
+                          color: ColorManager.primary,
+                        ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -155,5 +164,3 @@ class signupForm extends StatelessWidget {
     );
   }
 }
-
-

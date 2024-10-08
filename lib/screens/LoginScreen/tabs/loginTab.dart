@@ -13,6 +13,7 @@ class Logintab extends StatefulWidget {
 }
 
 class _LogintabState extends State<Logintab> {
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,6 +22,8 @@ class _LogintabState extends State<Logintab> {
      final LoginController loginController = Get.find<LoginController>();
 
     final navigationController = Get.put(NavigationController());
+    
+    
 
 
     return Center(

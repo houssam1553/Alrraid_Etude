@@ -23,7 +23,10 @@ class ApiService {
     return response;
   } on DioError catch (e) {
     // Handle Dio errors
-      print('DioError: ${e.response?.data ?? e.message}'); 
+      print('DioError: ${e.response?.data}'); 
+      print('DioError: ${e.message}'); 
+
+      
     throw Exception('Failed to post data: ${e.response?.statusCode ?? e.message}');
   }
 }

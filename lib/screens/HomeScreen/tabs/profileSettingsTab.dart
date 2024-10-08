@@ -1,7 +1,9 @@
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/profileSettingsController.dart';
 import 'package:arraid/screens/HomeScreen/widgets/profileSettForm.dart';
 import 'package:arraid/screens/HomeScreen/widgets/settingSection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ProfileSettingsTab extends StatefulWidget {
@@ -12,6 +14,9 @@ class ProfileSettingsTab extends StatefulWidget {
 }
 
 class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
+  final ProfileSettingsController controller =
+      Get.put(ProfileSettingsController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -25,7 +30,6 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
         child: Container(
           padding: EdgeInsets.only(
             top: height * 0.0956,
-           
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,196 +71,210 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                 ],
               ),
               const SizedBox(height: 27), // Space between avatar and TabBar
-               TabBar(
+              TabBar(
                 dividerColor: Colors.transparent,
                 indicatorColor: ColorManager.primary, // Removes the underline
                 tabs: [
                   Tab(
                     child: Text(
                       "Personal",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,color: ColorManager.primary)
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: ColorManager.primary),
                     ),
                   ),
                   Tab(
                     child: Text(
                       "Security",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,color: ColorManager.primary)
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: ColorManager.primary),
                     ),
                   ),
-                 
                 ],
               ),
-               SizedBox(height: 20,),
-             // Optional space between TabBar and TabBarView
-               Expanded( // Use Expanded to ensure TabBarView fills available space
+              SizedBox(height: 20),
+              // Optional space between TabBar and TabBarView
+              Expanded(
+                // Use Expanded to ensure TabBarView fills available space
                 child: TabBarView(
                   children: [
+                   Padding(
+  padding: const EdgeInsets.all(10),
+  child: SingleChildScrollView(
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 13),
+      child: Obx(() {
+        // Check if the observable currentUser is null
+        if (controller.currentUser == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          // Display the form when currentUser is available
+          return ProfileSettingsForm(
+            height: height,
+            width: width,
+            firstName: controller.currentUser.value?.firstName ?? 'First Name', // Fallback if null
+            lastName: controller.currentUser.value?.lastName ?? 'Last Name',
+            email: controller.currentUser.value?.email ?? 'email', // Fallback if null
+             // Fallback if null
+          );
+        }
+      }),
+    ),
+  ),
+),
+
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: SingleChildScrollView(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 13)
-                          ,
-                           child: ProfileSettingsForm(height: height, width: width),),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: SingleChildScrollView(
-                        child: Container(padding: EdgeInsets.symmetric(horizontal: 13),
+                          padding: EdgeInsets.symmetric(horizontal: 13),
                           child: Column(
                             children: [
-                                 SizedBox(height: 10,),
-                             
-                     settingsSection(width: width,title: "Privacy settings",child: Column(
-          children: [
-                            switchText(label: "Let others see my profile",),
-                            switchText(label: "Let others see my profile",),
-                            switchText(label: "Let others see my profile",),
-                            switchText(label: "Let others see my profile",),
-
-          ],
-        ),),
-     SizedBox(height: 30,),
-                     settingsSection(width: width,title: "Change password",child: Column(
-                      children: <Widget>[
-                            SizedBox(height: height * 0.008),
-                        Align(
-                          alignment:
-                              Alignment.centerLeft, // Align text to the left
-                          child: Text(
-                            " Current password",
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ),
-                        SizedBox(height: height * 0.008),
-                        TextFormField(
-                          //controller: loginController.emailController,
-                          // validator: (value) => Validator.validateEmail(value), // Use email validator
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25.0, vertical: 15),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                              SizedBox(height: 10),
+                              settingsSection(
+                                width: width,
+                                title: "Privacy settings",
+                                child: Column(
+                                  children: [
+                                    switchText(label: "Let others see my profile"),
+                                    switchText(label: "Let others see my profile"),
+                                    switchText(label: "Let others see my profile"),
+                                    switchText(label: "Let others see my profile"),
+                                  ],
+                                ),
                               ),
-                              prefixIcon: null,
-                              labelText: " Enter your current password",
-                              labelStyle: Theme.of(context).textTheme.labelMedium
-                              /*  TextStyle(
-                                    
-                                  //  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                              SizedBox(height: 30),
+                              settingsSection(
+                                width: width,
+                                title: "Change password",
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(height: height * 0.008),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      // Align text to the left
+                                      child: Text(
+                                        "Current password",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.008),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 25.0, vertical: 15),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        labelText:
+                                            "Enter your current password",
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.0309),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Password",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.008),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 25.0, vertical: 15),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        labelText: "Enter your new password",
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.0309),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Repeat password",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: height * 0.008),
+                                    TextFormField(
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 25.0, vertical: 15),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        labelText: "Password again",
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: height * 0.04),
+                              SizedBox(
+                                height: height * 0.0557,
+                                width: width * 0.63,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Apply changes",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.black
+                                              : Colors.white,
+                                        ),
                                   ),
-                                   */
+                                ),
                               ),
-                        
-                        ),                       
-                          SizedBox(height: height * 0.0309
-),
-                       
-             
-                        Align(
-                          alignment:
-                              Alignment.centerLeft, // Align text to the left
-                          child: Text(
-                            " Password",
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ),
-                        SizedBox(height: height * 0.008),
-                        TextFormField(
-                          //controller: loginController.emailController,
-                          // validator: (value) => Validator.validateEmail(value), // Use email validator
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25.0, vertical: 15),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                              SizedBox(
+                                height: height * 0.0357,
                               ),
-                              prefixIcon: null,
-                              labelText: "  Enter your new password",
-                              labelStyle: Theme.of(context).textTheme.labelMedium
-                              /*  TextStyle(
-                                    
-                                  //  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                                  ),
-                                   */
-                              ),
-                        
-                        ),                       
-                          SizedBox(height: height * 0.0309
-),   Align(
-                          alignment:
-                              Alignment.centerLeft, // Align text to the left
-                          child: Text(
-                            " Repeat password",
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ),
-                        SizedBox(height: height * 0.008),
-                        TextFormField(
-                          //controller: loginController.emailController,
-                          // validator: (value) => Validator.validateEmail(value), // Use email validator
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25.0, vertical: 15),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              prefixIcon: null,
-                              labelText: " Password again",
-                              labelStyle: Theme.of(context).textTheme.labelMedium
-                              /*  TextStyle(
-                                    
-                                  //  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                                  ),
-                                   */
-                              ),
-                        
-                        ),           
-                      
-                       
-                      ],),),
-                       SizedBox(height: height * 0.04),
-            SizedBox(
-                    height: height * 0.0557,
-                    width: width * 0.63,
-                    child: ElevatedButton(
-                      onPressed:(){},
-                      child: Text(
-                        "Apply changes",
-                      
-                         style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(
-                              color: Theme.of(context).brightness ==
-           Brightness.dark
-       ? Colors.black
-       : Colors.white,
-                            ), 
-                      ),
-                      
-                    ),
-                  ),
-                  SizedBox(   height: height * 0.0357,),
-
                             ],
                           ),
                         ),
                       ),
                     ),
-                 
-              
                   ],
                 ),
               ),
-              
             ],
           ),
         ),
@@ -264,4 +282,3 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
     );
   }
 }
-

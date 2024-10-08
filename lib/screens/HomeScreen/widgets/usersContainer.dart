@@ -1,8 +1,8 @@
 import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/commun%20widgets/formInput.dart';
 import 'package:arraid/config/colors.dart';
-import 'package:arraid/config/enums.dart';
 import 'package:arraid/controllers/usersController.dart';
+import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/screens/HomeScreen/widgets/userCard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,8 +13,10 @@ class UsersContainer extends StatefulWidget {
     super.key,
     required this.width,
     required this.height,
+    required this.userController,
   });
 
+  final UserController userController;
   final double width;
   final double height;
 
@@ -23,95 +25,70 @@ class UsersContainer extends StatefulWidget {
 }
 
 class _UsersContainerState extends State<UsersContainer> {
-  final UserController userController = Get.put(UserController());
-
-  final List<Map<String, String>> users = [
-    {
-      "name": "John Doe",
-      "email": "example@gmail.com",
-      "organization": "Organization A",
-      "subtitle": " Software Engineer",
-      "image": "assets/images/user1.png"
-    },
-    {
-      "name": "Jane Smith",
-      "email": "example@gmail.com",
-      "organization": "Organization B",
-      "subtitle": " Product Manager",
-      "image": "assets/images/user2.png"
-    },
-    {
-      "name": "Sam Wilson",
-      "email": "example@gmail.com",
-      "organization": "Organization C",
-      "subtitle": " UI/UX Designer",
-      "image": "assets/images/user3.png"
-    },
-  ];
-
   void _showAddUserDialog() {
+    // Initialize a list to keep track of selected users
+    List<bool> selectedUsers = widget.userController.users
+        .map((user) =>
+            user.isEmployee == 'true') // Assuming isEmployee is a String
+        .toList();
+
     // Show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add User'),
+          title: Text(
+            'Add Team Members',
+            style: TextStyle(
+              fontSize: 22,
+              color: ColorManager.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Add your custom input fields here
-            formInput(
-                  height: 60.0, // Adjust height based on your design
-                  label: 'Name',
-                  hint: 'Enter user name',
-                
-                  inputType: InputType.name, // Use your enum for input type
-                  obscureText: false,
-                  togglePasswordVisibility: () {}, // Not used here
-                ),
-                formInput(
-                  height: 60.0,
-                  label: 'Email',
-                  hint: 'Enter user email',
-                
-                  inputType: InputType.email,
-                  obscureText: false,
-                  togglePasswordVisibility: () {}, // Not used here
-                ),
-                formInput(
-                  height: 60.0,
-                  label: 'Organization',
-                  hint: 'Enter organization',
-                  
-                  inputType: InputType.name, // You can adjust this if needed
-                  obscureText: false,
-                  togglePasswordVisibility: () {},
-                ),
-                formInput(
-                  height: 60.0,
-                  label: 'Role',
-                  hint: 'Enter user role',
-                  
-                  inputType: InputType.name, // Adjust according to your needs
-                  obscureText: false,
-                  togglePasswordVisibility: () {},
-                ),
-              ],
+              children:
+                  List.generate(widget.userController.users.length, (index) {
+                return Obx(() {
+                  var user = widget.userController.users[index];
+                  return Row(
+                    children: [
+                      Checkbox(
+                        value: user.isEmployee == 'true',
+                        onChanged: (bool? value) {
+                          // Update the isEmployee state
+                          //  user.isEmployee = value == true ? 'true' : 'false';
+                          // Trigger an update
+                          //  widget.userController.updateUser(user);
+                        },
+                      ),
+                      Text('${user.firstName} ${user.lastName}'),
+                    ],
+                  );
+                });
+              }),
             ),
           ),
           actions: [
             TextButton(
               child: Text('Cancel'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Add'),
+              child: Text('Save'),
               onPressed: () {
-                // Handle the user addition logic here
-                Navigator.of(context).pop(); // Close the dialog
+                // Handle the logic to add selected users as team members
+                List<Userlistmodel> teamMembers = [];
+                for (int i = 0; i < selectedUsers.length; i++) {
+                  if (selectedUsers[i]) {
+                    teamMembers.add(
+                        widget.userController.users[i]); // Add user to team
+                  }
+                }
+                // Add your logic to handle team members (e.g., save to database)
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -124,7 +101,8 @@ class _UsersContainerState extends State<UsersContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width * 0.7,
-      padding: EdgeInsets.symmetric(horizontal: widget.width * 0.03, vertical: 20),
+      padding:
+          EdgeInsets.symmetric(horizontal: widget.width * 0.03, vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -148,22 +126,32 @@ class _UsersContainerState extends State<UsersContainer> {
                   color: ColorManager.greyText,
                   size: 30,
                 ),
-                onPressed: _showAddUserDialog, // Call the dialog method
+                onPressed: _showAddUserDialog,
               ),
             ],
           ),
           SizedBox(height: 10),
-          ...List.generate(users.length, (index) {
+          ...List.generate(widget.userController.users.length, (index) {
             return Obx(() {
+              var user = widget.userController.users[index];
               return UserCard(
                 index: index,
-                isExpanded: userController.expandedCardIndex.value == index,
-                onTap: userController.toggleExpand,
-                assetImage: users[index]["image"]!,
-                title: users[index]["name"]!,
-                email: users[index]["email"]!,
-                organization: users[index]["organization"]!,
-                subtitle: users[index]["subtitle"]!,
+                isExpanded:
+                    widget.userController.expandedCardIndex.value == index,
+                onTap: widget.userController.toggleExpand,
+                assetImage: user.imageUrl ?? '',
+                title: '${user.firstName} ${user.lastName}',
+                email: user.email,
+                organization:
+                    (user.platforms != null && user.platforms!.length > 1)
+                        ? user.platforms![1]
+                        : 'organization',
+                subtitle:
+                    (user.privileges != null && user.privileges!.isNotEmpty)
+                        ? user.privileges![0]
+                        : '   user',
+                firstName: user.firstName,
+                lastName: user.lastName,
               );
             });
           }),

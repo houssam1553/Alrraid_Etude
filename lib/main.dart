@@ -1,5 +1,6 @@
 import 'package:arraid/config/bindings/appBindings.dart';
 import 'package:arraid/config/theme.dart';
+import 'package:arraid/screens/HomeScreen/homeScreen.dart';
 import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +28,9 @@ class MainApp extends StatelessWidget {
 
       theme: AppTheme.lighttheme,
       darkTheme: AppTheme.darktheme,
+
       themeMode: ThemeMode.light,
-      home: LoginScreeen()
+      home: Homescreen()
     );
   }
 }

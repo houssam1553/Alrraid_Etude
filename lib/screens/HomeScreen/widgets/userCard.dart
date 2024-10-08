@@ -3,6 +3,7 @@ import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,24 +11,29 @@ class UserCard extends StatefulWidget {
 
   final String assetImage;
   final String title;
+  final String firstName;
+  final String lastName;
+
+
   final String subtitle;
   final String email;
-  final String organization;
+ final String organization;
 
   final bool isExpanded;
   final Function(int) onTap; // Callback to notify parent about tap
   final int index; // Index of the card
 
-  const UserCard({
+   UserCard({
     Key? key,
     required this.assetImage,
     required this.title,
+    
     required this.subtitle,
     required this.isExpanded,
     required this.onTap,
     required this.index,
-    required this.organization,
-    required this.email,
+ required this.organization,
+    required this.email, required this.firstName, required this.lastName,
   }) : super(key: key);
 
   @override
@@ -73,10 +79,31 @@ class _UserCardState extends State<UserCard> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          height: 50,
-                          child: Image(image: AssetImage(widget.assetImage)),
-                        ),
+                       Container(
+  height: 50,
+  width: 50, // Define a width for the container
+  decoration: BoxDecoration(
+    color: Colors.grey[200], // Add a background color
+    borderRadius: BorderRadius.circular(50),
+  ),
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(50), // Match the container's border radius
+    child: Image.network(
+      widget.assetImage,
+      fit: BoxFit.cover, // Specify how the image should fit within the container
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(
+            'Error!',
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    ),
+  ),
+)
+,
                            Divider(
                             height: 10,
                           indent: 10,
@@ -139,10 +166,10 @@ class _UserCardState extends State<UserCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children:  [
                                   
-            costumInput(label: "Zakaria BENSILLETE"),      SizedBox(height: 5.0),    
-            costumInput(label: "0549384723"),      SizedBox(height: 5.0),                          
-            costumInput(label: "example@gmail.com"),      SizedBox(height: 5.0),                          
-            costumInput(label: "35 cite daib aissa"),      SizedBox(height: 5.0),                          
+            costumInput(label: widget.firstName, isEnabeled:true,),      SizedBox(height: 5.0),    
+            costumInput(label: widget.lastName,isEnabeled:true,),      SizedBox(height: 5.0),                          
+            costumInput(label: widget.email,isEnabeled:false,),      SizedBox(height: 5.0),                          
+                                   
 
                                 
                                 ],
@@ -152,10 +179,31 @@ class _UserCardState extends State<UserCard> {
                         : Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: 50,
-                      child: Image(image: AssetImage(widget.assetImage)),
-                    ),
+                   
+                  Container(
+  height: 50,
+  width: 50, // Define a width for the container
+  decoration: BoxDecoration(
+    color: Colors.grey[200], // Add a background color
+    borderRadius: BorderRadius.circular(50),
+  ),
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(50), // Match the container's border radius
+    child: Image.network(
+      widget.assetImage,
+      fit: BoxFit.cover, // Specify how the image should fit within the container
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(
+            'Error!',
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    ),
+  ),
+),
                     const SizedBox(width: 16.0), Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +219,7 @@ class _UserCardState extends State<UserCard> {
                                 Text(
                                   widget.email,
                                   style: const TextStyle(
-                                    fontSize: 12.0,
+                                    fontSize: 10.0,
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -200,6 +248,7 @@ class _UserCardState extends State<UserCard> {
                               children: [
                                Text(
                                   widget.subtitle,
+                          
                                   style: const TextStyle(
                                     fontSize: 13.0,
                                     fontWeight: FontWeight.bold,
@@ -210,7 +259,7 @@ class _UserCardState extends State<UserCard> {
                               TextButton(
   onPressed: () async {
     // Find the position of the button
-    final RenderBox button = context.findRenderObject() as RenderBox;
+ /*    final RenderBox button = context.findRenderObject() as RenderBox;
     final Offset buttonPosition = button.localToGlobal(Offset.zero);
 
     // Show the menu at the button's position
@@ -238,14 +287,16 @@ class _UserCardState extends State<UserCard> {
                                       ],
                                     ).then((value) {
                                       if (value != null) {
-                                        userController.updateOrganization(widget.index, value);
+                                      //  userController.updateOrganization(widget.index, value);
                                       }
-                                    });
+                                    }); */
   },
   child: 
  Obx(() {
+   final organization = userController.users[widget.index];
   return Text(
-    userController.users[widget.index]["organization"]!,
+  widget.organization,
+  
     style: const TextStyle(
       fontSize: 12.0,
       fontWeight: FontWeight.bold,

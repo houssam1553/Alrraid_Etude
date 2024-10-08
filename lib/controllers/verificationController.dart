@@ -1,5 +1,6 @@
 import 'package:arraid/commun%20widgets/customDialog.dart';
 import 'package:arraid/config/exceptions.dart';
+import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/repositories/authRepository.dart';
 import 'package:arraid/services/localService.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class VerificationController extends GetxController {
   final TextEditingController codeController = TextEditingController();
   var isLoading = false.obs;
   var isValide = false.obs;
+   final navigationController = Get.find<NavigationController>();
 
 
 
@@ -50,10 +52,12 @@ class VerificationController extends GetxController {
       LoadingDialog.showResultIcon(true);
       await Future.delayed(Duration(seconds: 2));
       LoadingDialog.closeDialog();
-       isValide.value= true ;
+   
+       navigationController.goToSigninTab();
+       codeController.clear();
       
       // Perform any additional navigation or logic
-     // Get.offAllNamed('/home'); // Uncomment this line to navigate to home
+      // Uncomment this line to navigate to home
     } catch (e) {
       // Handle errors from AuthRepository
      String errorMessage = 'An unexpected error occurred'; // Default error message
@@ -62,8 +66,8 @@ class VerificationController extends GetxController {
         // Check if the exception contains a status code
         if (e.toString().contains('401')) {
           statusCode = 401;
-        } else if (e.toString().contains('409')) {
-          statusCode = 409; // Conflict (e.g., email already exists)
+        } else if (e.toString().contains('402')) {
+          statusCode = 402; // Conflict (e.g., email already exists)
         } else if (e.toString().contains('500')) {
           statusCode = 500; // Internal Server Error
         }
@@ -71,14 +75,14 @@ class VerificationController extends GetxController {
         // Customize the error message based on the status code
         switch (statusCode) {
           case 401:
-            errorMessage = 'Please check your code';
-            isValide.value = false ;
+            errorMessage = 'Your code is expired\nSgniup again';
+            
             break;
-          case 409:
-            errorMessage = 'Email already exists. Please try another one.';
+          case 402:
+            errorMessage = 'Please check your code';
             break;
           case 500:
-            errorMessage = 'Internal server error. Please try again later.';
+            errorMessage = 'Server error\nPlease try again later.';
             break;
           default:
             errorMessage = 'An unexpected error occurred. (Error $statusCode)';
@@ -95,7 +99,8 @@ class VerificationController extends GetxController {
 
   @override
   void onClose() {
-    codeController.dispose();
+           codeController.clear();
+
     super.onClose();
   }
 }

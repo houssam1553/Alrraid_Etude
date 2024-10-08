@@ -1,8 +1,8 @@
 class User {
   final String id;
   final String email;
-  final String firstName;
-  final String lastName;
+  late final String firstName;
+  late final String lastName;
   late final String? isEmployee; // Nullable since `isEmployee` may be optional
   final String? token; // Token can also be optional
 

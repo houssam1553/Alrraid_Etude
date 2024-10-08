@@ -1,3 +1,4 @@
+import 'package:arraid/config/bindings/appBindings.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
@@ -15,6 +16,16 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomeScreeenState extends State<Homescreen> {
+
+   @override
+  void initState() {
+    super.initState();
+    // Initialize bindings
+    HomeBindings().dependencies();
+  }
+
+
+  
   @override
   Widget build(BuildContext context) {
     final navigationController = Get.put(HomeNavigationController());

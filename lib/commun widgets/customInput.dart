@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class costumInput extends StatelessWidget {
   const costumInput({
     super.key,
-    required this.label,
+    required this.label, required this.isEnabeled,
   });
-
+final bool isEnabeled;
   final String label;
 
   @override
@@ -13,6 +13,7 @@ class costumInput extends StatelessWidget {
     return SizedBox(
       height: 30, // Adjusted height to ensure there's enough space for the cursor and text
       child: TextFormField(
+        enabled: isEnabeled,
         cursorHeight: 20,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(

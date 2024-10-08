@@ -23,12 +23,15 @@ class LocalService {
   static Future<void> saveUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', jsonEncode(user.toJson()));
+      print("saved user"  );
   }
 
   static Future<User?> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('user');
+
     if (userData != null) {
+       print(" user mot null"  );
       return User.fromJson(jsonDecode(userData));
     }
     return null;

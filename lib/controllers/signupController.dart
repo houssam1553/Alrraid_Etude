@@ -11,7 +11,6 @@ class SignupController extends GetxController {
   SignupController(this.authRepository);
   final navigationController = Get.find<NavigationController>();
 
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
@@ -26,8 +25,8 @@ class SignupController extends GetxController {
   }
 
   Future<void> signUp() async {
-   if (signupFormKey.currentState?.validate() ?? false) {
-      isLoading.value = true;  // Set loading state to true
+    if (signupFormKey.currentState?.validate() ?? false) {
+      isLoading.value = true; // Set loading state to true
       LoadingDialog.showLoadingDialog(); // Show loading dialog
 
       try {
@@ -41,12 +40,14 @@ class SignupController extends GetxController {
 
         // Handle successful signup
         LoadingDialog.showResultIcon(true); // Show success icon
-        await Future.delayed(Duration(seconds: 2)); // Wait for a moment to show the success icon
-        LoadingDialog.closeDialog(); 
-        navigationController.goToCodetab();// Close the dialog
-       // Get.offAllNamed('/home'); // Update with your actual home route
+        await Future.delayed(
+            Duration(seconds: 2)); // Wait for a moment to show the success icon
+        LoadingDialog.closeDialog();
+        navigationController.goToCodetab(); // Close the dialog
+        // Update with your actual home route
       } catch (e) {
-        String errorMessage = 'An unexpected error occurred'; // Default error message
+        String errorMessage =
+            'An unexpected error occurred'; // Default error message
         int? statusCode;
 
         // Check if the exception contains a status code
@@ -61,7 +62,7 @@ class SignupController extends GetxController {
         // Customize the error message based on the status code
         switch (statusCode) {
           case 400:
-            errorMessage = 'Invalid data. Please check your inputs.';
+            errorMessage = 'Please fill all your inputs.';
             break;
           case 409:
             errorMessage = 'Email already exists\nPlease try another one.';
@@ -92,4 +93,11 @@ class SignupController extends GetxController {
     lastNameController.dispose();
     super.onClose();
   }
+
+/*   void clearTextFields() {
+    emailController.clear();
+    passwordController.clear();
+     firstNameController.clear();
+    lastNameController.clear();
+  } */
 }

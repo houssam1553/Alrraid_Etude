@@ -1,17 +1,10 @@
-
-import 'package:arraid/screens/HomeScreen/charts/barChart.dart';
-import 'package:arraid/screens/HomeScreen/charts/lineChart.dart';
-import 'package:arraid/screens/HomeScreen/widgets/barChartContainer.dart';
-import 'package:arraid/screens/HomeScreen/widgets/dashboardCard.dart';
-import 'package:arraid/screens/HomeScreen/widgets/eventsContainer.dart';
-import 'package:arraid/screens/HomeScreen/widgets/linearChartContiner.dart';
-import 'package:arraid/screens/HomeScreen/widgets/projectsContainer.dart';
+import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/screens/HomeScreen/widgets/usersContainer.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class usersPage extends StatelessWidget {
-  const usersPage({
+class UsersPage extends StatefulWidget {
+  const UsersPage({
     super.key,
     required this.height,
     required this.width,
@@ -21,19 +14,40 @@ class usersPage extends StatelessWidget {
   final double width;
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          
-     
-          SizedBox(height: height*0.015,),
-        UsersContainer(width: width, height: height)
-    
-        ],
-      ),
-                        );
-  }
+  _UsersPageState createState() => _UsersPageState();
 }
 
+class _UsersPageState extends State<UsersPage> {
+  final UserController userController = Get.find<UserController>();
 
+  @override
+  void initState() {
+    super.initState();
+    userController.loadUsers(); // Call to load users during initialization
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      // Using Obx to reactively listen for loading state changes
+      if (userController.isLoading.value) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: widget.height * 0.015),
+            UsersContainer(
+              width: widget.width,
+              height: widget.height,
+              userController: userController,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}

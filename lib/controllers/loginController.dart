@@ -62,7 +62,7 @@ class LoginController extends GetxController {
     if (statusCode != null) {
       switch (statusCode) {
         case 404:
-          errorMessage = 'User not found';
+          errorMessage = 'User not found\nPlease use a different email address or sign up';
           break;
         case 401:
           errorMessage = 'Please check your credentials';
@@ -83,12 +83,17 @@ class LoginController extends GetxController {
   }
 }
 }
+void clearTextFields() {
+    emailController.clear();
+    passwordController.clear();
+  }
 
-  
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
     super.onClose();
   }
+  
+  
 }

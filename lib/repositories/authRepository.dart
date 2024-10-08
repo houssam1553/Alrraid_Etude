@@ -16,16 +16,7 @@ class AuthRepository {
 
  // AuthRepository(this.apiService);
 
-  Future<User> fetchUser(String id) async {
-    final response = await apiService.getRequest('/users/$id');
-    
-    if (response.statusCode == 200) {
-      // Parse the response using your User model
-      return User.fromJson(response.data);
-    } else {
-      throw Exception('Failed to load user');
-    }
-  }
+ 
 
  Future<User> login(String email, String password) async {
   final response = await apiService.postRequest('/api/users/login', {
@@ -38,7 +29,9 @@ class AuthRepository {
     await LocalService.saveToken(token);
 
     User user = User.fromJson(response.data);
-    await LocalService.saveUser(user); // Save user locally
+    await LocalService.saveUser(user); 
+  
+    // Save user locally
     
     currentUser = user; // Store in memory as well
     return user;

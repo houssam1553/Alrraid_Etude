@@ -20,7 +20,17 @@ class Codetab extends StatefulWidget {
   State<Codetab> createState() => _CodetabState();
 }
 
-class _CodetabState extends State<Codetab> {
+class _CodetabState extends State<Codetab> {   
+    final navigationController = Get.put(NavigationController());
+    
+  final VerificationController verificationController = Get.find<VerificationController>();
+
+
+  @override
+    void dispose() {
+    verificationController.codeController.clear();
+      super.dispose();
+    } 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -28,28 +38,18 @@ class _CodetabState extends State<Codetab> {
     double width = size.width;
     bool hasError = false;
 
-    
-    final navigationController = Get.put(NavigationController());
-    
-  final VerificationController verificationController = Get.find<VerificationController>();
+ 
     
     
   //   final VerificationController verificationController = Get.find<VerificationController>();
-    TextEditingController otpController = TextEditingController();
+   
     StreamController<ErrorAnimationType>? errorController;
 
-    String currentText = "";
+ 
 
-
-    @override
-    void dispose() {
-      otpController.dispose();
-      super.dispose();
-    } 
-     void handleVerificationError() {
-    // Trigger error animation
-    errorController?.add(ErrorAnimationType.shake);
-  }
+  
+    
+  
 
     return Center(
       child: Column(
