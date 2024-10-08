@@ -12,6 +12,8 @@ class UserController extends GetxController {
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final users = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
+  var isLoading1 = false.obs; 
+
    // List of user data
 
   // Method to load users from the repository
@@ -39,16 +41,24 @@ class UserController extends GetxController {
 }
 
 void updateUsers(List<Userlistmodel> updatedUsers) async {
+  // Set loading state to true before starting the update
+  isLoading1.value = true;
+
   try {
     // Call the repository method to update users
     await homeRepository.updatedUsers(updatedUsers);
-    Get.snackbar("Success", "Users updated successfully!", snackPosition: SnackPosition.TOP);
+    
+    Get.snackbar("Success", "Team members list updated successfully!", snackPosition: SnackPosition.BOTTOM);
   } catch (e) {
     // Handle errors and provide feedback to the user
     print("Error updating users: $e");
-    Get.snackbar("Error", "Failed to update users. Please try again.", snackPosition: SnackPosition.TOP);
+    Get.snackbar("Error", "Failed to update users. Please try again.", snackPosition: SnackPosition.BOTTOM);
+  } finally {
+    // Ensure loading state is reset
+    isLoading1.value = false;
   }
 }
+
 void updateUser(Userlistmodel updatedUser) async {
   try {
     // Find the index of the user to update

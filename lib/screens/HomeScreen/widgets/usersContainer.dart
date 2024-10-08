@@ -1,6 +1,7 @@
 import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/commun%20widgets/formInput.dart';
 import 'package:arraid/config/colors.dart';
+import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/screens/HomeScreen/widgets/userCard.dart';
@@ -37,131 +38,179 @@ class _UsersContainerState extends State<UsersContainer> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-  title: Text(
-    'Add team members',
-    style: TextStyle(
-      fontSize: 22,
-      color: ColorManager.primary,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-  content: SingleChildScrollView(
-    child: Column(
-      children: List.generate(widget.userController.users.length, (index) {
-        return Obx(() {
-          var user = widget.userController.users[index];
+          title: Text(
+            'Add team members',
+            style: TextStyle(
+              fontSize: 22,
+              color: ColorManager.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              children:
+                  List.generate(widget.userController.users.length, (index) {
+                return Obx(() {
+                  var user = widget.userController.users[index];
 
-          // Temporary state to track checkbox selection
-          bool isChecked = user.isEmployee == 'true';
+                  // Temporary state to track checkbox selection
+                  bool isChecked = user.isEmployee == 'true';
 
-          return Row(
-            children: [
-              Checkbox(
-                value: isChecked,
-                onChanged: (bool? value) {
-                  // Temporarily update the selection in memory, but not in the controller
-                  setState(() {
-                        //user.isEmployee = value == true ? 'true' : 'false'; // Update in local user object
-                          widget.userController.updateUser(user); 
-                       
+                  return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${user.firstName} ${user.lastName}'),
+                      Checkbox(
+                        value: isChecked,
+                        onChanged: (bool? value) {
+                          // Check if user is trying to uncheck the box
+                          if (value == false) {
+                            // Show snackbar informing the user they cannot uncheck
+                            Get.snackbar(
+                              "Action Denied",
+                              "You can remove team members from Team members page.",
+                              snackPosition: SnackPosition.BOTTOM,
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.orange,
+                            );
+                          } else {
+                            // If checking the box, update the user in the controller
+                            widget.userController.updateUser(user.copyWith(
+                                    isEmployee: 'true') // or handle as needed
+                                );
+                          }
+                          // Keep the checkbox state as is
+                          setState(() {
+                            isChecked = value ==
+                                true; // Do not update the value if unchecked
+                          });
+                        },
+                      ),
+                    ],
+                  );
+                });
+              }),
+            ),
+          ),
+          actions: [
+            // Show loading indicator
+            TextButton(
+              child: Text('Save',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: ColorManager.primary)),
+              onPressed: () {
+                widget.userController.isLoading1.value = true;
+                // Collect users who became employees
+                List<Userlistmodel> updatedUsers = widget.userController.users
+                    .where((user) => user.isEmployee == 'true')
+                    .toList();
 
-                  });
-                },
-              ),
-              Text('${user.firstName} ${user.lastName}'),
-            ],
-          );
-        });
-      }),
-    ),
-  ),
-  actions: [
-    TextButton(
-      child: Text('Cancel'),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    ),
-    TextButton(
-      child: Text('Save'),
-      onPressed: () {
-        // Collect users who became employees
-        List<Userlistmodel> updatedUsers = widget.userController.users.where((user) => user.isEmployee == 'true').toList();
+                // Handle the logic to update users
+                widget.userController.updateUsers(
+                    updatedUsers); // Call update method with all changed users
 
-        // Handle the logic to update users
-        widget.userController.updateUsers(updatedUsers); // Call update method with all changed users
-
-        Navigator.of(context).pop(); // Close the dialog
-      },
-    ),
-  ],
-);
-
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: ColorManager.primary)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width * 0.7,
-      padding:
-          EdgeInsets.symmetric(horizontal: widget.width * 0.03, vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(
+      () {
+        // Using Obx to reactively listen for loading state changes
+        if (widget.userController.isLoading1.value) {
+          return Column(
             children: [
-              Text(
-                "Platform users",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: ColorManager.primary,
-                ),
+              SizedBox(
+                height: 200,
               ),
-              IconButton(
-                icon: Icon(
-                  Iconsax.user_cirlce_add,
-                  color: ColorManager.greyText,
-                  size: 30,
+              Center(
+                child: CircularProgressIndicator(
+                  color: ColorManager.primary,
+                  backgroundColor: ColorManager.greyText,
                 ),
-                onPressed: _showAddUserDialog,
               ),
             ],
+          );
+        }
+
+        return Container(
+          width: widget.width * 0.7,
+          padding: EdgeInsets.symmetric(
+              horizontal: widget.width * 0.03, vertical: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
-          SizedBox(height: 10),
-          ...List.generate(widget.userController.users.length, (index) {
-            return Obx(() {
-              var user = widget.userController.users[index];
-              return UserCard(
-                isTeamPage: false,
-                index: index,
-                isExpanded:
-                    widget.userController.expandedCardIndex.value == index,
-                onTap: widget.userController.toggleExpand,
-                assetImage: user.imageUrl ?? '',
-                title: '${user.firstName} ${user.lastName}',
-                email: user.email,
-                organization:
-                    (user.platforms != null && user.platforms!.length > 1)
-                        ? user.platforms![1]
-                        : 'Alrraid Pro',
-                subtitle:
-                    (user.privileges != null && user.privileges!.isNotEmpty)
-                        ? user.privileges![0]
-                        : '   user',
-                firstName: user.firstName,
-                lastName: user.lastName,
-              );
-            });
-          }),
-        ],
-      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Platform users",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ColorManager.primary,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Iconsax.user_cirlce_add,
+                      color: ColorManager.greyText,
+                      size: 30,
+                    ),
+                    onPressed: _showAddUserDialog,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              ...List.generate(widget.userController.users.length, (index) {
+                return Obx(() {
+                  var user = widget.userController.users[index];
+                  return UserCard(
+                    isTeamPage: false,
+                    index: index,
+                    isExpanded:
+                        widget.userController.expandedCardIndex.value == index,
+                    onTap: widget.userController.toggleExpand,
+                    assetImage: user.imageUrl ?? '',
+                    title: '${user.firstName} ${user.lastName}',
+                    email: user.email,
+                    organization:
+                        (user.platforms != null && user.platforms!.length > 1)
+                            ? user.platforms![1]
+                            : 'Alrraid Pro',
+                    subtitle:
+                        (user.privileges != null && user.privileges!.isNotEmpty)
+                            ? user.privileges![0]
+                            : '   user',
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                  );
+                });
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 }
