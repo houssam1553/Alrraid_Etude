@@ -35,6 +35,28 @@ class Homerepository {
       throw Exception('Error loading users: $e');
     }
   }
+
+    Future<void> updatedUsers(List<Userlistmodel> users) async {
+    // Collect the ids of the users who became employees
+    List<String> employeeIds = users
+        .where((user) => user.isEmployee == 'true') // Filter for new employees
+        .map((user) => user.id) // Get their _id
+        .toList();
+
+    try {
+      // Prepare the data for the PUT request
+      Map<String, dynamic> data = {
+        'ids': employeeIds,
+      };
+      print(data);
+
+      // Send the PUT request with the employee IDs
+      await apiService.putRequest('/api/users/employee/add', data);
+    } catch (e) {
+      print("Error updating users: $e");
+      // Handle error
+    }
+  }
     
   /* if (response.statusCode == 200) {
     print("Raw response: ${response.data}");

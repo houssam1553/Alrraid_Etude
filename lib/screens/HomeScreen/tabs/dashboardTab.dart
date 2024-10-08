@@ -3,6 +3,7 @@ import 'package:arraid/controllers/sidebarController.dart';
 import 'package:arraid/screens/HomeScreen/charts/barChart.dart';
 import 'package:arraid/screens/HomeScreen/charts/lineChart.dart';
 import 'package:arraid/screens/HomeScreen/pages/dashboardPage.dart';
+import 'package:arraid/screens/HomeScreen/pages/teamMembersPage.dart';
 import 'package:arraid/screens/HomeScreen/pages/usersPage.dart';
 import 'package:arraid/screens/HomeScreen/widgets/barChartContainer.dart';
 import 'package:arraid/screens/HomeScreen/widgets/dashboardCard.dart';
@@ -96,7 +97,7 @@ class _DashboardTabState extends State<DashboardTab>
               builder: (context, displayMode) {
                 return SidebarItem(
                   index: 1, // Ensure unique index
-                  title: 'Settings',
+                  title: 'Users',
                   icon: Icons.person,
                   selectedColor: ColorManager.primary,
                   unselectedColor: Colors.white,
@@ -109,13 +110,13 @@ class _DashboardTabState extends State<DashboardTab>
             SideMenuItem(
               builder: (context, displayMode) {
                 return SidebarItem(
-                  index: 4, // Ensure unique index
-                  title: 'Settings',
-                  icon: Icons.settings,
+                  index: 2, // Ensure unique index
+                  title: 'Team members',
+                  icon: Icons.work,
                   selectedColor: ColorManager.primary,
                   unselectedColor: Colors.white,
                   sidebarController: sidebarController,
-                  children: [
+                 /*  children: [
                     SidebarItem(
                       index: 5, // Ensure unique index
                       title: 'User Settings',
@@ -132,7 +133,7 @@ class _DashboardTabState extends State<DashboardTab>
                       unselectedColor: Colors.white,
                       sidebarController: sidebarController,
                     ),
-                  ],
+                  ], */
                 );
               },
             ),
@@ -196,10 +197,7 @@ class _DashboardTabState extends State<DashboardTab>
                   children: [
                     dashboardPage(height: height, width: width),
                                                            UsersPage(height: height, width: width),
-                    Center(child: Text('Dashboard2')),
-                    Center(child: Text('Settings1')),
-                    Center(child: Text('Settings2')),
-                    Center(child: Text('Settings3')),
+                 Teammemberspage(height: height, width: width)
                   ],
                 ),
               ),

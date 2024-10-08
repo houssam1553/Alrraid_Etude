@@ -41,7 +41,8 @@ class _HomeScreeenState extends State<Homescreen> {
 
   body: Obx(() => navigationController.HomeTabs.isNotEmpty
           ? navigationController.HomeTabs[navigationController.selectedIndex.value]
-          : Center(child: CircularProgressIndicator())), // Show loading if HomeTabs is empty
+          : Center(child: CircularProgressIndicator( color: ColorManager.primary,
+                  backgroundColor: ColorManager.greyText,))), // Show loading if HomeTabs is empty
           
       bottomNavigationBar: Obx(() {
         // Only show BottomNavigationBar if there are items to show

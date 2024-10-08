@@ -37,62 +37,66 @@ class _UsersContainerState extends State<UsersContainer> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
-            'Add Team Members',
-            style: TextStyle(
-              fontSize: 22,
-              color: ColorManager.primary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children:
-                  List.generate(widget.userController.users.length, (index) {
-                return Obx(() {
-                  var user = widget.userController.users[index];
-                  return Row(
-                    children: [
-                      Checkbox(
-                        value: user.isEmployee == 'true',
-                        onChanged: (bool? value) {
-                          // Update the isEmployee state
-                          //  user.isEmployee = value == true ? 'true' : 'false';
-                          // Trigger an update
-                          //  widget.userController.updateUser(user);
-                        },
-                      ),
-                      Text('${user.firstName} ${user.lastName}'),
-                    ],
-                  );
-                });
-              }),
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Save'),
-              onPressed: () {
-                // Handle the logic to add selected users as team members
-                List<Userlistmodel> teamMembers = [];
-                for (int i = 0; i < selectedUsers.length; i++) {
-                  if (selectedUsers[i]) {
-                    teamMembers.add(
-                        widget.userController.users[i]); // Add user to team
-                  }
-                }
-                // Add your logic to handle team members (e.g., save to database)
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+  title: Text(
+    'Add team members',
+    style: TextStyle(
+      fontSize: 22,
+      color: ColorManager.primary,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  content: SingleChildScrollView(
+    child: Column(
+      children: List.generate(widget.userController.users.length, (index) {
+        return Obx(() {
+          var user = widget.userController.users[index];
+
+          // Temporary state to track checkbox selection
+          bool isChecked = user.isEmployee == 'true';
+
+          return Row(
+            children: [
+              Checkbox(
+                value: isChecked,
+                onChanged: (bool? value) {
+                  // Temporarily update the selection in memory, but not in the controller
+                  setState(() {
+                        //user.isEmployee = value == true ? 'true' : 'false'; // Update in local user object
+                          widget.userController.updateUser(user); 
+                       
+
+                  });
+                },
+              ),
+              Text('${user.firstName} ${user.lastName}'),
+            ],
+          );
+        });
+      }),
+    ),
+  ),
+  actions: [
+    TextButton(
+      child: Text('Cancel'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    ),
+    TextButton(
+      child: Text('Save'),
+      onPressed: () {
+        // Collect users who became employees
+        List<Userlistmodel> updatedUsers = widget.userController.users.where((user) => user.isEmployee == 'true').toList();
+
+        // Handle the logic to update users
+        widget.userController.updateUsers(updatedUsers); // Call update method with all changed users
+
+        Navigator.of(context).pop(); // Close the dialog
+      },
+    ),
+  ],
+);
+
       },
     );
   }
@@ -135,6 +139,7 @@ class _UsersContainerState extends State<UsersContainer> {
             return Obx(() {
               var user = widget.userController.users[index];
               return UserCard(
+                isTeamPage: false,
                 index: index,
                 isExpanded:
                     widget.userController.expandedCardIndex.value == index,
@@ -145,7 +150,7 @@ class _UsersContainerState extends State<UsersContainer> {
                 organization:
                     (user.platforms != null && user.platforms!.length > 1)
                         ? user.platforms![1]
-                        : 'organization',
+                        : 'Alrraid Pro',
                 subtitle:
                     (user.privileges != null && user.privileges!.isNotEmpty)
                         ? user.privileges![0]

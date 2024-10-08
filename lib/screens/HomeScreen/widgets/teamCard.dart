@@ -8,7 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UserCard extends StatefulWidget {
+class TeamCard extends StatefulWidget {
 
   final String assetImage;
   final String title;
@@ -26,7 +26,7 @@ class UserCard extends StatefulWidget {
   final Function(int) onTap; // Callback to notify parent about tap
   final int index; // Index of the card
 
-   UserCard({
+   TeamCard({
     Key? key,
     required this.assetImage,
     required this.title,
@@ -40,19 +40,19 @@ class UserCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UserCardState createState() => _UserCardState();
+  _TeamCardState createState() => _TeamCardState();
 }
 
-class _UserCardState extends State<UserCard> {
+class _TeamCardState extends State<TeamCard> {
          final navigationController = Get.put(HomeNavigationController());
 
   @override
   Widget build(BuildContext context) {
-    final UserController userController = Get.find<UserController>();
+    final TeamController teamController = Get.find<TeamController>();
     
 
 
-    bool editCard =userController.editingCardIndex.value == widget.index;  // Check if this card is being edited
+    bool editCard =teamController.editingCardIndex.value == widget.index;  // Check if this card is being edited
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -294,13 +294,13 @@ class _UserCardState extends State<UserCard> {
                                       ],
                                     ).then((value) {
                                       if (value != null) {
-                                      //  userController.updateOrganization(widget.index, value);
+                                      //  teamController.updateOrganization(widget.index, value);
                                       }
                                     }); */
   },
   child: 
  Obx(() {
-   final organization = userController.users[widget.index];
+   final organization = teamController.team[widget.index];
   return Text(
   widget.organization,
   
@@ -318,7 +318,7 @@ class _UserCardState extends State<UserCard> {
                             ),
                             TextButton(
                               onPressed: () {
-                                userController.toggleEdit(widget.index);  // Trigger edit state in controller
+                                teamController.toggleEdit(widget.index);  // Trigger edit state in controller
                               },
                               child: const Text(
                                 "Edit",

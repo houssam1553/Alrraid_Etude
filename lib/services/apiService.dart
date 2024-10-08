@@ -30,6 +30,17 @@ class ApiService {
     throw Exception('Failed to post data: ${e.response?.statusCode ?? e.message}');
   }
 }
+  Future<Response> putRequest(String endpoint, Map<String, dynamic> data) async {
+    try {
+      print('Putting to: ${_dio.options.baseUrl}$endpoint'); // Debugging line
+      final response = await _dio.put(endpoint, data: data);
+      return response;
+    } on DioError catch (e) {
+      print('DioError: ${e.response?.data}');
+      print('DioError: ${e.message}');
+      throw Exception('Failed to put data: ${e.response?.statusCode ?? e.message}');
+    }
+  }
 
-  // You can add more methods for PUT, DELETE, etc., if needed
+  // You can add more methods for  DELETE, etc., if needed
 }

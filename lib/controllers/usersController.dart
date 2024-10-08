@@ -32,11 +32,55 @@ class UserController extends GetxController {
         } finally {
       isLoading.value = false; // Set loading to false when done
     }
+
+    
   // Return an empty list in case of an error
   
 }
+
+void updateUsers(List<Userlistmodel> updatedUsers) async {
+  try {
+    // Call the repository method to update users
+    await homeRepository.updatedUsers(updatedUsers);
+    Get.snackbar("Success", "Users updated successfully!", snackPosition: SnackPosition.TOP);
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+    print("Error updating users: $e");
+    Get.snackbar("Error", "Failed to update users. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
+void updateUser(Userlistmodel updatedUser) async {
+  try {
+    // Find the index of the user to update
+    int index = users.indexWhere((user) => user.id == updatedUser.id);
+    print(index);
+    
+    // If user is found, update the user in the list
+    if (index != -1) {
+      // Create a new user instance with updated isEmployee
+      users[index] = updatedUser.copyWith(isEmployee: "true");
+      print(users[index].isEmployee);
+
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+
+    } else {
+      // Handle case where user was not found
+      Get.snackbar("Error", "User not found.", snackPosition: SnackPosition.TOP);
+    }
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
+
+
+
+
+
   @override
   void onInit() {
+   
     loadUsers(); // Load users when the controller is initialized
     super.onInit();
   }

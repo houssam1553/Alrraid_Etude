@@ -27,9 +27,40 @@ class Userlistmodel {
     this.createdAt,
   });
 
+  // Add the copyWith method
+  Userlistmodel copyWith({
+    String? id,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? isEmployee,
+    String? token,
+    String? type,
+    String? imageUrl,
+    String? phone,
+    List<String>? privileges,
+    List<String>? platforms,
+    DateTime? createdAt,
+  }) {
+    return Userlistmodel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      isEmployee: isEmployee ?? this.isEmployee,
+      token: token ?? this.token,
+      type: type ?? this.type,
+      imageUrl: imageUrl ?? this.imageUrl,
+      phone: phone ?? this.phone,
+      privileges: privileges ?? this.privileges,
+      platforms: platforms ?? this.platforms,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
   factory Userlistmodel.fromJson(Map<String, dynamic> json) {
     return Userlistmodel(
-      id: json['id'] ?? '',
+      id: json['_id'] ?? '',
       email: json['email'] ?? '',
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
