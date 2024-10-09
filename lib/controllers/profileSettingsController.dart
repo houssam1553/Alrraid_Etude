@@ -23,7 +23,8 @@ class ProfileSettingsController extends GetxController {
           lastName: "Last Name",   // Default last name
           email: "example@email.com", // Default email
           isEmployee: "false",
-           id: '',       // Default isEmployee status
+           id: '',    
+           type: '',   // Default isEmployee status
         );
       }
     } catch (e) {

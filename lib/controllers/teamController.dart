@@ -38,10 +38,29 @@ class TeamController extends GetxController {
     isLoading.value = false; // Set loading to false when done
   }
 }
+void deleteUser(String userId) async {
+  try {
+    // Find the index of the user to update
+    
+
+    
+    // If user is found, update the user in the list
+  await homeRepository.deleteUser(userId);
+
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+    Get.snackbar("Success", "user deleted", snackPosition: SnackPosition.TOP);
+   
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
+
 
   @override
   void onInit() {
-    loadTeamMembers(); // Load users when the controller is initialized
+    //loadTeamMembers(); // Load users when the controller is initialized
     super.onInit();
   }
 

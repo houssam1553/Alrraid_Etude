@@ -27,6 +27,8 @@ class HomeNavigationController extends GetxController {
   currentUser = await LocalService.getUser();
   print(currentUser!.isEmployee);
   print(currentUser!.email);
+  print(currentUser!.type);
+
 
   if (currentUser != null) {
     if (currentUser!.isEmployee == 'true') {

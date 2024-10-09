@@ -13,6 +13,7 @@ class UserController extends GetxController {
   final users = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
   var isLoading1 = false.obs; 
+   var isEmpty = true.obs;
 
    // List of user data
 
@@ -25,14 +26,20 @@ class UserController extends GetxController {
     users.clear(); // Clear the existing list
     users.addAll(fetchedUsers); 
     print(users[1].platforms );
+
+      isEmpty.value = false;
     // Add fetched users to the observable list
     return fetchedUsers;
   } catch (e) {
     print("Error loading users: $e");
     Get.snackbar("Server Error", "could not retreive users ",snackPosition: SnackPosition.TOP);
+     isEmpty.value = true;
     return [];
         } finally {
-      isLoading.value = false; // Set loading to false when done
+      isLoading.value = false; 
+        
+        print(isEmpty.value);
+        // Set loading to false when done
     }
 
     
@@ -91,7 +98,7 @@ void updateUser(Userlistmodel updatedUser) async {
   @override
   void onInit() {
    
-    loadUsers(); // Load users when the controller is initialized
+    //loadUsers(); // Load users when the controller is initialized
     super.onInit();
   }
 

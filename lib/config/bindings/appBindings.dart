@@ -46,12 +46,12 @@ class HomeBindings extends Bindings {
   @override
   void dependencies() {
       Get.lazyPut<ApiService>(() => ApiService('https://api.example.com'));
+    Get.lazyPut<HomeNavigationController>(() => HomeNavigationController());
 
         Get.lazyPut<Homerepository>(() => Homerepository(Get.find<ApiService>()));
      Get.lazyPut<UserController>(() => UserController(Get.find<Homerepository>()));
      Get.lazyPut<TeamController>(() => TeamController(Get.find<Homerepository>()));
 
-    Get.lazyPut<HomeNavigationController>(() => HomeNavigationController());
     // Add other dependencies here if needed
   }
 }

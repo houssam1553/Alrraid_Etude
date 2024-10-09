@@ -3,7 +3,9 @@ class User {
   final String email;
   late final String firstName;
   late final String lastName;
-  late final String? isEmployee; // Nullable since `isEmployee` may be optional
+  late final String? isEmployee; 
+   final String type; // Nullable since `isEmployee` may be optional
+  // Nullable since `isEmployee` may be optional
   final String? token; // Token can also be optional
 
   User({
@@ -11,6 +13,7 @@ class User {
     required this.email,
     required this.firstName,
     required this.lastName,
+    required this.type,
     this.isEmployee,
     this.token,
   });
@@ -21,7 +24,10 @@ class User {
       email: json['email'] ?? '', // Similarly for email
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
-      isEmployee: json['isEmployee'], // Nullable field, no need for a default value
+      isEmployee: json['isEmployee'],
+      type: json['type']??'',
+
+       // Nullable field, no need for a default value
       token: json['token'], // Nullable field, no need for a default value
     );
   }
@@ -32,6 +38,8 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'isEmployee': isEmployee,
+      'type':type,
+
     };
   }
 }

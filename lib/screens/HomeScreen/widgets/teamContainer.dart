@@ -109,7 +109,15 @@ class _TeamContainerState extends State<TeamContainer> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: 
+         RefreshIndicator(
+          
+    onRefresh: () async {
+      // Define the logic to refresh the data here
+      await widget.teamController.loadTeamMembers(); // Fetch updated data from controller
+    },
+    child:
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -133,12 +141,17 @@ class _TeamContainerState extends State<TeamContainer> {
             ],
           ),
           SizedBox(height: 10),
-          ...List.generate(widget.teamController.team.length, (index1) {
+         ListView.builder( scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+                      itemCount: widget.teamController.team.length,
+                      itemBuilder: (context, index1) {
             return Obx(() {
               var user = widget.teamController.team[index1];
               return TeamCard(
                 index: index1,
+                id:user.id,
                 isTeamPage: true,
+                type :user.type ,
                 isExpanded:
                     widget.teamController.expandedCardIndex.value == index1,
                 onTap: widget.teamController.toggleExpand,
@@ -158,8 +171,9 @@ class _TeamContainerState extends State<TeamContainer> {
               );
             });
           }),
+         
         ],
-      ),
+      ), ),
     );
   }
 }

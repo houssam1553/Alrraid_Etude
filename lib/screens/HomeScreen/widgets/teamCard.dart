@@ -20,7 +20,7 @@ class TeamCard extends StatefulWidget {
   final String email;
  final String organization;
  final bool isTeamPage;
-
+final String id;
 
   final bool isExpanded;
   final Function(int) onTap; // Callback to notify parent about tap
@@ -36,7 +36,7 @@ class TeamCard extends StatefulWidget {
     required this.onTap,
     required this.index,
  required this.organization,
-    required this.email, required this.firstName, required this.lastName, required this.isTeamPage,
+    required this.email, required this.firstName, required this.lastName, required this.isTeamPage, required this.id, String? type,
   }) : super(key: key);
 
   @override
@@ -254,7 +254,7 @@ class _TeamCardState extends State<TeamCard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                Text(
-                                  widget.subtitle,
+                                  widget.title,
                           
                                   style: const TextStyle(
                                     fontSize: 13.0,
@@ -316,18 +316,37 @@ class _TeamCardState extends State<TeamCard> {
 
                               ],
                             ),
-                            TextButton(
-                              onPressed: () {
-                                teamController.toggleEdit(widget.index);  // Trigger edit state in controller
-                              },
-                              child: const Text(
-                                "Edit",
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
+                            Column(
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    teamController.toggleEdit(widget.index);  // Trigger edit state in controller
+                                  },
+                                  child: const Text(
+                                    "Edit",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                   TextButton(
+                                  onPressed: () {
+                                    
+                                    teamController.deleteUser(widget.id);  // Trigger edit state in controller
+                                  },
+                                  child: const Text(
+
+                                    "Delete",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 224, 83, 83),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

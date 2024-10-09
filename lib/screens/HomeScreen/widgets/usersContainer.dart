@@ -171,42 +171,61 @@ class _UsersContainerState extends State<UsersContainer> {
                       color: ColorManager.primary,
                     ),
                   ),
+                  Obx((){
+                    
+           
+                   return
                   IconButton(
+                    
                     icon: Icon(
                       Iconsax.user_cirlce_add,
                       color: ColorManager.greyText,
                       size: 30,
                     ),
-                    onPressed: _showAddUserDialog,
+                    onPressed:
+                    
+                    widget.userController.isEmpty.value ? (){}: _showAddUserDialog,
+                  );}
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              ...List.generate(widget.userController.users.length, (index) {
-                return Obx(() {
-                  var user = widget.userController.users[index];
-                  return UserCard(
-                    isTeamPage: false,
-                    index: index,
-                    isExpanded:
-                        widget.userController.expandedCardIndex.value == index,
-                    onTap: widget.userController.toggleExpand,
-                    assetImage: user.imageUrl ?? '',
-                    title: '${user.firstName} ${user.lastName}',
-                    email: user.email,
-                    organization:
-                        (user.platforms != null && user.platforms!.length > 1)
-                            ? user.platforms![1]
-                            : 'Alrraid Pro',
-                    subtitle:
-                        (user.privileges != null && user.privileges!.isNotEmpty)
-                            ? user.privileges![0]
-                            : '   user',
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                  );
-                });
-              }),
+      RefreshIndicator(
+    onRefresh: () async {
+      // Define the logic to refresh the data here
+      await widget.userController.loadUsers(); // Fetch updated data from controller
+    },
+    child:  ListView.builder( scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+                      itemCount: widget.userController.users.length,
+                      itemBuilder: (context, index) {
+          return Obx(() {
+            var user = widget.userController.users[index];
+            return UserCard(
+              isTeamPage: false,
+              index: index,
+              isExpanded:
+                  widget.userController.expandedCardIndex.value == index,
+              onTap: widget.userController.toggleExpand,
+              assetImage: user.imageUrl ?? '',
+              title: '${user.firstName} ${user.lastName}',
+              email: user.email,
+              organization:
+                  (user.platforms != null && user.platforms!.length > 1)
+                      ? user.platforms![1]
+                      : 'Alrraid Pro',
+              subtitle:
+                  (user.privileges != null && user.privileges!.isNotEmpty)
+                      ? user.privileges![0]
+                      : '   user',
+              firstName: user.firstName,
+              lastName: user.lastName,
+            );
+          });
+        }),
+      
+
+      ),
+
             ],
           ),
         );

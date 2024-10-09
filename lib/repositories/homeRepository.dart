@@ -57,7 +57,25 @@ class Homerepository {
       // Handle error
     }
   }
-    
+      Future<void> deleteUser(String userId) async {
+    // Collect the ids of the users who became employees
+    String employeeId = userId;
+        
+
+    try {
+      // Prepare the data for the PUT request
+      Map<String, dynamic> data = {
+        '_id': employeeId,
+      };
+      print(data);
+
+      // Send the PUT request with the employee IDs
+      await apiService.putRequest('/api/users/employee/delete', data);
+    } catch (e) {
+      print("Error updating users: $e");
+      // Handle error
+    }
+  }
   /* if (response.statusCode == 200) {
     print("Raw response: ${response.data}");
 
