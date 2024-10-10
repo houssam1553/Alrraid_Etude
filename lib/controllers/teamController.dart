@@ -12,7 +12,10 @@ class TeamController extends GetxController {
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final team = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
+  var isFirstFetch = true.obs; 
+
    // List of user data
+   
 
   // Method to load users from the repository
  Future<List<Userlistmodel>> loadTeamMembers() async {
@@ -28,17 +31,20 @@ class TeamController extends GetxController {
     team.addAll(teamMembers); // Add filtered team members to the observable list
     
     
-    
+    isFirstFetch.value = false;
     return teamMembers;
   } catch (e) {
-    print("Error loading team members: $e");
-    Get.snackbar("Server Error", "Could not retrieve team members", snackPosition: SnackPosition.TOP);
+if (team == [] ){
+    Get.snackbar("Server Error", "Could not retrieve team members", snackPosition: SnackPosition.TOP);};
+        isFirstFetch.value = false;
     return [];
   } finally {
     isLoading.value = false; // Set loading to false when done
   }
-}
-void deleteUser(String userId) async {
+}Future<void> triggerRefresh() async {
+    await loadTeamMembers();
+  }
+ Future<void> deleteUser(String userId) async {
   try {
     // Find the index of the user to update
     
@@ -53,6 +59,31 @@ void deleteUser(String userId) async {
    
   } catch (e) {
     // Handle errors and provide feedback to the user
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
+Future<void> updateUserInfo(Userlistmodel updatedUser) async {
+  try {
+    // Find the index of the user to update
+    int index = team.indexWhere((user) => user.id == updatedUser.id);
+
+    
+    // If user is found, update the user in the list
+   
+      // Create a new user instance with updated isEmployee
+     // team[index] = updatedUser.copyWith();
+
+   await homeRepository.updateUser(updatedUser);
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+
+
+      // Handle case where user was not found
+      
+ 
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+   
     Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
   }
 }

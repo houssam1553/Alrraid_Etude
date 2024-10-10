@@ -93,7 +93,30 @@ void updateUser(Userlistmodel updatedUser) async {
 
 
 
+void updateUserInfo(Userlistmodel updatedUser) async {
+  try {
+    // Find the index of the user to update
+    int index = users.indexWhere((user) => user.id == updatedUser.id);
 
+    
+    // If user is found, update the user in the list
+   
+      // Create a new user instance with updated isEmployee
+      users[index] = updatedUser.copyWith();
+
+   await homeRepository.updateUser(updatedUser);
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+
+
+      // Handle case where user was not found
+      Get.snackbar("Error", "User not found.", snackPosition: SnackPosition.TOP);
+    
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
 
   @override
   void onInit() {

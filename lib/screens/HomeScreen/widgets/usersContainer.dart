@@ -65,6 +65,7 @@ class _UsersContainerState extends State<UsersContainer> {
                           // Check if user is trying to uncheck the box
                           if (value == false) {
                             // Show snackbar informing the user they cannot uncheck
+                           Get.closeAllSnackbars();
                             Get.snackbar(
                               "Action Denied",
                               "You can remove team members from Team members page.",
@@ -158,7 +159,12 @@ class _UsersContainerState extends State<UsersContainer> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
+          child:   RefreshIndicator(
+    onRefresh: () async {
+      // Define the logic to refresh the data here
+      await widget.userController.loadUsers(); // Fetch updated data from controller
+    },
+    child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -189,12 +195,7 @@ class _UsersContainerState extends State<UsersContainer> {
                   ),
                 ],
               ),
-      RefreshIndicator(
-    onRefresh: () async {
-      // Define the logic to refresh the data here
-      await widget.userController.loadUsers(); // Fetch updated data from controller
-    },
-    child:  ListView.builder( scrollDirection: Axis.vertical,
+    ListView.builder( scrollDirection: Axis.vertical,
         shrinkWrap: true,
                       itemCount: widget.userController.users.length,
                       itemBuilder: (context, index) {
@@ -223,10 +224,10 @@ class _UsersContainerState extends State<UsersContainer> {
           });
         }),
       
-
+  ],
       ),
 
-            ],
+          
           ),
         );
       },

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:arraid/config/exceptions.dart';
 import 'package:arraid/models/userListModel.dart';
+import 'package:arraid/models/userModel.dart';
 
 import 'package:arraid/services/apiService.dart';
 import 'package:arraid/services/localService.dart';
+import 'package:get/get.dart';
 
 class Homerepository {
   final ApiService apiService = ApiService("http://192.168.1.65:3002");
@@ -76,6 +78,31 @@ class Homerepository {
       // Handle error
     }
   }
+     Future<void> updateUser(Userlistmodel user) async {
+    try {
+      Map<String, dynamic> data = {
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+       
+        // Add more fields as necessary
+      };
+
+      await apiService.putRequest('/api/users/${user.id}', data);
+      print(data);
+             Get.closeAllSnackbars();
+                            Get.snackbar(
+                              "Done!",
+                              "User data updated succesfully",
+                              snackPosition: SnackPosition.BOTTOM,
+                              duration: Duration(seconds: 2),
+                       
+                            );
+
+    } catch (e) {
+      print("Error updating user: $e");
+    }
+  }
+}
   /* if (response.statusCode == 200) {
     print("Raw response: ${response.data}");
 
@@ -123,4 +150,3 @@ rawResponse = rawResponse.replaceAllMapped(
 
 
 
-}

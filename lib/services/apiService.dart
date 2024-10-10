@@ -32,7 +32,8 @@ class ApiService {
 }
   Future<Response> putRequest(String endpoint, Map<String, dynamic> data) async {
     try {
-      print('Putting to: ${_dio.options.baseUrl}$endpoint'); // Debugging line
+      print('Putting to: ${_dio.options.baseUrl}$endpoint');
+       print(data); // Debugging line
       final response = await _dio.put(endpoint, data: data);
       return response;
     } on DioError catch (e) {

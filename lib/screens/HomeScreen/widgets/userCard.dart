@@ -22,7 +22,7 @@ class UserCard extends StatefulWidget {
  final bool isTeamPage;
 
 
-  final bool isExpanded;
+  bool isExpanded;
   final Function(int) onTap; // Callback to notify parent about tap
   final int index; // Index of the card
 
@@ -45,6 +45,8 @@ class UserCard extends StatefulWidget {
 
 class _UserCardState extends State<UserCard> {
          final navigationController = Get.put(HomeNavigationController());
+
+         
 
   @override
   Widget build(BuildContext context) {
@@ -92,20 +94,28 @@ class _UserCardState extends State<UserCard> {
     color: Colors.grey[200], // Add a background color
     borderRadius: BorderRadius.circular(50),
   ),
-  child: ClipRRect(
-    borderRadius: BorderRadius.circular(50), // Match the container's border radius
-    child: Image.network(
-      widget.assetImage,
-      fit: BoxFit.cover, // Specify how the image should fit within the container
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Error!',
-            textAlign: TextAlign.center,
-          ),
-        );
-      },
+  child: GestureDetector(
+      onTap: () {
+      setState(() {
+        widget.isExpanded = false;
+      });
+      userController.editingCardIndex.value=-1;
+    },
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(50), // Match the container's border radius
+      child: Image.network(
+        widget.assetImage,
+        fit: BoxFit.cover, // Specify how the image should fit within the container
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(
+              'Error!',
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      ),
     ),
   ),
 )
@@ -171,11 +181,11 @@ class _UserCardState extends State<UserCard> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children:  [
-                                  
+           /*                        
             costumInput(label: widget.firstName, isEnabeled:true,),      SizedBox(height: 5.0),    
             costumInput(label: widget.lastName,isEnabeled:true,),      SizedBox(height: 5.0),                          
             costumInput(label: widget.email,isEnabeled:false,),      SizedBox(height: 5.0),                          
-                                   
+                                    */
 
                                 
                                 ],
@@ -316,16 +326,21 @@ class _UserCardState extends State<UserCard> {
 
                               ],
                             ),
-                            TextButton(
-                              onPressed: () {
-                                userController.toggleEdit(widget.index);  // Trigger edit state in controller
-                              },
-                              child: const Text(
-                                "Edit",
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
+                            Container(decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),color: ColorManager.greyText,
+                            ),
+                           height: 35,
+                              child: TextButton(
+                                onPressed: () {
+                                  userController.toggleEdit(widget.index);  // Trigger edit state in controller
+                                },
+                                child: const Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),

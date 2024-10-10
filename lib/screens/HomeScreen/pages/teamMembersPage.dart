@@ -31,17 +31,7 @@ class _TeammemberspageState extends State<Teammemberspage> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      // Using Obx to reactively listen for loading state changes
-      if (teamController.isLoading.value) {
-        return  Center(
-       
-            child: CircularProgressIndicator(color: ColorManager.primary,
-                    backgroundColor: ColorManager.greyText,),
-          
-        );
-      }
-
+   
       return SingleChildScrollView(
         child: Column(
           children: [
@@ -54,6 +44,6 @@ class _TeammemberspageState extends State<Teammemberspage> {
           ],
         ),
       );
-    });
+
   }
 }
