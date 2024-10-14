@@ -8,7 +8,7 @@ import 'package:arraid/services/apiService.dart';
 import 'package:arraid/services/localService.dart';
 
 class AuthRepository {
-  final ApiService apiService = ApiService("http://192.168.1.65:3002");
+  final ApiService apiService = ApiService("https://alrraid.com");
 
   AuthRepository(ApiService find);
    User? currentUser;

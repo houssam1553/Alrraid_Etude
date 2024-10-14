@@ -126,7 +126,7 @@ class _CodetabState extends State<Codetab> {
                               obscureText: false,
                               animationType: AnimationType.fade,
                               pinTheme: PinTheme(
-                                selectedFillColor: ColorManager.blueGrey,
+                                selectedFillColor: const Color.fromARGB(255, 218, 228, 236),
                                 fieldHeight: 60,
                                 fieldWidth: 45,
                                 shape: PinCodeFieldShape.box,
