@@ -24,6 +24,7 @@ class TeamCard extends StatefulWidget {
 final String id;
   final VoidCallback onRefresh; 
   bool isExpanded;
+  bool editCard;
   final Function(int) onTap; // Callback to notify parent about tap
   final int index; // Index of the card
 
@@ -34,6 +35,8 @@ final String id;
     
     required this.subtitle,
     required this.isExpanded,
+    required this.editCard,
+
     required this.onTap,
     required this.index,
  required this.organization,
@@ -52,15 +55,31 @@ class _TeamCardState extends State<TeamCard> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+    
 
   @override
   void initState() {
-    super.initState();
-    // Initialize the controllers with existing user data
+  /*    setState(() {
     widget.isExpanded = false;
+    widget.editCard = false;
+
+     
+
+  // Collapse the card
+  }); */
+       print(" edit : ${widget.editCard}");
+   
+
+     print(" isExpanded : ${widget.isExpanded}");
+   
+
+    // Initialize the controllers with existing user data
+   
+    
     firstNameController.text = widget.firstName;
     lastNameController.text = widget.lastName;
     emailController.text = widget.email;
+        super.initState();
   }
 
   @override
@@ -69,6 +88,9 @@ class _TeamCardState extends State<TeamCard> {
     if (teamController.editingCardIndex.value == widget.index) {
       teamController.editingCardIndex.value = -1; // Reset to no card being edited
     }
+ 
+    
+      widget.editCard = false;
     // Dispose controllers to free resources
     firstNameController.dispose();
     lastNameController.dispose();
@@ -92,7 +114,12 @@ print(updatedUser.firstName);
     teamController.loadTeamMembers();
     FocusManager.instance.primaryFocus?.unfocus();
      setState(() {
-    widget.isExpanded = false; // Collapse the card
+    widget.isExpanded = false;
+    widget.editCard = false;
+
+     
+
+  // Collapse the card
   });
   teamController.editingCardIndex.value = -1;
     widget.onRefresh();
@@ -111,16 +138,14 @@ print(updatedUser.firstName);
        
       });
       teamController.editingCardIndex.value=-1;
-
-     print(" isExpanded : ${widget.isExpanded}");
-   
+     
   }
  
 
   @override
   Widget build(BuildContext context) {
    
-    bool editCard =teamController.editingCardIndex.value == widget.index;
+ // bool editCard =teamController.editingCardIndex.value == widget.index;
       // Check if this card is being edited
 
     return Padding(
@@ -147,7 +172,7 @@ print(updatedUser.firstName);
             child: Column(
               children: [
                
-                    editCard
+                  widget.  editCard
                         ?  Row(
                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -312,7 +337,7 @@ print(updatedUser.firstName);
                           ),
                   ],
                 ),
-                if (widget.isExpanded && !editCard) ...[
+                if (widget.isExpanded && !widget.editCard) ...[
                   // Expanded content only shows if not in edit mode
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),

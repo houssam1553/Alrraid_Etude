@@ -4,7 +4,9 @@ class ApiService {
   final Dio _dio;
 
   ApiService(String baseUrl)
-      : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+      : _dio = Dio(BaseOptions(
+        connectTimeout: Duration(seconds: 7),
+        baseUrl: baseUrl));
 
   Future<Response> getRequest(String endpoint, {Map<String, dynamic>? queryParams}) async {
     try {

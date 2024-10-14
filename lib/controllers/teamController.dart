@@ -32,12 +32,18 @@ class TeamController extends GetxController {
     
     
     isFirstFetch.value = false;
+    expandedCardIndex.value = -1;
     return teamMembers;
   } catch (e) {
 if (team == [] ){
-    Get.snackbar("Server Error", "Could not retrieve team members", snackPosition: SnackPosition.TOP);};
+    Get.snackbar("Server Error", "Could not retrieve team members", snackPosition: SnackPosition.TOP);
+    
+    };
+  Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
+    
         isFirstFetch.value = false;
-    return [];
+          return [defaultuser];
+  
   } finally {
     isLoading.value = false; // Set loading to false when done
   }

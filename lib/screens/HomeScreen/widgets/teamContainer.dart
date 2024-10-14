@@ -1,6 +1,7 @@
 import 'package:arraid/commun%20widgets/customInput.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/teamController.dart';
+import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/screens/HomeScreen/widgets/teamCard.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,14 @@ class TeamContainer extends StatefulWidget {
 }
 
 class _TeamContainerState extends State<TeamContainer> {
+
+  @override
+  void initState() {
+  Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
+    // TODO: implement initState
+     widget.teamController.team.isEmpty?widget.teamController.team.value = [defaultuser]:null;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -72,6 +81,8 @@ class _TeamContainerState extends State<TeamContainer> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+            
+            
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,6 +95,7 @@ class _TeamContainerState extends State<TeamContainer> {
                   ),
                 ],
               ),
+              
               SizedBox(height: 10),
               ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -95,6 +107,7 @@ class _TeamContainerState extends State<TeamContainer> {
                     return TeamCard(
                       index: index1,
                       id: user.id,
+                      editCard :widget.teamController.editingCardIndex.value == index1,
                       isTeamPage: true,
                       type: user.type,
                       isExpanded: widget.teamController.expandedCardIndex.value == index1,

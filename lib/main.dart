@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
       darkTheme: AppTheme.darktheme,
 
       themeMode: ThemeMode.light,
-      home: Homescreen()
+      home: LoginScreeen()
     );
   }
 }
