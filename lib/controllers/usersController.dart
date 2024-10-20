@@ -1,3 +1,5 @@
+import 'package:arraid/commun%20widgets/customSnackbar.dart';
+import 'package:arraid/controllers/sidebarController.dart';
 import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/repositories/homeRepository.dart';
 import 'package:get/get.dart';
@@ -7,16 +9,22 @@ class UserController extends GetxController {
   final Homerepository homeRepository;
 
   UserController(this.homeRepository);
+  SidebarController sidebarController = Get.find<SidebarController>();
 
   var expandedCardIndex = Rxn<int>();  // Index of the expanded card
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final users = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
-  var isLoading1 = false.obs; 
+  //var isLoading1 = false.obs; 
    var isEmpty = true.obs;
-
+  var isFirstFetch = true.obs; 
    // List of user data
-
+void closeSnackbars() {
+    if (Get.isSnackbarOpen) {
+      Get.closeAllSnackbars();
+      print('Closed existing snackbars');
+    }
+  }
   // Method to load users from the repository
  Future<List<Userlistmodel>> loadUsers() async {
     isLoading.value = true; 
@@ -25,20 +33,37 @@ class UserController extends GetxController {
     List<Userlistmodel> fetchedUsers = await homeRepository.fetchUsers();
     users.clear(); // Clear the existing list
     users.addAll(fetchedUsers); 
-    print(users[1].platforms );
-
+  //  print(users[1].platforms );
+    isFirstFetch.value = false;
       isEmpty.value = false;
+
+         if (users.isEmpty && sidebarController.selectedIndex.value ==1 ){
+     print("*****${sidebarController.selectedIndex.value}");
+
+
+       Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
+  //  Get.snackbar("Empty List", "Could not retrieve any users members", snackPosition: SnackPosition.TOP); await Future.delayed(Duration(seconds: 2));
+   await Future.delayed(Duration(seconds: 2));
+    Customsnackbar.show(
+  title:"Empty List",
+  message: "Could not retrieve any users members",
+
+);
+
+  users.value = [defaultuser];
+    }  
     // Add fetched users to the observable list
     return fetchedUsers;
   } catch (e) {
     print("Error loading users: $e");
     Get.snackbar("Server Error", "could not retreive users ",snackPosition: SnackPosition.TOP);
      isEmpty.value = true;
+           isFirstFetch.value = false;
+            
     return [];
         } finally {
       isLoading.value = false; 
-        
-        print(isEmpty.value);
+  
         // Set loading to false when done
     }
 
@@ -49,7 +74,7 @@ class UserController extends GetxController {
 
 void updateUsers(List<Userlistmodel> updatedUsers) async {
   // Set loading state to true before starting the update
-  isLoading1.value = true;
+  isLoading.value = true;
 
   try {
     // Call the repository method to update users
@@ -62,7 +87,7 @@ void updateUsers(List<Userlistmodel> updatedUsers) async {
     Get.snackbar("Error", "Failed to update users. Please try again.", snackPosition: SnackPosition.BOTTOM);
   } finally {
     // Ensure loading state is reset
-    isLoading1.value = false;
+    isLoading.value = false;
   }
 }
 

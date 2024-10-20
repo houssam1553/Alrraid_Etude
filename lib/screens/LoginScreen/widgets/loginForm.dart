@@ -6,6 +6,7 @@ import 'package:arraid/controllers/loginController.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class loginForm extends StatefulWidget {
   const loginForm({
@@ -86,7 +87,11 @@ class _loginFormState extends State<loginForm> {
                 ],
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                 /*  var url  = Uri.https("alrraid.com","/en/auth/forget-password");
+                  if (await canLaunchUrl(url) ){
+                    await launchUrl(url);
+                  } */
                   widget.navigationController.goToForgotPasswordTab();
                 },
                 child: Text(

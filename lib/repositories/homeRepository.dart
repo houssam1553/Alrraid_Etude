@@ -8,7 +8,9 @@ import 'package:arraid/services/localService.dart';
 import 'package:get/get.dart';
 
 class Homerepository {
-  final ApiService apiService = ApiService("https://alrraid.com");
+ final ApiService apiService = ApiService("https://alrraid.com");
+//  final ApiService apiService = ApiService("http://192.168.1.65:3002");
+  
    Homerepository(ApiService find);
   List<Userlistmodel> users = []; // List to store User objects
 

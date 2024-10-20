@@ -37,6 +37,9 @@ class LocalService {
     if (userData != null) {
        print(" user mot null"  );
       return User.fromJson(jsonDecode(userData));
+    }else{
+      
+    return User(id: "0", email: "example", firstName: "thameur", lastName: "alrraid",type: 'admin',isEmployee: 'true');
     }
     return null;
   }

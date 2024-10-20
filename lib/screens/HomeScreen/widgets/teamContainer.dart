@@ -7,6 +7,7 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class TeamContainer extends StatefulWidget {
   const TeamContainer({
@@ -28,9 +29,9 @@ class _TeamContainerState extends State<TeamContainer> {
 
   @override
   void initState() {
-  Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
-    // TODO: implement initState
-     widget.teamController.team.isEmpty?widget.teamController.team.value = [defaultuser]:null;
+ 
+  
+     print("init called   users : ${widget.teamController.team.value }");
     super.initState();
   }
   @override
@@ -59,7 +60,7 @@ class _TeamContainerState extends State<TeamContainer> {
         child: CustomMaterialIndicator(
           onRefresh: () async {
             // Call the refresh logic to load team members
-    await Future.delayed(Duration(seconds: 2)); // Show success animation
+   // await Future.delayed(Duration(seconds: 2)); // Show success animation
             
             await widget.teamController.loadTeamMembers();
           },
@@ -74,7 +75,8 @@ class _TeamContainerState extends State<TeamContainer> {
                 : Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: CircularProgressIndicator(
-                      color: ColorManager.primary,
+                    color: ColorManager.primary,
+              backgroundColor: ColorManager.greyText,
                     ),
                   );
           },
@@ -97,37 +99,75 @@ class _TeamContainerState extends State<TeamContainer> {
               ),
               
               SizedBox(height: 10),
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: widget.teamController.team.length,
-                itemBuilder: (context, index1) {
-                  return Obx(() {
-                    var user = widget.teamController.team[index1];
-                    return TeamCard(
-                      index: index1,
-                      id: user.id,
-                      editCard :widget.teamController.editingCardIndex.value == index1,
-                      isTeamPage: true,
-                      type: user.type,
-                      isExpanded: widget.teamController.expandedCardIndex.value == index1,
-                      onTap: widget.teamController.toggleExpand,
-                      assetImage: user.imageUrl ?? '',
-                      title: '${user.firstName} ${user.lastName}',
-                      email: user.email,
-                      organization: (user.platforms != null && user.platforms!.length > 1)
-                          ? user.platforms![1]
-                          : 'Alrraid Pro',
-                      subtitle: (user.privileges != null && user.privileges!.isNotEmpty)
-                          ? user.privileges![0]
-                          : '   user',
-                      firstName: user.firstName,
-                      lastName: user.lastName,
-                       onRefresh: widget.teamController.triggerRefresh,
-                    );
-                  });
-                },
-              ),
+
+if (widget.teamController.isLoading.value) 
+   
+     Skeletonizer(
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+        itemCount: 5,
+          itemBuilder: (BuildContext context, int index){
+                 
+                      
+                    
+                     
+                      return TeamCard(
+                        index: 1,
+                        id: "user.id",
+                        editCard :false,
+                        isTeamPage: true,
+                        type: "user.type",
+                        isExpanded: false,
+                        onTap: widget.teamController.toggleExpand,
+                        assetImage: '',
+                        title: "uhgeourihoeugyr",
+                        email: "user.email",
+                        organization: 'Alrraid Pro',
+                        subtitle:  '   user',
+                        firstName: "user.firstName",
+                        lastName: "user.lastName",
+                         onRefresh: widget.teamController.triggerRefresh,
+                      );
+                      
+                  },
+    ))
+   else 
+      ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: widget.teamController.team.length,
+                  itemBuilder: (context, index1) {
+                    return Obx(() {
+                      var user = widget.teamController.team[index1];
+                      return TeamCard(
+                        index: index1,
+                        id: user.id,
+                        editCard :widget.teamController.editingCardIndex.value == index1,
+                        isTeamPage: true,
+                        type: user.type,
+                        isExpanded: widget.teamController.expandedCardIndex.value == index1,
+                        onTap: widget.teamController.toggleExpand,
+                        assetImage: user.imageUrl ?? '',
+                        title: '${user.firstName} ${user.lastName}',
+                        email: user.email,
+                        organization: (user.platforms != null && user.platforms!.length > 1)
+                            ? user.platforms![1]
+                            : 'Alrraid Pro',
+                        subtitle: (user.privileges != null && user.privileges!.isNotEmpty)
+                            ? user.privileges![0]
+                            : '   user',
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                         onRefresh: widget.teamController.triggerRefresh,
+                      );
+                    });
+                  },
+                ),
+             
+  
+         
+              
             ],
           ),
         ),

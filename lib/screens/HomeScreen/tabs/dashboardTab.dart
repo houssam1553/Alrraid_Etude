@@ -192,6 +192,7 @@ class _DashboardTabState extends State<DashboardTab>
               Expanded(
                 child: PageView(
                   controller: sidebarController.pageController,
+                  pageSnapping: false,
                   physics:
                       NeverScrollableScrollPhysics(), // Prevent manual swiping if handled by side menu
                   children: [

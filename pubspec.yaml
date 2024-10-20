@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   custom_refresh_indicator: ^4.0.1
@@ -24,7 +25,10 @@ dependencies:
   lottie: ^3.1.2
   pin_code_fields: ^8.0.1
   pin_code_text_field: ^1.8.0
+  sentry_flutter: ^8.9.0
   shared_preferences: ^2.3.2
+  skeletonizer: ^1.4.2
+  url_launcher: ^6.3.1
   webview_flutter: ^4.9.0
 
 dev_dependencies:

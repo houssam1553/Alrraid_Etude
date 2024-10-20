@@ -1,3 +1,5 @@
+import 'package:arraid/commun%20widgets/customSnackbar.dart';
+import 'package:arraid/controllers/sidebarController.dart';
 import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/repositories/homeRepository.dart';
 import 'package:get/get.dart';
@@ -7,7 +9,7 @@ class TeamController extends GetxController {
   final Homerepository homeRepository;
 
   TeamController(this.homeRepository);
-
+ SidebarController sidebarController = Get.find<SidebarController>();
   var expandedCardIndex = Rxn<int>();  // Index of the expanded card
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final team = RxList<Userlistmodel>(); 
@@ -29,10 +31,26 @@ class TeamController extends GetxController {
 
     team.clear(); // Clear the existing list
     team.addAll(teamMembers); // Add filtered team members to the observable list
-    
-    
+   
+  
     isFirstFetch.value = false;
     expandedCardIndex.value = -1;
+     await Future.delayed(Duration(seconds: 2));
+         if (team.isEmpty && sidebarController.selectedIndex.value ==2 ){
+     
+
+
+       Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
+  //  Get.snackbar("Empty List", "Could not retrieve any team members", snackPosition: SnackPosition.TOP);
+    Customsnackbar.show(
+  title:"Empty List",
+  message: "Could not retrieve any team members",
+
+);
+
+  team.value = [defaultuser];
+    }  
+    
     return teamMembers;
   } catch (e) {
 if (team == [] ){
@@ -42,11 +60,15 @@ if (team == [] ){
   Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
     
         isFirstFetch.value = false;
+         await Future.delayed(Duration(seconds: 2));
           return [defaultuser];
   
   } finally {
     isLoading.value = false; // Set loading to false when done
   }
+
+
+
 }Future<void> triggerRefresh() async {
     await loadTeamMembers();
   }

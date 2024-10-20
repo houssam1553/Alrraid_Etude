@@ -5,11 +5,24 @@ import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+Future<void> main() async {
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = 'https://5cee72f343430973a64682d7fc936206@o4508149717336064.ingest.de.sentry.io/4508149725855824';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+      // The sampling rate for profiling is relative to tracesSampleRate
+      // Setting to 1.0 will profile 100% of sampled transactions:
+      options.profilesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(const MainApp()),
+  );
 
+  // or define SENTRY_DSN via Dart environment variable (--dart-define)
+} 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 

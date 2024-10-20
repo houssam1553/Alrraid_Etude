@@ -201,10 +201,7 @@ print(updatedUser.firstName);
         errorBuilder: (context, error, stackTrace) {
           return Container(
             alignment: Alignment.center,
-            child: Text(
-              'Error!',
-              textAlign: TextAlign.center,
-            ),
+            child: Image.asset("assets/images/arraidLogo.png")
           );
         },
       ),
@@ -304,10 +301,7 @@ print(updatedUser.firstName);
       errorBuilder: (context, error, stackTrace) {
         return Container(
           alignment: Alignment.center,
-          child: Text(
-            'Error!',
-            textAlign: TextAlign.center,
-          ),
+          child:   Image.asset("assets/images/arraidLogo.png")
         );
       },
     ),

@@ -5,9 +5,11 @@ import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/screens/HomeScreen/widgets/userCard.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class UsersContainer extends StatefulWidget {
   const UsersContainer({
@@ -101,7 +103,7 @@ class _UsersContainerState extends State<UsersContainer> {
                       .bodyMedium
                       ?.copyWith(color: ColorManager.primary)),
               onPressed: () {
-                widget.userController.isLoading1.value = true;
+                widget.userController.isLoading.value = true;
                 // Collect users who became employees
                 List<Userlistmodel> updatedUsers = widget.userController.users
                     .where((user) => user.isEmployee == 'true')
@@ -132,23 +134,23 @@ class _UsersContainerState extends State<UsersContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
+    return Obx( () {
+  
         // Using Obx to reactively listen for loading state changes
-        if (widget.userController.isLoading1.value) {
-          return Column(
-            children: [
-              SizedBox(
-                height: 200,
-              ),
-              Center(
-                child: CircularProgressIndicator(
-                  color: ColorManager.primary,
-                  backgroundColor: ColorManager.greyText,
-                ),
-              ),
-            ],
-          );
+        if ( widget.userController.isLoading.value &&  widget.userController.isFirstFetch.value) {
+       
+
+       
+
+              return Padding(
+          padding: const EdgeInsets.only(top: 180),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: ColorManager.primary,
+              backgroundColor: ColorManager.greyText,
+            ),
+          ),
+        );
         }
 
         return Container(
@@ -159,12 +161,30 @@ class _UsersContainerState extends State<UsersContainer> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
-          child:   RefreshIndicator(
-    onRefresh: () async {
-      // Define the logic to refresh the data here
-      await widget.userController.loadUsers(); // Fetch updated data from controller
-    },
-    child:  Column(
+           child: CustomMaterialIndicator(
+          onRefresh: () async {
+            // Call the refresh logic to load team members
+   // await Future.delayed(Duration(seconds: 2)); // Show success animation
+            
+            await widget.userController.loadUsers();
+          },
+          backgroundColor: Colors.white,
+          indicatorBuilder: (context, controller) {
+            return controller.value < 0.5
+                ? Icon(
+                    Icons.refresh, // Circular refresh arrow icon
+                    color: ColorManager.primary, // Replace with your desired color
+                    size: 30, // Adjust size if needed
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: CircularProgressIndicator(
+                    color: ColorManager.primary,
+              backgroundColor: ColorManager.greyText,
+                    ),
+                  );
+          },
+          child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -195,6 +215,39 @@ class _UsersContainerState extends State<UsersContainer> {
                   ),
                 ],
               ),
+              if (widget.userController.isLoading.value) 
+     
+   
+     Skeletonizer(
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+        itemCount:5,
+          itemBuilder: (BuildContext context, int index){
+                 
+                      
+                    
+                     
+                      return UserCard(
+                        index: 1,
+                       
+                        isTeamPage: true,
+                       
+                        isExpanded: false,
+                        onTap: widget.userController.toggleExpand,
+                        assetImage: '',
+                        title: "uhgeourihoeugyr",
+                        email: "user.email",
+                        organization: 'Alrraid Pro',
+                        subtitle:  '   user',
+                        firstName: "user.firstName",
+                        lastName: "user.lastName",
+                    
+                      );
+                      
+                  },
+    ))
+   else 
     ListView.builder( scrollDirection: Axis.vertical,
         shrinkWrap: true,
                       itemCount: widget.userController.users.length,

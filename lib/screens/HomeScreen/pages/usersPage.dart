@@ -1,5 +1,7 @@
+import 'package:arraid/commun%20widgets/customSnackbar.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/usersController.dart';
+import 'package:arraid/models/userListModel.dart';
 import 'package:arraid/screens/HomeScreen/widgets/usersContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,23 +24,13 @@ class _UsersPageState extends State<UsersPage> {
   final UserController userController = Get.find<UserController>();
 
   @override
-  void initState() {
+ initState()  {
     super.initState();
-    userController.loadUsers(); // Call to load users during initialization
-  }
-
+   userController.loadUsers();
+    
+   }
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      // Using Obx to reactively listen for loading state changes
-      if (userController.isLoading.value) {
-        return  Center(
-       
-            child: CircularProgressIndicator(color: ColorManager.primary,
-                    backgroundColor: ColorManager.greyText,),
-          
-        );
-      }
 
       return SingleChildScrollView(
         child: Column(
@@ -52,6 +44,6 @@ class _UsersPageState extends State<UsersPage> {
           ],
         ),
       );
-    });
+
   }
 }

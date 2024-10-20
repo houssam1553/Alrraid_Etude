@@ -25,12 +25,16 @@ class HomeNavigationController extends GetxController {
 
   void loadCurrentUser() async {
   currentUser = await LocalService.getUser();
-  print(currentUser!.isEmployee);
-  print(currentUser!.email);
-  print(currentUser!.type);
+
+
+
 
 
   if (currentUser != null) {
+      print(currentUser!.isEmployee);
+  print(currentUser!.email);
+  print(currentUser!.type);
+
     if (currentUser!.isEmployee == 'true') {
       HomeTabs.value = [
         landingScreen(),

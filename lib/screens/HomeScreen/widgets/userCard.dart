@@ -109,10 +109,7 @@ class _UserCardState extends State<UserCard> {
         errorBuilder: (context, error, stackTrace) {
           return Container(
             alignment: Alignment.center,
-            child: Text(
-              'Error!',
-              textAlign: TextAlign.center,
-            ),
+           child: Image.asset("assets/images/arraidLogo.png")
           );
         },
       ),
@@ -185,7 +182,7 @@ class _UserCardState extends State<UserCard> {
             costumInput(label: widget.firstName, isEnabeled:true,),      SizedBox(height: 5.0),    
             costumInput(label: widget.lastName,isEnabeled:true,),      SizedBox(height: 5.0),                          
             costumInput(label: widget.email,isEnabeled:false,),      SizedBox(height: 5.0),                          
-                                    */
+                                     */
 
                                 
                                 ],
@@ -211,10 +208,7 @@ class _UserCardState extends State<UserCard> {
       errorBuilder: (context, error, stackTrace) {
         return Container(
           alignment: Alignment.center,
-          child: Text(
-            'Error!',
-            textAlign: TextAlign.center,
-          ),
+         child: Image.asset("assets/images/arraidLogo.png")
         );
       },
     ),

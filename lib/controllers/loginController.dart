@@ -52,6 +52,7 @@ class LoginController extends GetxController {
     // Check if the exception contains a status code (like "404")
     if (e.toString().contains('404')) {
       statusCode = 404;
+      //throw Exception('This is test exception');
     } else if (e.toString().contains('401')) {
       statusCode = 401;
     } else if (e.toString().contains('500')) {
