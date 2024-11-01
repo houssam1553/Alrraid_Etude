@@ -14,7 +14,14 @@ class TeamController extends GetxController {
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final team = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
+  var deleteLoading = false.obs; 
+  var saveLoading = false.obs; 
+
+
+  
+
   var isFirstFetch = true.obs; 
+
 
    // List of user data
    
@@ -73,9 +80,11 @@ if (team == [] ){
     await loadTeamMembers();
   }
  Future<void> deleteUser(String userId) async {
+   deleteLoading.value = true; 
   try {
     // Find the index of the user to update
     
+
 
     
     // If user is found, update the user in the list
@@ -89,8 +98,13 @@ if (team == [] ){
     // Handle errors and provide feedback to the user
     Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
   }
+   finally{
+    deleteLoading.value = false;
+  } 
 }
 Future<void> updateUserInfo(Userlistmodel updatedUser) async {
+   saveLoading.value = true; 
+  
   try {
     // Find the index of the user to update
     int index = team.indexWhere((user) => user.id == updatedUser.id);
@@ -113,6 +127,9 @@ Future<void> updateUserInfo(Userlistmodel updatedUser) async {
     // Handle errors and provide feedback to the user
    
     Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }finally{
+   saveLoading.value = false; 
+    
   }
 }
 

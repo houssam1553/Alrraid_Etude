@@ -1,37 +1,33 @@
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:flutter/material.dart';
-
 import 'package:fluttericon/mfg_labs_icons.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-class LoginScreeen extends StatefulWidget {
-  const LoginScreeen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LoginScreeen> createState() => _LoginScreeenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreeenState extends State<LoginScreeen> {
+class _LoginScreenState extends State<LoginScreen> {
+  final NavigationController navigationController = Get.put(NavigationController());
+
   @override
   Widget build(BuildContext context) {
-    final navigationController = Get.put(NavigationController());
-      Size size = MediaQuery.of(context).size;
-    double height = size.height;
-    double width = size.width;
-
     return Scaffold(
       backgroundColor: ColorManager.lightPrimary,
-      
-   
-      body: Obx(() => navigationController.bottomTabs[navigationController.selectedIndex.value]),
-
-      
-     
+      body: Obx(() {
+        return IndexedStack(
+          index: navigationController.selectedIndex.value,
+          children: navigationController.bottomTabs,
+        );
+      }),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
         showUnselectedLabels: false,
-        currentIndex: navigationController.selectedIndex.value >= 2 ? 1 : navigationController.selectedIndex.value,
+        currentIndex: navigationController.selectedIndex.value,
         onTap: (index) {
           navigationController.changeTabIndex(index);
         },
@@ -42,11 +38,11 @@ class _LoginScreeenState extends State<LoginScreeen> {
           ),
           BottomNavigationBarItem(
             icon: SizedBox(
-              height: 28, // Matching the icon size
+              height: 28,
               width: 28,
               child: Image.asset(
                 'assets/images/userIcon.png',
-                fit: BoxFit.contain, // Ensuring the image fits well
+                fit: BoxFit.contain,
               ),
             ),
             label: 'Profile',
@@ -60,4 +56,3 @@ class _LoginScreeenState extends State<LoginScreeen> {
     );
   }
 }
-

@@ -250,20 +250,24 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                 width: width * 0.63,
                                 child: ElevatedButton(
                                   onPressed: () {},
-                                  child: Text(
-                                    "Apply changes",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge
-                                        ?.copyWith(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.black
-                                              : Colors.white,
-                                        ),
-                                  ),
+                                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Apply changes",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
+                        ),
+                  ),
+                      SizedBox(width: 10,),
+                                      Icon(Iconsax.document_upload)
+                ],
+              ),
                                 ),
                               ),
+                              
                               SizedBox(
                                 height: height * 0.0357,
                               ),

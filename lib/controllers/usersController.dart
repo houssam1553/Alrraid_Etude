@@ -15,6 +15,8 @@ class UserController extends GetxController {
   var editingCardIndex = Rxn<int>();  // Index of the editing card
   final users = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
+  var saveLoading = false.obs; 
+
   //var isLoading1 = false.obs; 
    var isEmpty = true.obs;
   var isFirstFetch = true.obs; 
@@ -72,6 +74,60 @@ void closeSnackbars() {
   
 }
 
+Future<void> triggerRefresh() async {
+    await loadUsers();
+  }
+ Future<void> deleteUser(String userId) async {
+  try {
+    // Find the index of the user to update
+    
+
+    
+    // If user is found, update the user in the list
+  await homeRepository.deleteUser(userId);
+
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+    Get.snackbar("Success", "user deleted", snackPosition: SnackPosition.TOP);
+   
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+}
+Future<void> updateUserInfo(Userlistmodel updatedUser) async {
+   saveLoading.value = true; 
+  try {
+    // Find the index of the user to update
+    int index = users.indexWhere((user) => user.id == updatedUser.id);
+
+    
+    // If user is found, update the user in the list
+   
+      // Create a new user instance with updated isEmployee
+     // team[index] = updatedUser.copyWith();
+
+   await homeRepository.updateUser(updatedUser);
+      // Call the repository method to update the user in the backend
+       // Replace with your repository call
+
+
+      // Handle case where user was not found
+      
+ 
+  } catch (e) {
+    // Handle errors and provide feedback to the user
+   
+    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+  }
+    finally{
+   saveLoading.value = false; 
+
+  }
+}
+
+
+
 void updateUsers(List<Userlistmodel> updatedUsers) async {
   // Set loading state to true before starting the update
   isLoading.value = true;
@@ -92,6 +148,8 @@ void updateUsers(List<Userlistmodel> updatedUsers) async {
 }
 
 void updateUser(Userlistmodel updatedUser) async {
+ 
+
   try {
     // Find the index of the user to update
     int index = users.indexWhere((user) => user.id == updatedUser.id);
@@ -114,34 +172,12 @@ void updateUser(Userlistmodel updatedUser) async {
     // Handle errors and provide feedback to the user
     Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
   }
+
 }
 
 
 
-void updateUserInfo(Userlistmodel updatedUser) async {
-  try {
-    // Find the index of the user to update
-    int index = users.indexWhere((user) => user.id == updatedUser.id);
 
-    
-    // If user is found, update the user in the list
-   
-      // Create a new user instance with updated isEmployee
-      users[index] = updatedUser.copyWith();
-
-   await homeRepository.updateUser(updatedUser);
-      // Call the repository method to update the user in the backend
-       // Replace with your repository call
-
-
-      // Handle case where user was not found
-      Get.snackbar("Error", "User not found.", snackPosition: SnackPosition.TOP);
-    
-  } catch (e) {
-    // Handle errors and provide feedback to the user
-    Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
-  }
-}
 
   @override
   void onInit() {

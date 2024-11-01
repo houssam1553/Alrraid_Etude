@@ -8,7 +8,9 @@ import 'package:arraid/services/apiService.dart';
 import 'package:arraid/services/localService.dart';
 
 class AuthRepository {
-  final ApiService apiService = ApiService("https://alrraid.com");
+  //final ApiService apiService = ApiService("https://alrraid.com");
+//final ApiService apiService = ApiService("http://192.168.1.65:3002");
+  final ApiService apiService = ApiService("https://4934-105-235-130-74.ngrok-free.app");
 
   AuthRepository(ApiService find);
    User? currentUser;
@@ -63,7 +65,7 @@ class AuthRepository {
       'code': code,
       'token': token,
     });
-
+   print(response);
     if (response.statusCode == 201) {
       // Code verified successfully
        String token = response.data['token'];

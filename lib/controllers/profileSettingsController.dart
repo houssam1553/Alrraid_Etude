@@ -10,7 +10,7 @@ class ProfileSettingsController extends GetxController {
     fetchCurrentUser(); // Fetch the current user when the controller is initialized
     super.onInit();
   }
-
+ 
   Future<void> fetchCurrentUser() async {
     try {
       final fetchedUser = await LocalService.getUser();

@@ -12,15 +12,53 @@ class Validator {
   }
 
   // Validate password
-  static String? validatePassword(String? value) {
+static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
     }
-    // Check for minimum password length
+
+    // Minimum length check
     if (value.length < 8) {
-      return 'The password must be at least 8 characters';
+      return 'The password must be at least \n8 characters';
     }
-    return null; // Return null if validation passes
+
+    // Maximum length check (optional, based on your requirements)
+    if (value.length > 100) {
+      return 'Password must not exceed 100 characters';
+    }
+
+    // Check for uppercase letters
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return 'Password must contain at least \none uppercase letter';
+    }
+
+    // Check for lowercase letters
+    if (!RegExp(r'[a-z]').hasMatch(value)) {
+      return 'Password must contain at least \none lowercase letter';
+    }
+
+    // Check for numbers
+    if (!RegExp(r'\d').hasMatch(value)) {
+      return 'Password must contain at least \none number';
+    }
+
+    // Check for special characters
+    if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+      return 'Password must contain at least \none special character';
+    }
+
+    // Check for common patterns (optional)
+    if (RegExp(r'123|abc|password|qwerty', caseSensitive: false).hasMatch(value)) {
+      return 'Password contains common patterns \nthat are not allowed like (123,abc,...)';
+    }
+
+    // Check for repeating characters (optional)
+    if (RegExp(r'(.)\1{2,}').hasMatch(value)) {
+      return 'Password should not contain repeating \ncharacters (more than 2 times)';
+    }
+
+    // Return null if validation passes
+    return null;
   }
 
   // Validate email

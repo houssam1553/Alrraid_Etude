@@ -19,7 +19,7 @@ class VerificationController extends GetxController {
 
   Future<void> verifyCode() async {
     isLoading.value = true;
-    
+    Response response ; 
     LoadingDialog.showLoadingDialog();
 
     // Fetch the token
@@ -42,11 +42,11 @@ class VerificationController extends GetxController {
     try {
       print("token  "+  token);
       // Call the AuthRepository to verify the code
-      await authRepository.verifyCode(
+  await authRepository.verifyCode(
         codeController.text.trim(),
         token, // Now token is guaranteed to be non-null
       );
-      
+     // print();
 
       // Success - show success icon and navigate to home screen
       LoadingDialog.showResultIcon(true);
@@ -55,7 +55,7 @@ class VerificationController extends GetxController {
    
        navigationController.goToSigninTab();
        codeController.clear();
-      
+   
       // Perform any additional navigation or logic
       // Uncomment this line to navigate to home
     } catch (e) {

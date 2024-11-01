@@ -229,11 +229,13 @@ class _UsersContainerState extends State<UsersContainer> {
                     
                      
                       return UserCard(
+                        id: "id",
                         index: 1,
                        
                         isTeamPage: true,
                        
                         isExpanded: false,
+                        editCard: false,
                         onTap: widget.userController.toggleExpand,
                         assetImage: '',
                         title: "uhgeourihoeugyr",
@@ -241,7 +243,8 @@ class _UsersContainerState extends State<UsersContainer> {
                         organization: 'Alrraid Pro',
                         subtitle:  '   user',
                         firstName: "user.firstName",
-                        lastName: "user.lastName",
+                        lastName: "user.lastName", onRefresh: () {  }, 
+                   
                     
                       );
                       
@@ -255,8 +258,11 @@ class _UsersContainerState extends State<UsersContainer> {
           return Obx(() {
             var user = widget.userController.users[index];
             return UserCard(
+              id: user.id,
               isTeamPage: false,
               index: index,
+               editCard :widget.userController.editingCardIndex.value == index,
+
               isExpanded:
                   widget.userController.expandedCardIndex.value == index,
               onTap: widget.userController.toggleExpand,
@@ -273,6 +279,7 @@ class _UsersContainerState extends State<UsersContainer> {
                       : '   user',
               firstName: user.firstName,
               lastName: user.lastName,
+               onRefresh: widget.userController.triggerRefresh,
             );
           });
         }),

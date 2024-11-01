@@ -21,6 +21,7 @@ final bool isEnabeled;
           contentPadding: EdgeInsets.only(
             top: 3.0, // Added vertical padding to center text and cursor
             left: 25.0,
+            right: 10
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
           border: OutlineInputBorder(

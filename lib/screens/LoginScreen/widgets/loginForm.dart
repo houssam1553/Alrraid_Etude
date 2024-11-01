@@ -27,18 +27,20 @@ class loginForm extends StatefulWidget {
 }
 
 class _loginFormState extends State<loginForm> {
+   GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   @override
   void dispose() {
     // Clear text controllers when the login form is disposed
     widget.loginController.emailController.clear();
     widget.loginController.passwordController.clear();
+   // widget.loginController._loginFormKey.currentState?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.loginController.loginFormKey,
+      key: _loginFormKey,
       child: Column(
         children: <Widget>[
           SizedBox(height: widget.height * 0.0532),
@@ -88,11 +90,14 @@ class _loginFormState extends State<loginForm> {
               ),
               TextButton(
                 onPressed: () async {
-                 /*  var url  = Uri.https("alrraid.com","/en/auth/forget-password");
+                  var url  = Uri.https("alrraid.com","/en/auth/forget-password");
                   if (await canLaunchUrl(url) ){
-                    await launchUrl(url);
-                  } */
-                  widget.navigationController.goToForgotPasswordTab();
+                    await launchUrl(url,
+                    
+                    );
+                  } 
+                
+                //  widget.navigationController.goToForgotPasswordTab();
                 },
                 child: Text(
                   "Forgot password",
@@ -107,7 +112,12 @@ class _loginFormState extends State<loginForm> {
             height: widget.height * 0.0557,
             width: widget.width * 0.8743,
             child: ElevatedButton(
-              onPressed: widget.loginController.login,
+              onPressed: (){
+              
+              if (_loginFormKey.currentState!.validate()) {
+
+              widget.loginController.login();
+              }},
               child: Text(
                 "SIGN IN",
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(

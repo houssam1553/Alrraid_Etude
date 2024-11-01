@@ -1,4 +1,5 @@
 import 'package:arraid/config/colors.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -8,38 +9,39 @@ class landingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<landingScreen> {
-  late final WebViewController controller;
-  bool isLoading = true; // Flag to show the loading indicator
+  late WebViewController _controller;
+  bool _isLoading = true; // Flag to show the loading indicator
 
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.disabled)
+    // Initialize the WebViewController
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
             if (mounted) {
               setState(() {
-                isLoading = true; // Show loader when the page starts loading
+                _isLoading = true; // Show loader when the page starts loading
               });
             }
           },
           onPageFinished: (String url) {
             if (mounted) {
               setState(() {
-                isLoading = false; // Hide loader when the page finishes loading
+                _isLoading = false; // Hide loader when the page finishes loading
               });
             }
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://alrraid.com/fr'));
+      ..loadRequest(Uri.parse('https://alrraid.com/en'));
   }
 
   @override
   void dispose() {
-    controller.clearCache(); // Clear cache if necessary
+    // Optional: Clear cache if necessary
     super.dispose();
   }
 
@@ -52,17 +54,41 @@ class _LandingScreenState extends State<landingScreen> {
       ),
       child: Scaffold(
         backgroundColor: ColorManager.lightPrimary,
-        body: Stack(
-          children: [
-            WebViewWidget(controller: controller),
-            if (isLoading) // Show loading indicator while WebView is loading
-              Center(
-                child: CircularProgressIndicator(
-                  color: ColorManager.primary,
-                  backgroundColor: ColorManager.greyText,
+        body: CustomMaterialIndicator(
+          onRefresh: () async {
+            // Call the refresh logic to load team members
+    await Future.delayed(Duration(seconds: 2)); // Show success animation
+            
+           
+          },
+          backgroundColor: Colors.white,
+          indicatorBuilder: (context, controller) {
+            return controller.value < 0.5
+                ? Icon(
+                    Icons.refresh, // Circular refresh arrow icon
+                    color: ColorManager.primary, // Replace with your desired color
+                    size: 30, // Adjust size if needed
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: CircularProgressIndicator(
+                    color: ColorManager.primary,
+              backgroundColor: ColorManager.greyText,
+                    ),
+                  );
+          },
+          child: Stack(
+            children: [
+              WebViewWidget(controller: _controller),
+              if (_isLoading) // Show loading indicator while WebView is loading
+                Center(
+                  child: CircularProgressIndicator(
+                    color: ColorManager.primary,
+                    backgroundColor: ColorManager.greyText,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

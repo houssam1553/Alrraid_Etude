@@ -1,6 +1,9 @@
 import 'package:arraid/commun%20widgets/formInput.dart';
 import 'package:arraid/config/enums.dart';
+import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ProfileSettingsForm extends StatefulWidget {
   const ProfileSettingsForm({
@@ -22,12 +25,26 @@ class ProfileSettingsForm extends StatefulWidget {
 }
 
 class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
-  final _formKey = GlobalKey<FormState>(); // Key to identify the form
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+   
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+
+ // Key to identify the form
   String name = '';
   String email = '';
   String phone = '';
   String address = '';
+@override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.dispose();
+  lastNameController.dispose();
+ firstNameController.dispose();
 
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -35,7 +52,7 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
       child: Column(
         children: [
           SizedBox(height: widget.height * 0.0210),
-          formInput(
+          formInput(textEditingController: firstNameController,
               height: widget.height,
               label: 'First Name',
               hint: widget.firstName,
@@ -44,6 +61,7 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
               togglePasswordVisibility: () {}),
           SizedBox(height: widget.height * 0.0210),
           formInput(
+            textEditingController:lastNameController ,
               height: widget.height,
               label: 'Last Name',
               hint: widget.lastName,
@@ -85,22 +103,60 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid, proceed with the desired action
                   // For example, you can call a function to save changes
-                  print('Name: $name');
-                  print('Email: $email');
-                  print('Phone: $phone');
-                  print('Address: $address');
+              
                 }
               },
-              child: Text(
-                "Apply changes",
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                    ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Apply changes",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
+                        ),
+                  ),
+                      SizedBox(width: 10,),
+                                      Icon(Iconsax.document_upload)
+                ],
               ),
             ),
+             
           ),
+            SizedBox(height: widget.height * 0.025),
+                              SizedBox(
+                               height: widget.height * 0.0557,
+            width: widget.width * 0.823,
+                                child:  ElevatedButton(
+                                  
+                                style: ButtonStyle(
+                               backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
+                                ),
+                                  onPressed: () {
+                                   // widget.key ='';
+                                    Get.offAll(LoginScreen());
+                                  },
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Log out",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge
+                                            ?.copyWith(
+                                              color: Theme.of(context).brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                            ),
+                                      ),
+                                      SizedBox(width: 10,),
+                                      Icon(Icons.logout)
+                                    ],
+                                  ),
+                                ),
+                              ),
           SizedBox(height: widget.height * 0.0357),
         ],
       ),

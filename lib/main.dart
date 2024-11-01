@@ -2,13 +2,16 @@ import 'package:arraid/config/bindings/appBindings.dart';
 import 'package:arraid/config/theme.dart';
 import 'package:arraid/screens/HomeScreen/homeScreen.dart';
 import 'package:arraid/screens/LoginScreen/loginScreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
-  await SentryFlutter.init(
+ 
+ if (kReleaseMode) { 
+   await SentryFlutter.init(
     (options) {
       options.dsn = 'https://5cee72f343430973a64682d7fc936206@o4508149717336064.ingest.de.sentry.io/4508149725855824';
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
@@ -20,6 +23,9 @@ Future<void> main() async {
     },
     appRunner: () => runApp(const MainApp()),
   );
+  }else {
+     runApp(const MainApp());
+  }
 
   // or define SENTRY_DSN via Dart environment variable (--dart-define)
 } 
@@ -43,7 +49,7 @@ class MainApp extends StatelessWidget {
       darkTheme: AppTheme.darktheme,
 
       themeMode: ThemeMode.light,
-      home: LoginScreeen()
+      home: Homescreen()
     );
   }
 }

@@ -15,7 +15,7 @@ class LoginController extends GetxController {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+ 
 
   var obscurePassword = true.obs;
   RxBool rememberMe = false.obs;
@@ -29,7 +29,7 @@ class LoginController extends GetxController {
   // Validate and perform login
 
  Future<void> login() async {
-      if (loginFormKey.currentState!.validate()) {
+      
       isLoading.value = true;
   LoadingDialog.showLoadingDialog();
 
@@ -75,7 +75,7 @@ class LoginController extends GetxController {
           errorMessage = 'An unexpected error occurred\n (Error $statusCode)';
       }
     
-    }
+  
 
     // Show the error icon with a custom error message
     LoadingDialog.showResultIcon(false, errorMessage: errorMessage);
