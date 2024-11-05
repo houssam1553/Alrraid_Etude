@@ -39,7 +39,7 @@ class _LogintabState extends State<Logintab> {
                      child: Column(
                     children: <Widget>[
                       loginHeadline(height: height),
-                loginForm(height: height, loginController: loginController, navigationController: navigationController, width: width),
+                LoginForm(height: height, loginController: loginController, navigationController: navigationController, width: width),
                     ],
                 ),
               ),

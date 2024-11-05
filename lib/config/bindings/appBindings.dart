@@ -1,6 +1,7 @@
 import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/loginController.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
+import 'package:arraid/controllers/profileSettingsController.dart';
 import 'package:arraid/controllers/signupController.dart';
 import 'package:arraid/controllers/teamController.dart';
 import 'package:arraid/controllers/usersController.dart';
@@ -51,6 +52,8 @@ class HomeBindings extends Bindings {
         Get.lazyPut<Homerepository>(() => Homerepository(Get.find<ApiService>()));
      Get.lazyPut<UserController>(() => UserController(Get.find<Homerepository>()));
      Get.lazyPut<TeamController>(() => TeamController(Get.find<Homerepository>()));
+     Get.lazyPut<ProfileSettingsController>(() => ProfileSettingsController(Get.find<Homerepository>()));
+
 
     // Add other dependencies here if needed
   }

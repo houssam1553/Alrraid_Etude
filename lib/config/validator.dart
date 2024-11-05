@@ -12,7 +12,7 @@ class Validator {
   }
 
   // Validate password
-static String? validatePassword(String? value) {
+  static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
     }
@@ -76,11 +76,22 @@ static String? validatePassword(String? value) {
   // Validate name
   static String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Fill this feild';
+      return 'Fill this field';
     }
     // Check for valid name (can add more checks, like length or character restrictions)
     if (value.length < 2) {
       return 'Name must be \nat least 2 characters';
+    }
+    return null; // Return null if validation passes
+  }
+
+  // Validate password confirmation (checks if passwords match)
+  static String? validatePasswordConfirmation(String? value, String password) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != password) {
+      return 'Passwords do not match';
     }
     return null; // Return null if validation passes
   }

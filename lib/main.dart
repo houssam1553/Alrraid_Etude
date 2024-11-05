@@ -12,7 +12,7 @@ Future<void> main() async {
  
  if (kReleaseMode) { 
    await SentryFlutter.init(
-    (options) {
+    (options) { 
       options.dsn = 'https://5cee72f343430973a64682d7fc936206@o4508149717336064.ingest.de.sentry.io/4508149725855824';
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
       // We recommend adjusting this value in production.
@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
       darkTheme: AppTheme.darktheme,
 
       themeMode: ThemeMode.light,
-      home: Homescreen()
+      home: LoginScreen()
     );
   }
 }

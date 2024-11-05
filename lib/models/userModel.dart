@@ -20,7 +20,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? '', // Provide a default empty string if id is missing
+      id: json['_id'] ?? '', // Provide a default empty string if id is missing
       email: json['email'] ?? '', // Similarly for email
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
@@ -33,7 +33,7 @@ class User {
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'email': email,
       'firstName': firstName,
       'lastName': lastName,

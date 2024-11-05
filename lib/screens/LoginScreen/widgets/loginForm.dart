@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class loginForm extends StatefulWidget {
-  const loginForm({
+class LoginForm extends StatefulWidget {
+  const LoginForm({
     super.key,
     required this.height,
     required this.loginController,
@@ -23,18 +23,34 @@ class loginForm extends StatefulWidget {
   final double width;
 
   @override
-  _loginFormState createState() => _loginFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _loginFormState extends State<loginForm> {
-   GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+class _LoginFormState extends State<LoginForm> {
+  GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    widget.loginController .checkRememberedCredentials();
+    super.initState();
+  }
+
   @override
   void dispose() {
-    // Clear text controllers when the login form is disposed
-    widget.loginController.emailController.clear();
-    widget.loginController.passwordController.clear();
-   // widget.loginController._loginFormKey.currentState?.dispose();
     super.dispose();
+    // Dispose of the text controllers if needed
+ 
+  }
+
+  // Method to handle "Forgot Password" link
+  Future<void> _handleForgotPassword() async {
+    var url = Uri.https("alrraid.com", "/en/auth/forget-password");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // Handle failure to launch URL (optional)
+      Get.snackbar('Error', 'Could not launch the forgot password page.');
+    }
   }
 
   @override
@@ -46,12 +62,13 @@ class _loginFormState extends State<loginForm> {
           SizedBox(height: widget.height * 0.0532),
           formInput(
             height: widget.height,
-            togglePasswordVisibility: () {},
+            togglePasswordVisibility: widget.loginController.togglePasswordVisibility,
             obscureText: false,
             label: "Email",
             hint: "Your email address",
             textEditingController: widget.loginController.emailController,
             inputType: InputType.email,
+             // Add a validator for the email field
           ),
           SizedBox(height: widget.height * 0.01),
           Obx(
@@ -62,8 +79,8 @@ class _loginFormState extends State<loginForm> {
               textEditingController: widget.loginController.passwordController,
               inputType: InputType.password,
               obscureText: widget.loginController.obscurePassword.value,
-              togglePasswordVisibility:
-                  widget.loginController.togglePasswordVisibility,
+              togglePasswordVisibility: widget.loginController.togglePasswordVisibility,
+         // Add a password validator
             ),
           ),
           SizedBox(height: widget.height * 0.02),
@@ -74,9 +91,13 @@ class _loginFormState extends State<loginForm> {
                 children: [
                   Transform.scale(
                     scale: 0.8,
-                    child: Switch(
-                      value: true,
-                      onChanged: (bool value1) {},
+                    child: Obx(
+                      () => Switch(
+                        value: widget.loginController.rememberMe.value,
+                        onChanged: (bool value) {
+                          widget.loginController.rememberMe.value = value;
+                        },
+                      ),
                     ),
                   ),
                   Text(
@@ -89,16 +110,7 @@ class _loginFormState extends State<loginForm> {
                 ],
               ),
               TextButton(
-                onPressed: () async {
-                  var url  = Uri.https("alrraid.com","/en/auth/forget-password");
-                  if (await canLaunchUrl(url) ){
-                    await launchUrl(url,
-                    
-                    );
-                  } 
-                
-                //  widget.navigationController.goToForgotPasswordTab();
-                },
+                onPressed: _handleForgotPassword, // Call method for forgot password
                 child: Text(
                   "Forgot password",
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -112,12 +124,12 @@ class _loginFormState extends State<loginForm> {
             height: widget.height * 0.0557,
             width: widget.width * 0.8743,
             child: ElevatedButton(
-              onPressed: (){
-              
-              if (_loginFormKey.currentState!.validate()) {
-
-              widget.loginController.login();
-              }},
+              onPressed: () async {
+                if (_loginFormKey.currentState!.validate()) {
+                  // Trigger login logic when the form is valid
+                  await widget.loginController.login();
+                }
+              },
               child: Text(
                 "SIGN IN",
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -140,15 +152,16 @@ class _loginFormState extends State<loginForm> {
                       ),
                 ),
                 TextButton(
-                    onPressed: () {
-                      widget.navigationController.goToSignUpTab();
-                    },
-                    child: Text(
-                      " Sign Up",
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: ColorManager.primary),
-                    ))
+                  onPressed: () {
+                    widget.navigationController.goToSignUpTab();
+                  },
+                  child: Text(
+                    " Sign Up",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.primary),
+                  ),
+                )
               ],
             ),
           ),
