@@ -87,6 +87,9 @@ class Validator {
 
   // Validate password confirmation (checks if passwords match)
   static String? validatePasswordConfirmation(String? value, String password) {
+    
+      // Debug line
+
     if (value == null || value.isEmpty) {
       return 'Please confirm your password';
     }

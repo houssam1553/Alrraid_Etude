@@ -6,9 +6,13 @@ class profileHeadline extends StatelessWidget {
   const profileHeadline({
     super.key,
     required this.width,
+    required this.name,
+
   });
 
   final double width;
+  
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class profileHeadline extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Text("Zakaria Bensillete"),
+                child: Text(name!),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),

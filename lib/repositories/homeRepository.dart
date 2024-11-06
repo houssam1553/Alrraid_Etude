@@ -106,6 +106,42 @@ class Homerepository {
       print("Error updating user: $e");
     }
   }
+  Future<void> changePassword({
+  required String? userId,
+  required String currentPassword,
+  required String newPassword,
+}) async {
+  try {
+    print(userId);    // Prepare the data for the PUT request
+    Map<String, dynamic> data = {
+      'clerckId' : userId,
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+    };
+
+    // Send the PUT request with the password data
+    await apiService.putRequest('/api/users/password', data);
+    
+    // Show success message
+    Get.closeAllSnackbars();
+    Get.snackbar(
+      "Success",
+      "Password changed successfully",
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(seconds: 2),
+    );
+  } catch (e) {
+    print("Error changing password: $e");
+    // Show error message
+    Get.snackbar(
+      "Error",
+      "Failed to change password: $e",
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(seconds: 2),
+    );
+  }
+}
+
 }
   /* if (response.statusCode == 200) {
     print("Raw response: ${response.data}");

@@ -10,7 +10,12 @@ class ProfileSettingsController extends GetxController {
   Rx<User?> currentUser = Rx<User?>(null); // Observable for current user
   final Homerepository homeRepository;
  
-  var saveLoading = false.obs; // To track loading state during save operation
+ 
+
+  var saveLoading = false.obs; 
+  var changePassLoading = false.obs; 
+
+  // To track loading state during save operation
   var logoutLoading = false.obs; // To track loading state during save operation
   var obscurePassword = true.obs; // RxBool for password visibility
   
@@ -42,7 +47,8 @@ class ProfileSettingsController extends GetxController {
           lastName: "Last Name",   // Default last name
           email: "example@email.com", // Default email
           isEmployee: "false",      // Default isEmployee status
-          id: '',                   // Default id
+          id: '',    
+          clerkId: '',               // Default id
           type: '',                 // Default type
         );
       }
@@ -62,6 +68,7 @@ class ProfileSettingsController extends GetxController {
         email: updatedUser.email ?? currentUser.value?.email ?? "example@email.com",
         isEmployee: updatedUser.isEmployee ?? currentUser.value?.isEmployee ?? "false",
         id: updatedUser.id,
+        clerkId: updatedUser.id,
         type: updatedUser.type ?? currentUser.value?.type ?? "",
       );
 
@@ -78,6 +85,32 @@ class ProfileSettingsController extends GetxController {
       Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
     } finally {
       saveLoading.value = false; // Set loading to false once the operation is complete
+    }
+  }
+    Future<void> updateUserPassword(  {
+  required String? userId,
+  required String currentPassword,
+  required String newPassword,
+}) async {
+    changePassLoading.value = true; // Set loading to true while the update is in progress
+    try {
+      // Here you can convert Userlistmodel to User if needed before updating
+    
+
+      // Call the repository method to update the user info (assumes you have an updateUser method in your repository)
+      await homeRepository.changePassword(userId:userId,currentPassword:currentPassword ,newPassword:newPassword );
+
+
+      // After successfully updating, fetch the updated user
+      await fetchCurrentUser();  // This will fetch the user again and update the observable state
+
+      // Optional: You can update the local storage or perform other operations here
+
+    } catch (e) {
+      // Show error message if the update fails
+      Get.snackbar("Error", "Failed to update user. Please try again.", snackPosition: SnackPosition.TOP);
+    } finally {
+      changePassLoading.value = false; // Set loading to false once the operation is complete
     }
   }
 

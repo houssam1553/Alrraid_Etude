@@ -20,6 +20,8 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
       Get.find<ProfileSettingsController>();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController currentPasswordController = TextEditingController();
+
   final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
@@ -54,7 +56,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.asset(
-                        'assets/images/profile.png',
+                        'assets/images/profilePic.png',
                       ),
                     ),
                   ),
@@ -164,33 +166,18 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(height: height * 0.008),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Current password",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
+                 formInput(
+                                        height: height,
+                                        label: "Current password",
+                                        hint: "Enter your current password",
+                                        inputType: InputType.password,
+                                        obscureText: false,
+                                        togglePasswordVisibility:
+                                            controller.togglePasswordVisibility,
+                                            textEditingController: currentPasswordController,
+                                      
                                       ),
-                                      SizedBox(height: height * 0.008),
-                                      TextFormField(
-                                        decoration: InputDecoration(
-                                          contentPadding:
-                                              EdgeInsets.symmetric(
-                                                  horizontal: 25.0, vertical: 15),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.all(Radius.circular(20)),
-                                          ),
-                                          labelText: "Enter your current password",
-                                          labelStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium,
-                                        ),
-                                      ),
+                                    
                                       SizedBox(height: height * 0.0309),
                                       formInput(
                                         height: height,
@@ -200,6 +187,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         obscureText: false,
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
+                                            textEditingController: passwordController,
                                         passwordController: passwordController,
                                       ),
                                       SizedBox(height: height * 0.0309),
@@ -212,8 +200,9 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                       
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                       passwordController: controller.passwordController,
-                                      ),
+                                       textEditingController: confirmPasswordController, // Pass the confirm password controller here
+  passwordController: passwordController, // Pass the main password controller for comparison
+),
                                     ],
                                   ),
                                   
@@ -223,10 +212,17 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                               SizedBox(
                                 height: height * 0.0557,
                                 width: width * 0.63,
-                                child: ElevatedButton(
+                                child: Obx(() {
+                                  
+                                  return ElevatedButton(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       // Trigger logic when the form is valid
+
+                                    
+                                      controller.updateUserPassword(userId: controller.currentUser.value!.clerkId , currentPassword: currentPasswordController.text, newPassword: passwordController.text);
+
+
                                     }
                                   },
                                   child: Row(
@@ -245,10 +241,22 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         ),
                                       ),
                                       SizedBox(width: 10),
-                                      Icon(Iconsax.document_upload),
+                                    controller.changePassLoading.value
+                        ?  Center(
+                                              child: SizedBox(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                    color: ColorManager.white,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                  )))
+                        : Icon(Iconsax.document_upload),
                                     ],
                                   ),
-                                ),
+                                );}),
                               ),
                               SizedBox(
                                 height: height * 0.0357,

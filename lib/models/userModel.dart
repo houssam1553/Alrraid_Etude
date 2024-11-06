@@ -1,5 +1,8 @@
 class User {
   final String id;
+  final String? clerkId;
+
+
   final String email;
   late final String firstName;
   late final String lastName;
@@ -15,7 +18,8 @@ class User {
     required this.lastName,
     required this.type,
     this.isEmployee,
-    this.token,
+    this.token, 
+    required this.clerkId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -26,7 +30,7 @@ class User {
       lastName: json['lastName'] ?? '',
       isEmployee: json['isEmployee'],
       type: json['type']??'',
-
+clerkId:json['clerkId']??'',
        // Nullable field, no need for a default value
       token: json['token'], // Nullable field, no need for a default value
     );
@@ -34,6 +38,9 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
+      'clerkId': clerkId,
+
+
       'email': email,
       'firstName': firstName,
       'lastName': lastName,

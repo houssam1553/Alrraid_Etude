@@ -1,6 +1,7 @@
 import 'package:arraid/commun%20widgets/customSnackbar.dart';
 import 'package:arraid/controllers/sidebarController.dart';
 import 'package:arraid/models/userListModel.dart';
+import 'package:arraid/models/userModel.dart';
 import 'package:arraid/repositories/homeRepository.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,7 @@ class TeamController extends GetxController {
   var deleteLoading = false.obs; 
   var saveLoading = false.obs; 
 
+String? currentTeamMember ;
 
   
 

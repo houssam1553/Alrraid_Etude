@@ -35,7 +35,7 @@ class HomeNavigationController extends GetxController {
   print(currentUser!.email);
   print(currentUser!.type);
 
-    if (currentUser!.isEmployee == 'false') {
+    if (currentUser!.isEmployee == 'true') {
       HomeTabs.value = [
         landingScreen(),
         DashboardTab(),
@@ -147,7 +147,9 @@ class HomeNavigationController extends GetxController {
     void gotoProfile() {
     selectedIndex.value = 3;
   }
-  
+  void gotoDashboard() {
+    selectedIndex.value = 1;
+  }
   void changeTabIndex1(int index) {
     if (index >= 0 && index < HomeTabs.length) {
       selectedIndex.value = index;

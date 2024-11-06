@@ -67,9 +67,7 @@ class _TeamCardState extends State<TeamCard> {
 
   // Collapse the card
   }); */
-    print(" edit : ${widget.editCard}");
-
-    print(" isExpanded : ${widget.isExpanded}");
+   
 
     // Initialize the controllers with existing user data
 
@@ -264,6 +262,7 @@ class _TeamCardState extends State<TeamCard> {
                                     ),
                                     TextButton(
                                       onPressed: () {
+                                        teamController.currentTeamMember =widget.firstName+' '+widget.lastName;
                                         navigationController.gotoProfile();
                                       },
                                       style: TextButton.styleFrom(

@@ -37,6 +37,8 @@ class formInput extends StatelessWidget {
           ),
         ),
         SizedBox(height: height * 0.008),
+      
+      
         TextFormField(
           controller: textEditingController,
           validator: (value) {
@@ -50,6 +52,7 @@ class formInput extends StatelessWidget {
               case InputType.passwordCh:
                 return Validator.validatePassword(value); // Validate password for passwordCh
               case InputType.passwordChRepeat:
+               print("Confirm Password: $value, Original Password: ${passwordController!.text}");
                 if (value != passwordController!.text) {
     return "Passwords do not match";
   }

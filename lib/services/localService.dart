@@ -37,7 +37,7 @@ class LocalService {
       return User.fromJson(jsonDecode(userData));
     } else {
       // Default user if not found in SharedPreferences
-      return User(id: "0", email: "example", firstName: "thameur", lastName: "alrraid", type: 'admin', isEmployee: 'true');
+      return User(id: "0", email: "example", firstName: "thameur", lastName: "alrraid", type: 'admin', isEmployee: 'true', clerkId: '');
     }
   }
 

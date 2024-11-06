@@ -47,7 +47,7 @@ class SignupController extends GetxController {
         // Update with your actual home route
       } catch (e) {
         String errorMessage =
-            'An unexpected error occurred'; // Default error message
+            'Server error try again later'; // Default error message
         int? statusCode;
 
         // Check if the exception contains a status code

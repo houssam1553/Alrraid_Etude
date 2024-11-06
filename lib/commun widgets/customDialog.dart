@@ -12,7 +12,7 @@ class LoadingDialogController extends GetxController {
     isLoading.value = false;  // Stop the loading indicator
     if (isSuccess) {
       currentIcon.value = Icons.check_circle;  // Success icon
-      message.value = 'Success!';  // Update the message to success
+      message.value = 'Done!';  // Update the message to success
     } else {
       currentIcon.value = Icons.error;  // Error icon
       message.value = errorMessage ?? 'An error occurred';  // Use custom error message if provided
@@ -95,6 +95,7 @@ static void showLoadingDialog() {
                       color: ColorManager.TextColor,
                     ),
                     child: Text(
+                      style: TextStyle(fontSize: 18),
                       controller.message.value,
                       textAlign: TextAlign.center,
                     ),

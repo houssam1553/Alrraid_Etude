@@ -53,7 +53,7 @@ print(rememberMe.value);
       LoadingDialog.showResultIcon(true); // Show success icon
       await Future.delayed(Duration(seconds: 2)); // Show success animation
       LoadingDialog.closeDialog(); // Close dialog
-      Get.to(() => Homescreen()); // Navigate to home screen
+      Get.offAll(() => Homescreen()); // Navigate to home screen
 
       // Clear text fields after successful login
       clearTextFields();
