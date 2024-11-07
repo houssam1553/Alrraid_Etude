@@ -31,9 +31,7 @@ class HomeNavigationController extends GetxController {
 
 
   if (currentUser != null) {
-      print(currentUser!.isEmployee);
-  print(currentUser!.email);
-  print(currentUser!.type);
+      
 
     if (currentUser!.isEmployee == 'true') {
       HomeTabs.value = [

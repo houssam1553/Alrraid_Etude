@@ -19,11 +19,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
   final ProfileSettingsController controller =
       Get.find<ProfileSettingsController>();
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController currentPasswordController = TextEditingController();
-
-  final TextEditingController confirmPasswordController = TextEditingController();
-
+  
   @override
   void initState() {
     // Fetch current user data on initialization
@@ -170,11 +166,12 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         height: height,
                                         label: "Current password",
                                         hint: "Enter your current password",
-                                        inputType: InputType.password,
+                                        inputType: InputType.name
+                                        ,
                                         obscureText: false,
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                            textEditingController: currentPasswordController,
+                                            textEditingController: controller. currentPasswordController,
                                       
                                       ),
                                     
@@ -187,8 +184,8 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         obscureText: false,
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                            textEditingController: passwordController,
-                                        passwordController: passwordController,
+                                            textEditingController: controller. passwordController,
+                                        passwordController: controller. passwordController,
                                       ),
                                       SizedBox(height: height * 0.0309),
                                       formInput(
@@ -200,8 +197,8 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                       
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                       textEditingController: confirmPasswordController, // Pass the confirm password controller here
-  passwordController: passwordController, // Pass the main password controller for comparison
+                                       textEditingController: controller. confirmPasswordController, // Pass the confirm password controller here
+  passwordController: controller. passwordController, // Pass the main password controller for comparison
 ),
                                     ],
                                   ),
@@ -216,11 +213,12 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                   
                                   return ElevatedButton(
                                   onPressed: () async {
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                     if (_formKey.currentState!.validate()) {
                                       // Trigger logic when the form is valid
 
                                     
-                                      controller.updateUserPassword(userId: controller.currentUser.value!.clerkId , currentPassword: currentPasswordController.text, newPassword: passwordController.text);
+                               await       controller.updateUserPassword(userId: controller.currentUser.value!.clerkId , currentPassword: controller. currentPasswordController.text, newPassword:controller. passwordController.text);
 
 
                                     }

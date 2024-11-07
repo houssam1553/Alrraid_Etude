@@ -32,7 +32,7 @@ class _DashboardPageState extends State<dashboardPage> {
    @override
   void initState() {
     super.initState();
-
+//userController.loadUsers();
     // Start the snackbar close check loop after the first frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startSnackbarCheckLoop();
@@ -71,12 +71,12 @@ class _DashboardPageState extends State<dashboardPage> {
       child: Column(
         children: [
           SizedBox(height: widget.height * 0.015),
-          dashboardCard(
+       Obx((){  return    dashboardCard(
             width: widget.width,
             title: "Today's users",
-            value: "2,300",
+            value: userController.userCount.value.toString(),
             precentage: "+5%",
-          ),
+          );}),
           SizedBox(height: widget.height * 0.015),
           barchartContainer(
             width: widget.width,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:arraid/models/userModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,5 +80,22 @@ class LocalService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('email');
     await prefs.remove('password');
+  }
+
+  static Future<void> saveProfileImage(Uint8List imageBytes) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String base64Image = base64Encode(imageBytes);
+    await prefs.setString('profileImage', base64Image);
+  }
+
+  // Load profile image as Uint8List
+  static Future<Uint8List?> loadProfileImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? base64Image = prefs.getString('profileImage');
+    
+    if (base64Image != null) {
+      return base64Decode(base64Image);
+    }
+    return null; // Return null if no image is saved
   }
 }

@@ -43,6 +43,8 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
     super.initState();
     // Initialize the controllers with the passed widget data or fallback to controller state
   /*  */
+   controller.fetchCurrentUser();
+  print ({controller.currentUser.value!.firstName});
 
     // Listen for changes in the controller's current user and update the fields accordingly
     controller.currentUser.listen((user) {
@@ -57,8 +59,9 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
   @override
   void dispose() {
     emailController.dispose();
-    lastNameController.dispose();
-    firstNameController.dispose();
+    lastNameController.clear();
+    firstNameController.clear();
+   
     super.dispose();
   }
 
@@ -99,7 +102,7 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
               textEditingController: firstNameController,
               height: widget.height,
               label: 'First Name',
-              hint: user.firstName ?? widget.firstName,
+              hint: controller.currentUser.value!.firstName ,
               inputType: InputType.name,
               obscureText: false,
               togglePasswordVisibility: () {},
@@ -109,7 +112,7 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
               textEditingController: lastNameController,
               height: widget.height,
               label: 'Last Name',
-              hint: user.lastName ?? widget.lastName,
+              hint: user.lastName ,
               inputType: InputType.name,
               obscureText: false,
               togglePasswordVisibility: () {},

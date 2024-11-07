@@ -10,7 +10,11 @@ class ProfileSettingsController extends GetxController {
   Rx<User?> currentUser = Rx<User?>(null); // Observable for current user
   final Homerepository homeRepository;
  
- 
+
+  final TextEditingController currentPasswordController = TextEditingController();
+
+  final TextEditingController confirmPasswordController = TextEditingController();
+
 
   var saveLoading = false.obs; 
   var changePassLoading = false.obs; 
@@ -103,6 +107,9 @@ class ProfileSettingsController extends GetxController {
 
       // After successfully updating, fetch the updated user
       await fetchCurrentUser();  // This will fetch the user again and update the observable state
+passwordController.clear();
+currentPasswordController.clear();
+confirmPasswordController.clear();
 
       // Optional: You can update the local storage or perform other operations here
 

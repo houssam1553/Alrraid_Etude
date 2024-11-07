@@ -58,7 +58,7 @@ print(rememberMe.value);
       // Clear text fields after successful login
       clearTextFields();
     } catch (e) {
-      String errorMessage = 'An unexpected error occurred';  // Default error message
+      String errorMessage = 'Server error \nPlease try again';  // Default error message
       int? statusCode;
 
       // Check if the exception contains a status code (like "404")

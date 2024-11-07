@@ -8,32 +8,30 @@ import 'package:arraid/services/localService.dart';
 import 'package:get/get.dart';
 
 class Homerepository {
- //final ApiService apiService = ApiService("https://alrraid.com");
-  final ApiService apiService = ApiService("http://192.168.1.65:3002");
- // final ApiService apiService = ApiService("https://4934-105-235-130-74.ngrok-free.app");
+  final ApiService apiService = ApiService("https://alrraid.com");
+  // final ApiService apiService = ApiService("http://192.168.1.65:3002");
+  // final ApiService apiService = ApiService("https://4934-105-235-130-74.ngrok-free.app");
 
-  
-   Homerepository(ApiService find);
+  Homerepository(ApiService find);
   List<Userlistmodel> users = []; // List to store User objects
-
- 
 
   Future<List<Userlistmodel>> fetchUsers() async {
     try {
-      final response = await apiService.getRequest('/api/users'); // Adjust endpoint as necessary
+      final response = await apiService
+          .getRequest('/api/users'); // Adjust endpoint as necessary
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> responseData = response.data; 
-        print(responseData);// The API response is a map
+        Map<String, dynamic> responseData = response.data;
+        print(responseData); // The API response is a map
         // Assuming the user data is nested in a 'data' key (adjust this as necessary)
-         if (responseData['users'] != null && responseData['users'] is List) {
-        List<dynamic> usersData = responseData['users'] as List<dynamic>;
+        if (responseData['users'] != null && responseData['users'] is List) {
+          List<dynamic> usersData = responseData['users'] as List<dynamic>;
 
-        // Map the list of user data to Userlistmodel instances
-        return usersData.map((user) => Userlistmodel.fromJson(user)).toList();
-      } else {
-        throw Exception('No valid data found in the response');
-      }
+          // Map the list of user data to Userlistmodel instances
+          return usersData.map((user) => Userlistmodel.fromJson(user)).toList();
+        } else {
+          throw Exception('No valid data found in the response');
+        }
       } else {
         throw Exception('Failed to load users: ${response.statusCode}');
       }
@@ -42,7 +40,7 @@ class Homerepository {
     }
   }
 
-    Future<void> updatedUsers(List<Userlistmodel> users) async {
+  Future<void> updatedUsers(List<Userlistmodel> users) async {
     // Collect the ids of the users who became employees
     List<String> employeeIds = users
         .where((user) => user.isEmployee == 'true') // Filter for new employees
@@ -63,10 +61,10 @@ class Homerepository {
       // Handle error
     }
   }
-      Future<void> deleteUser(String userId) async {
+
+  Future<void> deleteUser(String userId) async {
     // Collect the ids of the users who became employees
     String employeeId = userId;
-        
 
     try {
       // Prepare the data for the PUT request
@@ -82,66 +80,65 @@ class Homerepository {
       // Handle error
     }
   }
-     Future<void> updateUser(Userlistmodel user) async {
+
+  Future<void> updateUser(Userlistmodel user) async {
     try {
       Map<String, dynamic> data = {
         'firstName': user.firstName,
         'lastName': user.lastName,
-       
+
         // Add more fields as necessary
       };
 
       await apiService.putRequest('/api/users/${user.id}', data);
       print(data);
-             Get.closeAllSnackbars();
-                            Get.snackbar(
-                              "Done!",
-                              "User data updated succesfully",
-                              snackPosition: SnackPosition.BOTTOM,
-                              duration: Duration(seconds: 2),
-                       
-                            );
-
+      Get.closeAllSnackbars();
+      Get.snackbar(
+        "Done!",
+        "User data updated succesfully",
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 2),
+      );
     } catch (e) {
       print("Error updating user: $e");
     }
   }
+
   Future<void> changePassword({
-  required String? userId,
-  required String currentPassword,
-  required String newPassword,
-}) async {
-  try {
-    print(userId);    // Prepare the data for the PUT request
-    Map<String, dynamic> data = {
-      'clerckId' : userId,
-      'currentPassword': currentPassword,
-      'newPassword': newPassword,
-    };
+    required String? userId,
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      print(userId); // Prepare the data for the PUT request
+      Map<String, dynamic> data = {
+        'clerkId': userId,
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      };
 
-    // Send the PUT request with the password data
-    await apiService.putRequest('/api/users/password', data);
-    
-    // Show success message
-    Get.closeAllSnackbars();
-    Get.snackbar(
-      "Success",
-      "Password changed successfully",
-      snackPosition: SnackPosition.BOTTOM,
-      duration: Duration(seconds: 2),
-    );
-  } catch (e) {
-    print("Error changing password: $e");
-    // Show error message
-    Get.snackbar(
-      "Error",
-      "Failed to change password: $e",
-      snackPosition: SnackPosition.BOTTOM,
-      duration: Duration(seconds: 2),
-    );
+      // Send the PUT request with the password data
+      await apiService.putRequest('/api/users/password', data);
+
+      // Show success message
+      Get.closeAllSnackbars();
+      Get.snackbar(
+        "Success",
+        "Password changed successfully",
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 2),
+      );
+    } catch (e) {
+      print("Error changing password: $e");
+      // Show error message
+      Get.snackbar(
+        "Error",
+        "Failed to change password: \ncurrent password is worng",
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 2),
+      );
+    }
   }
-}
-
 }
   /* if (response.statusCode == 200) {
     print("Raw response: ${response.data}");

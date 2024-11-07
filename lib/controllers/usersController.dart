@@ -12,17 +12,17 @@ class UserController extends GetxController {
   SidebarController sidebarController = Get.find<SidebarController>();
 
   var expandedCardIndex = Rxn<int>();  // Index of the expanded card
-  var editingCardIndex = Rxn<int>();  // Index of the editing card
+  var editingCardIndex = Rxn<int>();   // Index of the editing card
   final users = RxList<Userlistmodel>(); 
   var isLoading = true.obs; 
   var saveLoading = false.obs; 
-
-  //var isLoading1 = false.obs; 
+var userCount = 0.obs;
+   //var isLoading1 = false.obs; 
    var isEmpty = true.obs;
-  var isFirstFetch = true.obs; 
+   var isFirstFetch = true.obs; 
    // List of user data
-void closeSnackbars() {
-    if (Get.isSnackbarOpen) {
+   void closeSnackbars() {
+ if (Get.isSnackbarOpen) {
       Get.closeAllSnackbars();
       print('Closed existing snackbars');
     }
@@ -38,7 +38,7 @@ void closeSnackbars() {
   //  print(users[1].platforms );
     isFirstFetch.value = false;
       isEmpty.value = false;
-
+userCount.value = users.length; 
          if (users.isEmpty && sidebarController.selectedIndex.value ==1 ){
      print("*****${sidebarController.selectedIndex.value}");
 
@@ -53,6 +53,8 @@ void closeSnackbars() {
 );
 
   users.value = [defaultuser];
+          
+
     }  
     // Add fetched users to the observable list
     return fetchedUsers;
