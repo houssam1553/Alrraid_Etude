@@ -3,22 +3,35 @@ import 'package:arraid/screens/HomeScreen/widgets/chartHeadline.dart';
 import 'package:arraid/screens/HomeScreen/widgets/userProgress.dart';
 import 'package:flutter/material.dart';
 
-class barchartContainer extends StatelessWidget {
-  const barchartContainer({
-    super.key,
+class BarchartContainer extends StatefulWidget {
+  const BarchartContainer({
+    Key? key,
     required this.width,
-    required this.height, required this.chart,
-  } );
+    required this.height,
+    required this.chart,
+    required this.userCount, 
+    required this.teamCount, 
 
-final Widget chart;
+ 
+  }) : super(key: key);
+
+  final Widget chart;
   final double width;
   final double height;
+  final String userCount;
+  final String teamCount;
 
+
+  @override
+  _BarchartContainerState createState() => _BarchartContainerState();
+}
+
+class _BarchartContainerState extends State<BarchartContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width * 0.68,
-      padding: EdgeInsets.symmetric(horizontal:  width*0.03,vertical: 20),
+      width: widget.width * 0.68,
+      padding: EdgeInsets.symmetric(horizontal: widget.width * 0.03, vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -26,28 +39,44 @@ final Widget chart;
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           chartHeadline(height: height,title:"Active Users",value :"(+23)",subtiltle:"Than last week"),
+          chartHeadline(
+            height: widget.height,
+            title: "Active Users",
+            value: "(+${widget.userCount})",
+            subtiltle: "Than last week",
+          ),
           SizedBox(
-            height: height * 0.025,
+            height: widget.height * 0.025,
           ),
           Container(
-              decoration: BoxDecoration(
-                color: ColorManager.primary,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: chart),
-          SizedBox(
-            height: height * 0.025,
+            decoration: BoxDecoration(
+              color: ColorManager.primary,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: widget.chart,
           ),
-         
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          SizedBox(
+            height: widget.height * 0.025,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              usersProgress(width: width, height: height,title: "Users",value: "32,248", icon: Icons.person,),
-               usersProgress(width: width, height: height,title: "Clicks",value: "6,765", icon: Icons.ads_click_outlined,)
-    
+              usersProgress(
+                width: widget.width,
+                height: widget.height,
+                title: "Users",
+                value: widget.userCount,
+                icon: Icons.person,
+              ),
+              usersProgress(
+                width: widget.width,
+                height: widget.height,
+                title: "Team",
+                value: widget.teamCount,
+                icon: Icons.work,
+              ),
             ],
           ),
-                           
         ],
       ),
     );

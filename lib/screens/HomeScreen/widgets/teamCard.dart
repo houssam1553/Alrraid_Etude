@@ -104,7 +104,7 @@ class _TeamCardState extends State<TeamCard> {
       email: emailController.text,
       isEmployee: 'true', // Or retain the existing value
     );
-    print(updatedUser.firstName);
+    //print(updatedUser.firstName);
     // Update the user in the controller
    
     await teamController.updateUserInfo(updatedUser);
@@ -122,7 +122,7 @@ class _TeamCardState extends State<TeamCard> {
 
   Future<void> deleteUser() async {
     // Update the user object with new values
-    print(" isExpanded : ${widget.isExpanded}");
+   // print(" isExpanded : ${widget.isExpanded}");
     //teamController.isLoading.value = true;
     // Update the user in the controller
     await teamController.deleteUser(widget.id);

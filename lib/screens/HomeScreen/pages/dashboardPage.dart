@@ -1,3 +1,4 @@
+import 'package:arraid/controllers/teamController.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/screens/HomeScreen/charts/barChart.dart';
 import 'package:arraid/screens/HomeScreen/charts/lineChart.dart';
@@ -28,6 +29,8 @@ class dashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<dashboardPage> {  
   
   UserController userController = Get.find<UserController>();
+  TeamController teamController = Get.find<TeamController>();
+
   bool _isChecking = true;
    @override
   void initState() {
@@ -75,12 +78,14 @@ class _DashboardPageState extends State<dashboardPage> {
             width: widget.width,
             title: "Today's users",
             value: userController.userCount.value.toString(),
-            precentage: "+5%",
+            precentage: "+4%",
           );}),
           SizedBox(height: widget.height * 0.015),
-          barchartContainer(
+          BarchartContainer(
             width: widget.width,
             height: widget.height,
+            teamCount : teamController.teamCount.value.toString(),
+       userCount:     userController.userCount.value.toString(),
             chart: BarChartSample3(),
           ),
           SizedBox(height: widget.height * 0.015),

@@ -41,7 +41,7 @@ class SidebarController extends GetxController {
   } 
 
   void changeIndex(int index) {
-    print(index);
+   // print(index);
     selectedIndex.value = index;
     if (expandedIndex.value == index) {
       expandedIndex.value = -1; // Collapse
@@ -52,7 +52,7 @@ class SidebarController extends GetxController {
 
   void selectChildIndex(int index) {
     selectedIndex.value = index;
-    print('Attempting to jump to page $index');
+   // print('Attempting to jump to page $index');
 
     if (pageController.hasClients) {
       try {
@@ -63,7 +63,7 @@ class SidebarController extends GetxController {
           curve: Curves.easeInOutQuart, // Use Flutter's built-in curves
         );
 
-        print('Successfully jumped to page $index');
+        //print('Successfully jumped to page $index');
       } catch (e) {
         print('Error occurred while jumping to page: $e');
       }

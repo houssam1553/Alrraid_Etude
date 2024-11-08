@@ -17,6 +17,7 @@ class TeamController extends GetxController {
   var isLoading = true.obs; 
   var deleteLoading = false.obs; 
   var saveLoading = false.obs; 
+var teamCount = 0.obs;
 
 String? currentTeamMember ;
 
@@ -41,7 +42,7 @@ String? currentTeamMember ;
     team.clear(); // Clear the existing list
     team.addAll(teamMembers); // Add filtered team members to the observable list
    
-  
+  teamCount.value = team.length; 
     isFirstFetch.value = false;
     expandedCardIndex.value = -1;
      await Future.delayed(Duration(seconds: 2));
@@ -138,7 +139,7 @@ Future<void> updateUserInfo(Userlistmodel updatedUser) async {
 
   @override
   void onInit() {
-    //loadTeamMembers(); // Load users when the controller is initialized
+    loadTeamMembers(); // Load users when the controller is initialized
     super.onInit();
   }
 

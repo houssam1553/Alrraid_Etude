@@ -22,7 +22,7 @@ class Homerepository {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
-        print(responseData); // The API response is a map
+     //  print(responseData); // The API response is a map
         // Assuming the user data is nested in a 'data' key (adjust this as necessary)
         if (responseData['users'] != null && responseData['users'] is List) {
           List<dynamic> usersData = responseData['users'] as List<dynamic>;
@@ -52,7 +52,7 @@ class Homerepository {
       Map<String, dynamic> data = {
         'ids': employeeIds,
       };
-      print(data);
+     //  print(data);
 
       // Send the PUT request with the employee IDs
       await apiService.putRequest('/api/users/employee/add', data);
@@ -71,7 +71,7 @@ class Homerepository {
       Map<String, dynamic> data = {
         '_id': employeeId,
       };
-      print(data);
+     // print(data);
 
       // Send the PUT request with the employee IDs
       await apiService.putRequest('/api/users/employee/delete', data);
@@ -110,7 +110,7 @@ class Homerepository {
     required String newPassword,
   }) async {
     try {
-      print(userId); // Prepare the data for the PUT request
+     // print(userId); // Prepare the data for the PUT request
       Map<String, dynamic> data = {
         'clerkId': userId,
         'currentPassword': currentPassword,

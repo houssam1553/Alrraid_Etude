@@ -40,7 +40,7 @@ class VerificationController extends GetxController {
     
 
     try {
-      print("token  "+  token);
+    //  print("token  "+  token);
       // Call the AuthRepository to verify the code
   await authRepository.verifyCode(
         codeController.text.trim(),

@@ -24,9 +24,11 @@ var userCount = 0.obs;
    void closeSnackbars() {
  if (Get.isSnackbarOpen) {
       Get.closeAllSnackbars();
-      print('Closed existing snackbars');
+     // print('Closed existing snackbars');
     }
   }
+
+  
   // Method to load users from the repository
  Future<List<Userlistmodel>> loadUsers() async {
     isLoading.value = true; 
@@ -39,8 +41,10 @@ var userCount = 0.obs;
     isFirstFetch.value = false;
       isEmpty.value = false;
 userCount.value = users.length; 
+     await Future.delayed(Duration(seconds: 1));
+
          if (users.isEmpty && sidebarController.selectedIndex.value ==1 ){
-     print("*****${sidebarController.selectedIndex.value}");
+    // print("*****${sidebarController.selectedIndex.value}");
 
 
        Userlistmodel  defaultuser =Userlistmodel(id: "id", email: "example", firstName: "thameur", lastName: "alrraid");
@@ -59,7 +63,7 @@ userCount.value = users.length;
     // Add fetched users to the observable list
     return fetchedUsers;
   } catch (e) {
-    print("Error loading users: $e");
+  //  print("Error loading users: $e");
     Get.snackbar("Server Error", "could not retreive users ",snackPosition: SnackPosition.TOP);
      isEmpty.value = true;
            isFirstFetch.value = false;
@@ -155,13 +159,13 @@ void updateUser(Userlistmodel updatedUser) async {
   try {
     // Find the index of the user to update
     int index = users.indexWhere((user) => user.id == updatedUser.id);
-    print(index);
+   // print(index);
     
     // If user is found, update the user in the list
     if (index != -1) {
       // Create a new user instance with updated isEmployee
       users[index] = updatedUser.copyWith(isEmployee: "true");
-      print(users[index].isEmployee);
+   //   print(users[index].isEmployee);
 
       // Call the repository method to update the user in the backend
        // Replace with your repository call
@@ -184,7 +188,7 @@ void updateUser(Userlistmodel updatedUser) async {
   @override
   void onInit() {
    
-    //loadUsers(); // Load users when the controller is initialized
+    loadUsers(); // Load users when the controller is initialized
     super.onInit();
   }
 

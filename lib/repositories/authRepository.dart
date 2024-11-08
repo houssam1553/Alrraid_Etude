@@ -32,7 +32,7 @@ class AuthRepository {
     await LocalService.saveToken(token);
 
     User user = User.fromJson(response.data);
-    print(user.id);
+   // print(user.id);
     await LocalService.saveUser(user); 
   
     // Save user locally
@@ -67,7 +67,7 @@ class AuthRepository {
       'code': code,
       'token': token,
     });
-   print(response);
+   //print(response);
     if (response.statusCode == 201) {
       // Code verified successfully
        String token = response.data['token'];

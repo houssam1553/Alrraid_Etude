@@ -67,7 +67,7 @@ class _UserCardState extends State<UserCard> {
       
    
 
-     print(" isExpanded : ${widget.isExpanded}");
+  //   print(" isExpanded : ${widget.isExpanded}");
    
 
     // Initialize the controllers with existing user data
@@ -104,7 +104,7 @@ class _UserCardState extends State<UserCard> {
       email: emailController.text,
       isEmployee: 'true', // Or retain the existing value
     );
-print(updatedUser.firstName);
+//print(updatedUser.firstName);
     // Update the user in the controller
    
   await  userController.updateUserInfo(updatedUser);

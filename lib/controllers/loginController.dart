@@ -36,7 +36,7 @@ class LoginController extends GetxController {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
-print(rememberMe.value);
+//print(rememberMe.value);
       // If login is successful, save credentials if "Remember Me" is selected
       if (rememberMe.value) {
         await LocalService.saveCredentials(

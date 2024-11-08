@@ -7,6 +7,7 @@ import 'package:arraid/screens/HomeScreen/widgets/settingSection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingsTab extends StatefulWidget {
   const ProfileSettingsTab({super.key});
@@ -23,6 +24,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
   @override
   void initState() {
     // Fetch current user data on initialization
+     controller.loadImage();
     controller.fetchCurrentUser();
     super.initState();
   }
@@ -46,16 +48,19 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
             children: [
               Stack(
                 children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset(
-                        'assets/images/profilePic.png',
-                      ),
-                    ),
-                  ),
+                Obx(() {
+  return SizedBox(
+    width: 120,
+    height: 120,
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(100),  // Circular shape
+      child: controller.profileImage.value != null
+          ? Image.file(controller.profileImage.value!)  // Display the profile image
+          : Image.asset('assets/images/profilePic.png'),  // Fallback image if no profile image
+    ),
+  );
+}),
+
                   Positioned(
                     right: 0,
                     bottom: 0,
@@ -68,7 +73,9 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                       height: 30,
                       child: Center(
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                           await controller.pickImage(ImageSource.gallery);
+                          },
                           icon: const Icon(
                             Iconsax.edit,
                             color: Colors.white,

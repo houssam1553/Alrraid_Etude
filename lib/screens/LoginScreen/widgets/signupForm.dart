@@ -97,26 +97,8 @@ class _signupFormState extends State<signupForm> {
                   widget.signupController.togglePasswordVisibility,
             ),
           ),
-          SizedBox(height: widget.height * 0.0197),
-          Row(
-            children: [
-              Transform.scale(
-                scale: 0.7,
-                child: Switch(
-                  value: true,
-                  onChanged: (bool value1) {},
-                ),
-              ),
-              Text(
-                "Remember me",
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: ColorManager.TextColor,
-                      letterSpacing: 0.5,
-                      fontWeight: FontWeight.normal,
-                    ),
-              ),
-            ],
-          ),
+        //  SizedBox(height: widget.height * 0.0197),
+        
           SizedBox(height: widget.height * 0.03),
           SizedBox(
             height: widget.height * 0.0557,

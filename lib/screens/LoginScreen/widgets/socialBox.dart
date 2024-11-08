@@ -14,11 +14,16 @@ class SocialMediaBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size inside the build method
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 80, // Set width of the box
-        height: 80, // Set height of the box
+        width: width * 0.18,  // Example: set width to 30% of screen width
+        height: width * 0.18,  // Set height of the box
         decoration: BoxDecoration(
           // Background color for the box
           borderRadius: BorderRadius.circular(10),

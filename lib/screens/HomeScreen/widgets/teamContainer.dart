@@ -31,7 +31,7 @@ class _TeamContainerState extends State<TeamContainer> {
   void initState() {
  
   
-     print("init called   users : ${widget.teamController.team.value }");
+   //  print("init called   users : ${widget.teamController.team.value }");
     super.initState();
   }
   @override
@@ -121,11 +121,11 @@ if (widget.teamController.isLoading.value)
                         isExpanded: false,
                         onTap: widget.teamController.toggleExpand,
                         assetImage: '',
-                        title: "uhgeourihoeugyr",
+                        title: "uhgeourihohgj",
                         email: "user.email",
                         organization: 'Alrraid Pro',
                         subtitle:  '   user',
-                        firstName: "user.firstName",
+                        firstName: "user.firstNkug",
                         lastName: "user.lastName",
                          onRefresh: widget.teamController.triggerRefresh,
                       );

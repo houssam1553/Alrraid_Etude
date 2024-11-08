@@ -35,7 +35,7 @@ class _DashboardTabState extends State<DashboardTab>
 
     sidebarController = Get.put(SidebarController());
     sidebarController.sideMenuController.dispose();
-    print("sideMenu"+sidebarController.sideMenuController.currentPage.toString());
+   // print("sideMenu"+sidebarController.sideMenuController.currentPage.toString());
     
    // sideMenuController = SideMenuController(); 
   
@@ -168,7 +168,7 @@ class _DashboardTabState extends State<DashboardTab>
                         child: Icon(Icons.search, color: Colors.grey),
                       ),
                       constraints: BoxConstraints(
-                          maxWidth: 200, maxHeight: 40, minHeight: 40),
+                          maxWidth: width*0.42, maxHeight: 40, minHeight: 40),
                       elevation: MaterialStateProperty.all<double?>(0),
                     ),
                     Expanded(

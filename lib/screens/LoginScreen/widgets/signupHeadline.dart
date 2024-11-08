@@ -24,7 +24,7 @@ class signupHeadline extends StatelessWidget {
           height: height * 0.0281,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 35
+          padding: const EdgeInsets.symmetric(horizontal: 30
     ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment

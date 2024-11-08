@@ -142,15 +142,15 @@ class _CodetabState extends State<Codetab> {
                               errorAnimationController: errorController,
                               controller: verificationController.codeController,
                               onCompleted: (v) {
-                                print("Completed");
+                               // print("Completed");
                                 verificationController.verifyCode();
                                 verificationController.isValide == true ? errorController!.add(ErrorAnimationType.shake) :null;
                               },
                               onChanged: (value) {
-                                print(value);
+                               // print(value);
                               },
                               beforeTextPaste: (text) {
-                                print("Allowing to paste $text");
+                             //   print("Allowing to paste $text");
                                 return true;
                               },
                             ),

@@ -34,33 +34,31 @@ class ProfileSettingsForm extends StatefulWidget {
 class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ProfileSettingsController controller = Get.find<ProfileSettingsController>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController firstNameController = TextEditingController();
+ 
 
   @override
   void initState() {
     super.initState();
     // Initialize the controllers with the passed widget data or fallback to controller state
   /*  */
-   controller.fetchCurrentUser();
-  print ({controller.currentUser.value!.firstName});
+  
+ // print ({controller.currentUser.value!.firstName});
 
     // Listen for changes in the controller's current user and update the fields accordingly
     controller.currentUser.listen((user) {
       if (user != null) {
-        firstNameController.text = user.firstName ?? widget.firstName;
-        lastNameController.text = user.lastName ?? widget.lastName;
-        emailController.text = user.email ?? widget.email;
+        controller.firstNameController.text = user.firstName ?? widget.firstName;
+        controller.lastNameController.text = user.lastName ?? widget.lastName;
+        controller.emailController.text = user.email ?? widget.email;
       }
     });
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    lastNameController.clear();
-    firstNameController.clear();
+   // controller.emailController.dispose();
+    controller.lastNameController.clear();
+    controller.firstNameController.clear();
    
     super.dispose();
   }
@@ -69,16 +67,16 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
     // Update the user object with new values
     Userlistmodel updatedUser = Userlistmodel(
       id: widget.id,
-      firstName: firstNameController.text.isNotEmpty ? firstNameController.text : widget.firstName,
-      lastName: lastNameController.text.isNotEmpty ? lastNameController.text : widget.lastName,
-      email: emailController.text.isNotEmpty ? emailController.text : widget.email,
+      firstName: controller.firstNameController.text.isNotEmpty ? controller.firstNameController.text : widget.firstName,
+      lastName: controller.lastNameController.text.isNotEmpty ? controller.lastNameController.text : widget.lastName,
+      email: controller.emailController.text.isNotEmpty ? controller.emailController.text : widget.email,
       isEmployee: 'true',
     );
 
     await controller.updateUserInfo(updatedUser);
-      firstNameController.text = updatedUser.firstName;
-    lastNameController.text = updatedUser.lastName;
-    emailController.text = widget.email;
+      controller.firstNameController.text = updatedUser.firstName;
+    controller.lastNameController.text = updatedUser.lastName;
+    controller.emailController.text = widget.email;
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
@@ -99,20 +97,20 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
           children: [
             SizedBox(height: widget.height * 0.0210),
             formInput(
-              textEditingController: firstNameController,
+              textEditingController: controller.firstNameController,
               height: widget.height,
               label: 'First Name',
-              hint: controller.currentUser.value!.firstName ,
+              hint: controller.fNameHint.value ,
               inputType: InputType.name,
               obscureText: false,
               togglePasswordVisibility: () {},
             ),
             SizedBox(height: widget.height * 0.0210),
             formInput(
-              textEditingController: lastNameController,
+              textEditingController: controller.lastNameController,
               height: widget.height,
               label: 'Last Name',
-              hint: user.lastName ,
+              hint: controller.lNameHint.value  ,
               inputType: InputType.name,
               obscureText: false,
               togglePasswordVisibility: () {},

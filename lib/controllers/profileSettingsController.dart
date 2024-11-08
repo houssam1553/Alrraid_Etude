@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:arraid/config/colors.dart';
 import 'package:arraid/models/userListModel.dart'; // Assuming Userlistmodel and User are different
 import 'package:arraid/models/userModel.dart'; // Your User model
 import 'package:arraid/repositories/homeRepository.dart';
@@ -5,6 +8,10 @@ import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:arraid/services/localService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileSettingsController extends GetxController {
   Rx<User?> currentUser = Rx<User?>(null); // Observable for current user
@@ -14,6 +21,12 @@ class ProfileSettingsController extends GetxController {
   final TextEditingController currentPasswordController = TextEditingController();
 
   final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+ RxString fNameHint = ''.obs;
+ RxString lNameHint = ''.obs;
+
 
 
   var saveLoading = false.obs; 
@@ -31,7 +44,9 @@ class ProfileSettingsController extends GetxController {
 
   @override
   void onInit() {
-    fetchCurrentUser(); // Fetch the current user when the controller is initialized
+    fetchCurrentUser();
+   // loadProfileImage(); // Load profile image when the controller is initialized
+     // Fetch the current user when the controller is initialized
     super.onInit();
   }
 
@@ -39,7 +54,7 @@ class ProfileSettingsController extends GetxController {
   Future<void> fetchCurrentUser() async {
     try {
       final fetchedUser = await LocalService.getUser();
-      print(fetchedUser!.id);
+     // print(fetchedUser!.id);
 
       if (fetchedUser != null) {
         // Update the observable currentUser if fetchedUser is not null
@@ -57,7 +72,7 @@ class ProfileSettingsController extends GetxController {
         );
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+    //  print('Error fetching user data: $e');
     }
   }
 
@@ -75,6 +90,8 @@ class ProfileSettingsController extends GetxController {
         clerkId: updatedUser.id,
         type: updatedUser.type ?? currentUser.value?.type ?? "",
       );
+fNameHint.value = updatedUser.firstName;
+lNameHint.value = updatedUser.lastName;
 
       // Call the repository method to update the user info (assumes you have an updateUser method in your repository)
       await homeRepository.updateUser(updatedUser);
@@ -130,6 +147,7 @@ confirmPasswordController.clear();
 
       // Set currentUser to null
       currentUser.value = null;
+    // await Future.delayed(Duration(seconds: 1));
 
       // Optionally, you can navigate the user to the login screen after logout
       Get.offAll(LoginScreen()); // Navigate to the login screen
@@ -140,6 +158,145 @@ confirmPasswordController.clear();
     }finally{
     logoutLoading.value = false; // Set loading to true while the update is in progress
 
+    }
+  }
+  
+ Rx<File?> profileImage = Rx<File?>(null);
+  final ImagePicker _picker = ImagePicker();
+
+  // Pick an image from the specified source (gallery/camera)
+  // Future<void> pickImage(ImageSource source) async {
+  //   try {final status = await Permission.storage.request();
+  // print('Permission status: $status');
+  //     print('Picking image from source: $source');
+  //     final XFile? pickedFile = await _picker.pickImage(source: source);
+  //     if (pickedFile != null) {
+  //       final File imageFile = File(pickedFile.path);
+  //       profileImage.value = imageFile;
+
+  //       print('Image picked: ${imageFile.path}');
+
+  //       // Show the confirmation dialog
+  //       showSaveImageDialog(imageFile);
+  //     } else {
+  //       print('No image picked.');
+  //     }
+  //   } catch (e) {
+  //     print('Error picking image: $e');
+  //   }
+  // }
+
+  // Show a confirmation dialog to save the image
+  void showSaveImageDialog(File imageFile) {
+    print('Showing save dialog for the image...');
+    Get.dialog(
+      AlertDialog(
+        title: Center(child: const Text('Save Image',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold))),
+        content:  Text('Do you want to save this image as your profile picture?',style: TextStyle(color: ColorManager.greyText)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              print('Cancel button pressed');
+              Get.back(); // Close the dialog without saving
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              print('Save button pressed');
+              await saveImage(imageFile);
+              Get.back(); // Close the dialog after saving
+            },
+            child: const Text('Save',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Save the image to local storage
+  Future<void> saveImage(File imageFile) async {
+    try {
+      print('Starting to save the image...');
+      
+      // Get the directory to save the image (App document directory)
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String filePath = '${appDocDir.path}/profilePic.png';
+
+      print('Directory path for saving: $filePath');
+
+      // Check if the file already exists at the location
+      final bool exists = await File(filePath).exists();
+      if (exists) {
+        print('File already exists at $filePath');
+      } else {
+        print('No file found at the path, proceeding with copy');
+      }
+
+      // Copy the selected image to the local app directory
+      final File savedImage = await imageFile.copy(filePath);
+      print('Image saved successfully to $filePath');
+
+      // Update profile image observable with the saved file
+     // profileImage.value = savedImage;
+
+      // Optional: Show a success message
+     Get.back();
+    } catch (e) {
+      print('Error saving the image: $e');
+      Get.snackbar('Error', 'Failed to save the image: $e');
+    }
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      final status = await Permission.storage.request();
+      print('Permission status: $status');
+
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        final File imageFile = File(pickedFile.path);
+
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          
+          sourcePath: imageFile.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1), // Square for circular display
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Edit Image',
+              toolbarColor: ColorManager.primary,
+              toolbarWidgetColor: Colors.white,
+              hideBottomControls: true,
+              cropStyle: CropStyle.circle,
+              lockAspectRatio: true, // Locks to square crop
+            ),
+            IOSUiSettings(
+              title: 'Edit Image',
+              aspectRatioLockEnabled: true, // Locks aspect ratio for circular display
+            ),
+          ],
+        );
+
+        if (croppedFile != null) {
+          // Convert CroppedFile to File and update profile image
+          profileImage.value = File(croppedFile.path);
+          showSaveImageDialog(profileImage.value!); // Show confirmation dialog to save
+        }
+      } else {
+        print('No image picked.');
+      }
+    } catch (e) {
+      print('Error picking or cropping image: $e');
+    }
+  }
+   Future<void> loadImage() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/profilePic.png';
+
+    final File savedImage = File(filePath);
+    if (await savedImage.exists()) {
+      profileImage.value = savedImage; // Update profile image
     }
   }
 }

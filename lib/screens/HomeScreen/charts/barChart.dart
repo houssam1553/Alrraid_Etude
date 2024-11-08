@@ -114,7 +114,7 @@ class _BarChart extends StatelessWidget {
           x: 0,
           barRods: [
             BarChartRodData(
-              toY:48,
+              toY:0,
               gradient: _barsGradient,
             )
           ],

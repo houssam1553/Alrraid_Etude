@@ -26,7 +26,7 @@ class LocalService {
   static Future<void> saveUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', jsonEncode(user.toJson()));
-    print("User saved: ${user.email}, ${user.firstName}, ${user.id}");
+   // print("User saved: ${user.email}, ${user.firstName}, ${user.id}");
   }
 
   // Get user data
@@ -82,10 +82,12 @@ class LocalService {
     await prefs.remove('password');
   }
 
+   // Save profile image in SharedPreferences
   static Future<void> saveProfileImage(Uint8List imageBytes) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String base64Image = base64Encode(imageBytes);
     await prefs.setString('profileImage', base64Image);
+  //  print("Profile image saved.");
   }
 
   // Load profile image as Uint8List
@@ -94,8 +96,13 @@ class LocalService {
     String? base64Image = prefs.getString('profileImage');
     
     if (base64Image != null) {
-      return base64Decode(base64Image);
+      try {
+        return base64Decode(base64Image);
+      } catch (e) {
+       // print("Error decoding profile image: $e");
+      }
     }
-    return null; // Return null if no image is saved
+    return null; // Return null if no image is saved or decoding fails
   }
+
 }
