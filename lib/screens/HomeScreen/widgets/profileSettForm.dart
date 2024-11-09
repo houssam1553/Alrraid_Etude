@@ -57,8 +57,8 @@ class _ProfileSettingsFormState extends State<ProfileSettingsForm> {
   @override
   void dispose() {
    // controller.emailController.dispose();
-    controller.lastNameController.clear();
-    controller.firstNameController.clear();
+   // controller.lastNameController.clear();
+    //controller.firstNameController.clear();
    
     super.dispose();
   }

@@ -24,7 +24,7 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
   @override
   void initState() {
     // Fetch current user data on initialization
-     controller.loadImage();
+    controller.loadImage();
     controller.fetchCurrentUser();
     super.initState();
   }
@@ -74,7 +74,13 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                       child: Center(
                         child: IconButton(
                           onPressed: () async {
-                           await controller.pickImage(ImageSource.gallery);
+                           if ( controller.profileImage.value == null) {
+      controller. pickImage(ImageSource.gallery);
+       // Show dialog if image exists
+    } else {
+      // If no image is saved, open gallery immediately
+    controller.showImageOptionsDialog();
+    }
                           },
                           icon: const Icon(
                             Iconsax.edit,

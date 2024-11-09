@@ -59,6 +59,7 @@ class ProfileSettingsController extends GetxController {
       if (fetchedUser != null) {
         // Update the observable currentUser if fetchedUser is not null
         currentUser.value = fetchedUser;
+
       } else {
         // If no user is found, set to default values
         currentUser.value = User(
@@ -92,10 +93,13 @@ class ProfileSettingsController extends GetxController {
       );
 fNameHint.value = updatedUser.firstName;
 lNameHint.value = updatedUser.lastName;
+firstNameController.text =updatedUser.firstName ;
+
+lastNameController.text =updatedUser.lastName ;
 
       // Call the repository method to update the user info (assumes you have an updateUser method in your repository)
       await homeRepository.updateUser(updatedUser);
-
+await LocalService.saveUser(updatedUserData);
       // After successfully updating, fetch the updated user
       await fetchCurrentUser();  // This will fetch the user again and update the observable state
 
@@ -187,68 +191,70 @@ confirmPasswordController.clear();
   // }
 
   // Show a confirmation dialog to save the image
-  void showSaveImageDialog(File imageFile) {
-    print('Showing save dialog for the image...');
+ 
+  Future<void> loadImage() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/profilePic.png';
+    final File savedImage = File(filePath);
+    if (await savedImage.exists()) {
+      profileImage.value = savedImage;
+    //  showImageOptionsDialog(); // Show dialog if image exists
+    } else {
+      // If no image is saved, open gallery immediately
+      pickImage(ImageSource.gallery);
+    }
+  }
+  Future<void> editButtonClicked() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/profilePic.png';
+    final File savedImage = File(filePath);
+    if (await savedImage.exists()) {
+   
+      showImageOptionsDialog(); // Show dialog if image exists
+    } else {
+      // If no image is saved, open gallery immediately
+      pickImage(ImageSource.gallery);
+    }
+  }
+
+  void showImageOptionsDialog() {
     Get.dialog(
       AlertDialog(
-        title: Center(child: const Text('Save Image',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold))),
-        content:  Text('Do you want to save this image as your profile picture?',style: TextStyle(color: ColorManager.greyText)),
+        title: Center(child: const Text('Profile Picture Options', style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold))),
+        content: Text('You already have a profile picture. What would you like to do?', style: TextStyle(color: ColorManager.greyText)),
         actions: [
           TextButton(
             onPressed: () {
-              print('Cancel button pressed');
-              Get.back(); // Close the dialog without saving
+              Get.back();
+              pickImage(ImageSource.gallery); // Choose a new image
             },
-            child: const Text('Cancel'),
+            child: const Text('Change'),
           ),
           TextButton(
             onPressed: () async {
-              print('Save button pressed');
-              await saveImage(imageFile);
-              Get.back(); // Close the dialog after saving
+              await deleteProfileImage();
+              Get.back(); // Close the dialog after deletion
             },
-            child: const Text('Save',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
     );
   }
 
-  // Save the image to local storage
-  Future<void> saveImage(File imageFile) async {
-    try {
-      print('Starting to save the image...');
-      
-      // Get the directory to save the image (App document directory)
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '${appDocDir.path}/profilePic.png';
-
-      print('Directory path for saving: $filePath');
-
-      // Check if the file already exists at the location
-      final bool exists = await File(filePath).exists();
-      if (exists) {
-        print('File already exists at $filePath');
-      } else {
-        print('No file found at the path, proceeding with copy');
-      }
-
-      // Copy the selected image to the local app directory
-      final File savedImage = await imageFile.copy(filePath);
-      print('Image saved successfully to $filePath');
-
-      // Update profile image observable with the saved file
-     // profileImage.value = savedImage;
-
-      // Optional: Show a success message
-     Get.back();
-    } catch (e) {
-      print('Error saving the image: $e');
-      Get.snackbar('Error', 'Failed to save the image: $e');
+  Future<void> deleteProfileImage() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/profilePic.png';
+    final File savedImage = File(filePath);
+    if (await savedImage.exists()) {
+      await savedImage.delete();
+        Get.back(); 
+      profileImage.value = null;
+      Get.snackbar("Profile Picture", "Profile picture deleted successfully.", snackPosition: SnackPosition.TOP);
     }
   }
 
-  Future<void> pickImage(ImageSource source) async {
+ Future<void> pickImage(ImageSource source) async {
     try {
       final status = await Permission.storage.request();
       print('Permission status: $status');
@@ -290,13 +296,45 @@ confirmPasswordController.clear();
       print('Error picking or cropping image: $e');
     }
   }
-   Future<void> loadImage() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDocDir.path}/profilePic.png';
 
-    final File savedImage = File(filePath);
-    if (await savedImage.exists()) {
-      profileImage.value = savedImage; // Update profile image
+  void showSaveImageDialog(File imageFile) {
+    print('Showing save dialog for the image...');
+    Get.dialog(
+      AlertDialog(
+        title: Center(child: const Text('Save Image',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold))),
+        content:  Text('Do you want to save this image as your profile picture?',style: TextStyle(color: ColorManager.greyText)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              print('Cancel button pressed');
+              Get.back(); // Close the dialog without saving
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              print('Save button pressed');
+              await saveImage(imageFile);
+              Get.back(); // Close the dialog after saving
+            },
+            child: const Text('Save',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> saveImage(File imageFile) async {
+    try {
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String filePath = '${appDocDir.path}/profilePic.png';
+      final File savedImage = await imageFile.copy(filePath);
+      profileImage.value = savedImage;
+       Get.back(); 
+      Get.snackbar('Profile Picture', 'Image saved successfully.');
+    } catch (e) {
+      print('Error saving the image: $e');
+      Get.snackbar('Error', 'Failed to save the image: $e');
     }
   }
 }
