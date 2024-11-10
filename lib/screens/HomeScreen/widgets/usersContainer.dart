@@ -4,6 +4,7 @@ import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/models/userListModel.dart';
+import 'package:arraid/screens/HomeScreen/pages/usersPage.dart';
 import 'package:arraid/screens/HomeScreen/widgets/userCard.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +124,7 @@ class _UsersContainerState extends State<UsersContainer> {
                       fontWeight: FontWeight.normal,
                       color: ColorManager.primary)),
               onPressed: () {
+               
                 Navigator.of(context).pop();
               },
             ),

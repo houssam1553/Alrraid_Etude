@@ -65,12 +65,13 @@ class EventsContainer extends StatelessWidget {
 class EventWidget extends StatelessWidget {
   final String title;
   final String subtitle;
-  final double height ;
+  final double height;
 
   const EventWidget({
     Key? key,
     required this.title,
-    required this.subtitle, required this.height,
+    required this.subtitle,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -80,26 +81,23 @@ class EventWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Vertical Line
-       // Space between line and icon
-          // Alarm Icon
           Column(
             children: [
               Icon(
                 Icons.notifications,
-                color: ColorManager.primary, // You can customize the color
+                color: ColorManager.primary,
               ),
-                   SizedBox(height: height *0.009,), // Space b
-               Container(
-            width: 2.0,
-            height:height*0.06 , // Adjust height according to the content
-            color: Colors.grey, // Line color
-          ),
+              SizedBox(height: height * 0.009),
+              Container(
+                width: 2.0,
+                height: height * 0.06,
+                color: Colors.grey,
+              ),
             ],
           ),
-          const SizedBox(width: 20), // Space between icon and text
-          // Title and Subtitle
-           Column(
+          const SizedBox(width: 20),
+          Flexible(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -107,9 +105,10 @@ class EventWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
-                color: ColorManager.primary, // You can customize the color
-
+                    color: ColorManager.primary,
                   ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
                 ),
                 const SizedBox(height: 5),
                 Text(
@@ -118,10 +117,12 @@ class EventWidget extends StatelessWidget {
                     fontSize: 12.0,
                     color: ColorManager.greyText,
                   ),
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
                 ),
               ],
             ),
-          
+          ),
         ],
       ),
     );

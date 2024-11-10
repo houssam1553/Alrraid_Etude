@@ -485,6 +485,7 @@ class _TeamCardState extends State<TeamCard> {
                                                   height: 15,
                                                   child:
                                                       CircularProgressIndicator(
+                                                        strokeWidth: 2,
                                                     color: Color.fromARGB(
                                                         255, 224, 83, 83),
                                                     backgroundColor:

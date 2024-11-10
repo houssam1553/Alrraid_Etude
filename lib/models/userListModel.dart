@@ -3,7 +3,7 @@ class Userlistmodel {
   final String email;
   final String firstName;
   final String lastName;
-  final String? isEmployee; // Nullable field
+  late final String? isEmployee; // Nullable field
   final String? token; // Nullable field
   final String? type; // Nullable field for user type
   final String? imageUrl; // Nullable field for image URL

@@ -244,7 +244,8 @@ class _UserCardState extends State<UserCard> {
       ),
       TextButton(
         onPressed: (){
-              navigationController.gotoProfile();}
+             // navigationController.gotoProfile();
+              }
           
         ,
         style: TextButton.styleFrom( 

@@ -30,6 +30,7 @@ class ProfileSettingsController extends GetxController {
 
 
   var saveLoading = false.obs; 
+  var imagechanged  = false.obs; 
   var changePassLoading = false.obs; 
 
   // To track loading state during save operation
@@ -72,6 +73,7 @@ class ProfileSettingsController extends GetxController {
           type: '',                 // Default type
         );
       }
+       await loadImage();
     } catch (e) {
     //  print('Error fetching user data: $e');
     }
@@ -192,32 +194,62 @@ confirmPasswordController.clear();
 
   // Show a confirmation dialog to save the image
  
-  Future<void> loadImage() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDocDir.path}/profilePic.png';
-    final File savedImage = File(filePath);
-    if (await savedImage.exists()) {
-      profileImage.value = savedImage;
-    //  showImageOptionsDialog(); // Show dialog if image exists
-    } else {
-      // If no image is saved, open gallery immediately
-      pickImage(ImageSource.gallery);
-    }
+ Future<void> loadImage() async {
+  if (currentUser.value == null) {print("Null image ");};
+
+  final email = currentUser.value!.email;
+  final Directory appDocDir = await getApplicationDocumentsDirectory();
+  final String filePath = '${appDocDir.path}/profilePic_$email.png';
+  final File savedImage = File(filePath);
+
+  if (await savedImage.exists()) {
+    profileImage.value = savedImage; // Load profile image for the specific user
+  } else {
+    profileImage.value = null; // No saved image for this user
   }
-  Future<void> editButtonClicked() async {
+}
+
+
+ Future<void> editButtonClicked(String email) async {
+  try {
+    // Use the email to fetch user-specific data (e.g., user profile picture).
+    print('Loading data for email: $email');
+    
+    // Fetch user-specific profile picture based on email (this is just an example)
     final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDocDir.path}/profilePic.png';
+    final String filePath = '${appDocDir.path}/profilePic_$email.png';  // Custom path based on email
     final File savedImage = File(filePath);
+
     if (await savedImage.exists()) {
-   
-      showImageOptionsDialog(); // Show dialog if image exists
+      print('Image file exists, showing dialog');
+      showImageOptionsDialog();
     } else {
-      // If no image is saved, open gallery immediately
-      pickImage(ImageSource.gallery);
+      print('No existing image found for email $email. Opening gallery...');
+      imagechanged.value = false;
+
+       // Show success animation
+
+      try {
+        await pickImage(ImageSource.gallery); // Attempt to pick image
+        print('Image picked successfully.');
+        imagechanged.value = true; // Update only if an image was successfully picked
+      } catch (e) {
+        print('Error picking image: $e');
+        imagechanged.value = false; // Ensure no change if there's an error
+      }
+
+      print('Image change status after picking: ${imagechanged.value}');
     }
+  } catch (e) {
+    print('Error in editButtonClicked: $e');
   }
+}
+
+
 
   void showImageOptionsDialog() {
+    imagechanged.value = true;
+  
     Get.dialog(
       AlertDialog(
         title: Center(child: const Text('Profile Picture Options', style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold))),
@@ -233,26 +265,31 @@ confirmPasswordController.clear();
           TextButton(
             onPressed: () async {
               await deleteProfileImage();
-              Get.back(); // Close the dialog after deletion
+              //Get.back(); // Close the dialog after deletion
             },
             child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
     );
-  }
 
-  Future<void> deleteProfileImage() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDocDir.path}/profilePic.png';
-    final File savedImage = File(filePath);
-    if (await savedImage.exists()) {
-      await savedImage.delete();
-        Get.back(); 
-      profileImage.value = null;
-      Get.snackbar("Profile Picture", "Profile picture deleted successfully.", snackPosition: SnackPosition.TOP);
-    }
   }
+Future<void> deleteProfileImage() async {
+  if (currentUser.value == null) return;
+
+  final email = currentUser.value!.email;
+  final Directory appDocDir = await getApplicationDocumentsDirectory();
+  final String filePath = '${appDocDir.path}/profilePic_$email.png';
+  final File savedImage = File(filePath);
+  imagechanged.value= false;
+ profileImage.value = null;
+  if (await savedImage.exists()) {
+    await savedImage.delete();
+   
+  }
+  Get.back(); // Close dialog after deletion
+}
+
 
  Future<void> pickImage(ImageSource source) async {
     try {
@@ -287,6 +324,7 @@ confirmPasswordController.clear();
         if (croppedFile != null) {
           // Convert CroppedFile to File and update profile image
           profileImage.value = File(croppedFile.path);
+       
           showSaveImageDialog(profileImage.value!); // Show confirmation dialog to save
         }
       } else {
@@ -297,44 +335,96 @@ confirmPasswordController.clear();
     }
   }
 
-  void showSaveImageDialog(File imageFile) {
-    print('Showing save dialog for the image...');
-    Get.dialog(
-      AlertDialog(
-        title: Center(child: const Text('Save Image',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold))),
-        content:  Text('Do you want to save this image as your profile picture?',style: TextStyle(color: ColorManager.greyText)),
-        actions: [
-          TextButton(
-            onPressed: () {
-              print('Cancel button pressed');
-              Get.back(); // Close the dialog without saving
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              print('Save button pressed');
-              await saveImage(imageFile);
-              Get.back(); // Close the dialog after saving
-            },
-            child: const Text('Save',style: TextStyle(color: ColorManager.primary,fontWeight: FontWeight.bold)),
-          ),
-        ],
+ void showSaveImageDialog(File imageFile) {
+  print('Showing save dialog for the image...');
+  Get.dialog(
+    AlertDialog(
+      title: Center(
+        child: const Text(
+          'Save Image',
+          style: TextStyle(
+              color: ColorManager.primary, fontWeight: FontWeight.bold),
+        ),
       ),
-    );
-  }
+      content: Text(
+        'Do you want to save this image as your profile picture?',
+        style: TextStyle(color: ColorManager.greyText),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            print('Cancel button pressed');
+            print(imagechanged.value);
 
-  Future<void> saveImage(File imageFile) async {
-    try {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '${appDocDir.path}/profilePic.png';
-      final File savedImage = await imageFile.copy(filePath);
-      profileImage.value = savedImage;
-       Get.back(); 
-      Get.snackbar('Profile Picture', 'Image saved successfully.');
-    } catch (e) {
-      print('Error saving the image: $e');
-      Get.snackbar('Error', 'Failed to save the image: $e');
+            if (imagechanged.value) {
+              imagechanged.value = false;
+              await revertToPreviousImage(currentUser.value!.email);
+               
+            } else {
+              await deleteProfileImage();
+            }
+
+            // Close the dialog
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            print('Save button pressed');
+            print(imageFile.path);
+
+            await saveImage(imageFile); // Save image
+            Get.back(); // Close the dialog after saving
+          },
+          child: const Text(
+            'Save',
+            style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<void> revertToPreviousImage(String email) async {
+  try {
+    // Construct the file path based on the email to fetch the user's profile picture
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/profilePic_$email.png';  // Use email to generate a unique file path
+    final File savedImage = File(filePath);
+
+    // Close the current screen/dialog before proceeding
+    Get.back();
+
+    // Check if the profile image exists for this user
+    if (await savedImage.exists()) {
+      print('Reverting to previous image for email: $email');
+      profileImage.value = savedImage;  // Set the profile image to the saved one
+    } else {
+      print('No previous image found for email $email.');
+       imagechanged.value= false;
+ profileImage.value = null;
+
     }
+  } catch (e) {
+    print('Error in revertToPreviousImage: $e');
   }
+}
+
+Future<void> saveImage(File imageFile) async {
+  if (currentUser.value == null) return;
+
+  final email = currentUser.value!.email;
+  final Directory appDocDir = await getApplicationDocumentsDirectory();
+  final String filePath = '${appDocDir.path}/profilePic_$email.png';
+
+  try {
+    await imageFile.copy(filePath); // Save the cropped image with the email-based filename
+    profileImage.value = File(filePath); // Update the profileImage observable
+  } catch (e) {
+    print('Error saving image: $e');
+  }
+}
+
+
 }

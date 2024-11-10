@@ -2,6 +2,7 @@ import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/homeNavigationCtrl.dart';
 import 'package:arraid/controllers/navigationCtrl.dart';
 import 'package:arraid/controllers/teamController.dart';
+import 'package:arraid/controllers/usersController.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/widgets/orgTable.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/widgets/profileHeadline.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/widgets/projectsTable.dart';
@@ -20,6 +21,9 @@ class ProfileInfoscreen extends StatefulWidget {
 
 class _ProfileInfoscreenState extends State<ProfileInfoscreen> {
   final TeamController teamController = Get.find<TeamController>();
+  final UserController userController = Get.find<UserController>();
+
+
   final HomeNavigationController navigationController = Get.find<HomeNavigationController>();
 
   @override

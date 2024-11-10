@@ -91,6 +91,7 @@ class projectHeadline extends StatelessWidget {
     required this.imageSource,
     required this.title,
   });
+
   final String imageSource, title;
 
   @override
@@ -98,6 +99,7 @@ class projectHeadline extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start, // Aligns items to top
         children: [
           SizedBox(
             height: 25,
@@ -107,15 +109,17 @@ class projectHeadline extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14,
-              color: ColorManager.primary,
-            ), // First text style
+          SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                color: ColorManager.primary,
+              ),
+              overflow: TextOverflow.visible, // Allow text to wrap
+              softWrap: true, // Enables wrapping to the next line
+            ),
           ),
         ],
       ),
