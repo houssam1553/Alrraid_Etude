@@ -79,6 +79,11 @@ class _DashboardPageState extends State<dashboardPage> {
             title: "Today's users",
             value: userController.userCount.value.toString(),
             precentage: "+4%",
+               icon:  Icon(
+                  Icons.person, // Replace with your icon
+                  color: Colors.white,
+                  size: 24, // Adjust icon size
+                ),
           );}),
           SizedBox(height: widget.height * 0.015),
           BarchartContainer(

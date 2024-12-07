@@ -11,9 +11,22 @@ class loginHeadline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-    Text(
-      "Welcome Back",
-      style: Theme.of(context).textTheme.headlineLarge,
+      SizedBox(
+        height: 160,
+          child: Image.asset(
+            'assets/images/arraidLogo.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+         SizedBox(
+    height:  height * 0.0105, ),
+    Center(
+      child: Text(
+      
+        "S’authentifier avec votre \ncompte Alrraid Pro",
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize:20, ),
+      ),
     ),
     SizedBox(
     height:  height * 0.0105, ),

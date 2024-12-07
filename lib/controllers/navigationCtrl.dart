@@ -6,11 +6,12 @@ import 'package:arraid/screens/HomeScreen/userMoreInfo/profileInfoScreen.dart';
 import 'package:arraid/screens/HomeScreen/tabs/cming.dart';
 import 'package:arraid/screens/HomeScreen/tabs/dashboardTab.dart';
 import 'package:arraid/screens/HomeScreen/tabs/profileSettingsTab.dart';
+import 'package:arraid/screens/LoginScreen/devisScreen.dart';
 import 'package:arraid/screens/LoginScreen/loginScreen.dart';
 import 'package:arraid/screens/LoginScreen/profileScreen.dart';
 import 'package:arraid/screens/LoginScreen/tabs/codeTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/forgotTab.dart';
-import 'package:arraid/screens/LoginScreen/landingScreen.dart';
+import 'package:arraid/screens/LoginScreen/projectsScreen.dart';
 import 'package:arraid/screens/LoginScreen/tabs/loginTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/resetTab.dart';
 import 'package:arraid/screens/LoginScreen/tabs/signupTab.dart';
@@ -32,7 +33,8 @@ class NavigationController extends GetxController {
 
   // Tabs for BottomNavigationBar (Home and Profile)
   final bottomTabs = [
-    landingScreen(), // Home Tab
+    ProjectsScreen(), // projects Tab
+    DevisScreen(),
     Profilescreen(), // Profile Main Tab
   ];
 

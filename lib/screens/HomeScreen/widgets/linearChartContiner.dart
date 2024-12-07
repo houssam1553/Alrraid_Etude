@@ -16,7 +16,7 @@ final Widget chart;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width * 0.68,
+    //  width: width * 0.68,
       padding: EdgeInsets.symmetric(horizontal:  width*0.03,vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,

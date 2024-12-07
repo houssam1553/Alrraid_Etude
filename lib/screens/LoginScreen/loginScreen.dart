@@ -36,17 +36,30 @@ class _LoginScreenState extends State<LoginScreen> {
             icon: Icon(Iconsax.home_24),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 28,
-              width: 28,
-              child: Image.asset(
-                'assets/images/userIcon.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-            label: 'Profile',
+            BottomNavigationBarItem(
+            icon: Icon(Iconsax.edit),
+            label: 'Devis',
           ),
+          BottomNavigationBarItem(
+              label: 'Profile',
+            icon:
+          Obx(() => ColorFiltered(
+            
+      colorFilter: ColorFilter.mode(
+     navigationController.   selectedIndex.value == 2
+            ? ColorManager.primary // Selected color
+            : ColorManager.darkGrey, // Unselected color
+        BlendMode.srcIn,
+      ),
+      child: SizedBox(
+        height: 25,
+        width: 25,
+        child: Image.asset(
+          'assets/images/userIcon.png',
+          fit: BoxFit.contain,
+        ),
+      ),
+    )),),
         ],
         selectedItemColor: ColorManager.primary,
         unselectedItemColor: ColorManager.darkGrey,

@@ -10,6 +10,8 @@ class ApiService {
 
   Future<Response> getRequest(String endpoint, {Map<String, dynamic>? queryParams}) async {
     try {
+    print('Getting from: ${_dio.options.baseUrl}$endpoint'); // Debugging line
+
       final response = await _dio.get(endpoint, queryParameters: queryParams);
       return response;
     } on DioError catch (e) {
@@ -22,6 +24,7 @@ class ApiService {
   try {
     print('Posting to: ${_dio.options.baseUrl}$endpoint'); // Debugging line
     final response = await _dio.post(endpoint, data: data);
+    print(response.statusCode);
     return response;
   } on DioError catch (e) {
     // Handle Dio errors

@@ -20,13 +20,13 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
   final ProfileSettingsController controller =
       Get.find<ProfileSettingsController>();
   final _formKey = GlobalKey<FormState>();
-  
+
   @override
   void initState() {
     // Fetch current user data on initialization
-     controller.fetchCurrentUser();
-   // controller.loadImage();
-   
+    controller.fetchCurrentUser();
+    // controller.loadImage();
+
     super.initState();
   }
 
@@ -49,19 +49,21 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
             children: [
               Stack(
                 children: [
-                Obx(() {
-  return SizedBox(
-    width: 120,
-    height: 120,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(100),  // Circular shape
-      child: controller.profileImage.value != null
-          ? Image.file(controller.profileImage.value!)  // Display the profile image
-          : Image.asset('assets/images/profilePic.png'),  // Fallback image if no profile image
-    ),
-  );
-}),
-
+                  Obx(() {
+                    return SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(100), // Circular shape
+                        child: controller.profileImage.value != null
+                            ? Image.file(controller.profileImage
+                                .value!) // Display the profile image
+                            : Image.asset(
+                                'assets/images/profilePic.png'), // Fallback image if no profile image
+                      ),
+                    );
+                  }),
                   Positioned(
                     right: 0,
                     bottom: 0,
@@ -75,14 +77,15 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                       child: Center(
                         child: IconButton(
                           onPressed: () async {
-    //                        if ( controller.profileImage.value == null) {
-    //   controller. pickImage(ImageSource.gallery);
-    //    // Show dialog if image exists
-    // } else {
-    //   // If no image is saved, open gallery immediately
-    // controller.showImageOptionsDialog();
-    // }
-    await controller.editButtonClicked(controller.currentUser.value!.email);
+                            //                        if ( controller.profileImage.value == null) {
+                            //   controller. pickImage(ImageSource.gallery);
+                            //    // Show dialog if image exists
+                            // } else {
+                            //   // If no image is saved, open gallery immediately
+                            // controller.showImageOptionsDialog();
+                            // }
+                            await controller.editButtonClicked(
+                                controller.currentUser.value!.email);
                           },
                           icon: const Icon(
                             Iconsax.edit,
@@ -103,23 +106,17 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                   Tab(
                     child: Text(
                       "Personal",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: ColorManager.primary),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: ColorManager.primary),
                     ),
                   ),
                   Tab(
                     child: Text(
                       "Security",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: ColorManager.primary),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: ColorManager.primary),
                     ),
                   ),
                 ],
@@ -152,9 +149,8 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                 lastName:
                                     controller.currentUser.value?.lastName ??
                                         'Last Name',
-                                email:
-                                    controller.currentUser.value?.email ??
-                                        'email', // Fallback if null
+                                email: controller.currentUser.value?.email ??
+                                    'email', // Fallback if null
                               );
                             }
                           }),
@@ -177,19 +173,17 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                   child: Column(
                                     children: <Widget>[
                                       SizedBox(height: height * 0.008),
-                 formInput(
+                                      formInput(
                                         height: height,
                                         label: "Current password",
                                         hint: "Enter your current password",
-                                        inputType: InputType.name
-                                        ,
+                                        inputType: InputType.name,
                                         obscureText: false,
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                            textEditingController: controller. currentPasswordController,
-                                      
+                                        textEditingController: controller
+                                            .currentPasswordController,
                                       ),
-                                    
                                       SizedBox(height: height * 0.0309),
                                       formInput(
                                         height: height,
@@ -199,8 +193,10 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         obscureText: false,
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                            textEditingController: controller. passwordController,
-                                        passwordController: controller. passwordController,
+                                        textEditingController:
+                                            controller.passwordController,
+                                        passwordController:
+                                            controller.passwordController,
                                       ),
                                       SizedBox(height: height * 0.0309),
                                       formInput(
@@ -209,15 +205,16 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                         hint: "Password again",
                                         inputType: InputType.passwordChRepeat,
                                         obscureText: false,
-                                      
+
                                         togglePasswordVisibility:
                                             controller.togglePasswordVisibility,
-                                       textEditingController: controller. confirmPasswordController, // Pass the confirm password controller here
-  passwordController: controller. passwordController, // Pass the main password controller for comparison
-),
+                                        textEditingController: controller
+                                            .confirmPasswordController, // Pass the confirm password controller here
+                                        passwordController: controller
+                                            .passwordController, // Pass the main password controller for comparison
+                                      ),
                                     ],
                                   ),
-                                  
                                 ),
                               ),
                               SizedBox(height: height * 0.04),
@@ -225,51 +222,57 @@ class _ProfileSettingsTabState extends State<ProfileSettingsTab> {
                                 height: height * 0.0557,
                                 width: width * 0.63,
                                 child: Obx(() {
-                                  
                                   return ElevatedButton(
-                                  onPressed: () async {
-                                    FocusManager.instance.primaryFocus?.unfocus();
-                                    if (_formKey.currentState!.validate()) {
-                                      // Trigger logic when the form is valid
+                                    onPressed: () async {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      if (_formKey.currentState!.validate()) {
+                                        // Trigger logic when the form is valid
 
-                                    
-                               await       controller.updateUserPassword(userId: controller.currentUser.value!.clerkId , currentPassword: controller. currentPasswordController.text, newPassword:controller. passwordController.text);
-
-
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Apply changes",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.black
-                                              : Colors.white,
+                                        await controller.updateUserPassword(
+                                            userId: controller
+                                                .currentUser.value!.clerkId,
+                                            currentPassword: controller
+                                                .currentPasswordController.text,
+                                            newPassword: controller
+                                                .passwordController.text);
+                                      }
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Apply changes",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
                                         ),
-                                      ),
-                                      SizedBox(width: 10),
-                                    controller.changePassLoading.value
-                        ?  Center(
-                                              child: SizedBox(
-                                                  width: 15,
-                                                  height: 15,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                    color: ColorManager.white,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                  )))
-                        : Icon(Iconsax.document_upload),
-                                    ],
-                                  ),
-                                );}),
+                                        SizedBox(width: 10),
+                                        controller.changePassLoading.value
+                                            ? Center(
+                                                child: SizedBox(
+                                                    width: 15,
+                                                    height: 15,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color: ColorManager.white,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                    )))
+                                            : Icon(Iconsax.document_upload),
+                                      ],
+                                    ),
+                                  );
+                                }),
                               ),
                               SizedBox(
                                 height: height * 0.0357,

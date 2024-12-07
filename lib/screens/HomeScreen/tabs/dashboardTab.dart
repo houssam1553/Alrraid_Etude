@@ -1,19 +1,18 @@
 import 'package:arraid/config/colors.dart';
 import 'package:arraid/controllers/sidebarController.dart';
-import 'package:arraid/screens/HomeScreen/charts/barChart.dart';
+import 'package:arraid/controllers/tabBarControlller.dart';
 import 'package:arraid/screens/HomeScreen/charts/lineChart.dart';
-import 'package:arraid/screens/HomeScreen/pages/dashboardPage.dart';
-import 'package:arraid/screens/HomeScreen/pages/teamMembersPage.dart';
-import 'package:arraid/screens/HomeScreen/pages/usersPage.dart';
-import 'package:arraid/screens/HomeScreen/widgets/barChartContainer.dart';
+import 'package:arraid/screens/HomeScreen/tabBarTabs/cmndsTab.dart';
+import 'package:arraid/screens/HomeScreen/tabBarTabs/devisTab.dart';
+import 'package:arraid/screens/HomeScreen/tabBarTabs/projectsTab.dart';
+import 'package:arraid/screens/HomeScreen/tabBarTabs/statTab.dart';
+import 'package:arraid/screens/HomeScreen/tabBarTabs/viewsTab.dart';
 import 'package:arraid/screens/HomeScreen/widgets/dashboardCard.dart';
-import 'package:arraid/screens/HomeScreen/widgets/eventsContainer.dart';
 import 'package:arraid/screens/HomeScreen/widgets/linearChartContiner.dart';
-import 'package:arraid/screens/HomeScreen/widgets/projectsContainer.dart';
-import 'package:arraid/screens/HomeScreen/widgets/sidebarItem.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:arraid/screens/HomeScreen/widgets/projectsTable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class DashboardTab extends StatefulWidget {
   const DashboardTab({super.key});
@@ -23,190 +22,154 @@ class DashboardTab extends StatefulWidget {
 }
 
 class _DashboardTabState extends State<DashboardTab>
-{
+    with SingleTickerProviderStateMixin {
   late final SidebarController sidebarController;
-
-
-
+  late TabBarController tabBarController;
+  late TabController tabController;
   @override
   void initState() {
     super.initState();
-    
-
+    tabController = TabController(length: 5, vsync: this);
     sidebarController = Get.put(SidebarController());
-    sidebarController.sideMenuController.dispose();
-   // print("sideMenu"+sidebarController.sideMenuController.currentPage.toString());
-    
-   // sideMenuController = SideMenuController(); 
-  
-  // sidebarController.selectedIndex =  sideMenuController.currentPage  ;
-    // Initialize here
+    tabBarController = Get.put(
+        TabBarController()); // Adjust the length based on the number of tabs
   }
-@override
+
+  @override
   void dispose() {
-    // TODO: implement dispose
     sidebarController.selectedIndex.value = 0;
+    //tabBarController.dispose();
     super.dispose();
   }
- /*  @override
-  bool get wantKeepAlive => true; */ // Keep this state alive when navigating
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
-    /* super.build(
-        context);  */// Ensure state is retained with AutomaticKeepAliveClientMixin
-    return Row(
-      children: [
-        SideMenu(
-          collapseWidth: 2000,
-          title: Column(
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                    top: 30,
-                    bottom: 20,
-                    right: 0,
-                  ),
-                  child: Image.asset("assets/images/arraidLogo.png")),
-              Divider(
-                indent: 10,
-                endIndent: 10,
-                thickness: 1,
-                color:Color(0xFFE2E8F0),
-              )
+
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'Dashboard',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'admin', // Subtitle
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+              ),
             ],
           ),
-          controller:sidebarController.sideMenuController, // Use the initialized controller
-          items: [
-            SideMenuItem(
-              builder: (context, displayMode) {
-                return SidebarItem(
-                  index: 0, // Ensure unique index
-                  title: 'Dashboard',
-                  icon: Icons.bar_chart_outlined,
-                  selectedColor: ColorManager.primary,
-                  unselectedColor: Colors.white,
-                  sidebarController: sidebarController,
-                );
-              },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.black),
+            onPressed: () {
+              // Define search action here
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert, color: Colors.black),
+            onPressed: () {
+              // Define more action here
+            },
+          ),
+        ],
+        bottom: TabBar(
+          tabAlignment: TabAlignment.start,
+          isScrollable: true,
+          dividerColor: Colors.transparent,
+          controller: tabController,
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(20), // Rounded corners for t
+            color: ColorManager
+                .primary, // Primary color or use Theme.of(context).primaryColor
+          ),
+          indicatorPadding:
+              const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.black,
+          tabs: [
+            Tab(
+              child: Container(
+                // alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 0), // Inner padding
+                child: const Text(
+                  'Statistiques',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ),
-            SideMenuItem(
-              builder: (context, displayMode) {
-                return SidebarItem(
-                  index: 1, // Ensure unique index
-                  title: 'Users',
-                  icon: Icons.person,
-                  selectedColor: ColorManager.primary,
-                  unselectedColor: Colors.white,
-                  sidebarController: sidebarController,
-                 
-                  
-                );
-              },
+            Tab(
+              child: Container(
+                //alignment: Alignment.centerLeft,
+
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 8), // Inner padding
+                child: const Text(
+                  'Projets',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ),
-            SideMenuItem(
-              builder: (context, displayMode) {
-                return SidebarItem(
-                  index: 2, // Ensure unique index
-                  title: 'Team members',
-                  icon: Icons.work,
-                  selectedColor: ColorManager.primary,
-                  unselectedColor: Colors.white,
-                  sidebarController: sidebarController,
-                 /*  children: [
-                    SidebarItem(
-                      index: 5, // Ensure unique index
-                      title: 'User Settings',
-                      icon: Icons.person,
-                      selectedColor: ColorManager.primary,
-                      unselectedColor: Colors.white,
-                      sidebarController: sidebarController,
-                    ),
-                    SidebarItem(
-                      index: 6, // Ensure unique index
-                      title: 'App Settings',
-                      icon: Icons.settings_applications,
-                      selectedColor: ColorManager.primary,
-                      unselectedColor: Colors.white,
-                      sidebarController: sidebarController,
-                    ),
-                  ], */
-                );
-              },
+            Tab(
+              child: Container(
+                //  alignment: Alignment.centerLeft,
+
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 8), // Inner padding
+                child: const Text(
+                  'Commands',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+              Tab(
+              child: Container(
+                //  alignment: Alignment.centerLeft,
+
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 8), // Inner padding
+                child: const Text(
+                  'Devis',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),  Tab(
+              child: Container(
+                //  alignment: Alignment.centerLeft,
+
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 8), // Inner padding
+                child: const Text(
+                  'Utilisateurs',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ),
           ],
-          style: SideMenuStyle(
-            openSideMenuWidth: 200,
-            compactSideMenuWidth: width * 0.2,
-            backgroundColor: ColorManager.greyBack,
-          ),
         ),
-        Container(
-          width: width * 0.8,
-          color: ColorManager.greyBack,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(
-                  top: height * 0.0792,
-                  left: 5,
-                ),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween, // Adjust alignment here
-                  children: [
-                    SearchBar(
-                      hintText: "Type here...",
-                      hintStyle: MaterialStateProperty.all<TextStyle?>(
-                          Theme.of(context).textTheme.labelMedium),
-                      textStyle: MaterialStateProperty.all<TextStyle?>(
-                          Theme.of(context).textTheme.labelLarge),
-                      leading: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.search, color: Colors.grey),
-                      ),
-                      constraints: BoxConstraints(
-                          maxWidth: width*0.42, maxHeight: 40, minHeight: 40),
-                      elevation: MaterialStateProperty.all<double?>(0),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // Adjust alignment for icons
-                          children: [
-                            Icon(Icons.person, color: ColorManager.blueGrey),
-                            Icon(Icons.settings, color: ColorManager.blueGrey),
-                            Icon(Icons.notifications,
-                                color: ColorManager.blueGrey),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: PageView(
-                  controller: sidebarController.pageController,
-                  pageSnapping: false,
-                  physics:
-                      NeverScrollableScrollPhysics(), // Prevent manual swiping if handled by side menu
-                  children: [
-                    dashboardPage(height: height, width: width),
-                                                           UsersPage(height: height, width: width),
-                 Teammemberspage(height: height, width: width)
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),  
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          StatistiquesTab(),
+      ProjectsTab(),
+         CommandsTab(),
+          DevisTab(),
+       ViewsTab(),
+
+        ],
+      ),
     );
   }
-}
 
+    }

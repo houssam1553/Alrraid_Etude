@@ -2,7 +2,7 @@ import 'package:arraid/config/colors.dart';
 import 'package:arraid/models/userModel.dart';
 import 'package:arraid/screens/HomeScreen/tabs/dashboardTab.dart';
 import 'package:arraid/screens/HomeScreen/tabs/profileSettingsTab.dart';
-import 'package:arraid/screens/LoginScreen/landingScreen.dart';
+import 'package:arraid/screens/LoginScreen/projectsScreen.dart';
 import 'package:arraid/screens/HomeScreen/userMoreInfo/profileInfoScreen.dart';
 import 'package:arraid/services/LocalService.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class HomeNavigationController extends GetxController {
 
     if (currentUser!.isEmployee == 'true') {
       HomeTabs.value = [
-        landingScreen(),
+        ProjectsScreen(),
         DashboardTab(),
         ProfileSettingsTab(),
         ProfileInfoscreen(),
@@ -98,7 +98,7 @@ class HomeNavigationController extends GetxController {
     } else {
       // Normal user home tabs and items
       HomeTabs.value = [
-        landingScreen(),
+        ProjectsScreen(),
         ProfileSettingsTab(),
       ];
 

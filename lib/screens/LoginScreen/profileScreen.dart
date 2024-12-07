@@ -23,28 +23,7 @@ class _ProfileScreeenState extends State<Profilescreen> {
 
     return Scaffold(
       backgroundColor: ColorManager.lightPrimary,
-         appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: ColorManager.lightPrimary,
-        leadingWidth: 116,
-        toolbarHeight: 100,
-        leading: SizedBox(
-          child: Image.asset(
-            'assets/images/arraidLogo.png',
-            fit: BoxFit.cover,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all( 25
-),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(MfgLabs.menu, size: 33, color: ColorManager.black,),
-            ),
-          )
-        ],
-      ),
+        
    
       body: Obx(() => navigationController.profileTabs[navigationController.selectedIndex1.value]),
 

@@ -13,17 +13,19 @@ class formInput extends StatelessWidget {
     required this.inputType,
     required this.obscureText,
     required this.togglePasswordVisibility,
-    this.passwordController, // Pass password controller for matching
+    this.passwordController,
+    this.options, // Add options for multiple-choice input
   });
 
   final String label;
   final String hint;
   final double height;
   final TextEditingController? textEditingController;
-  final InputType inputType; // Use enum for input type
-  final bool obscureText; // Obscure text visibility
-  final VoidCallback togglePasswordVisibility; // Function to toggle password visibility
-  final TextEditingController? passwordController; // Password controller for matching fields
+  final InputType inputType;
+  final bool obscureText;
+  final VoidCallback togglePasswordVisibility;
+  final TextEditingController? passwordController;
+  final List<String>? options;
 
   @override
   Widget build(BuildContext context) {
@@ -37,54 +39,93 @@ class formInput extends StatelessWidget {
           ),
         ),
         SizedBox(height: height * 0.008),
-      
-      
-        TextFormField(
-          controller: textEditingController,
-          validator: (value) {
-            switch (inputType) {
-              case InputType.password:
-                return Validator.validatePassword(value);
-              case InputType.email:
-                return Validator.validateEmail(value);
-              case InputType.name:
-                return Validator.validateName(value); // Validate name
-              case InputType.passwordCh:
-                return Validator.validatePassword(value); // Validate password for passwordCh
-              case InputType.passwordChRepeat:
-               print("Confirm Password: $value, Original Password: ${passwordController!.text}");
-                if (value != passwordController!.text) {
-    return "Passwords do not match";
-  }
-;// Validate password match
-             default:
-                return null; // Return null for other cases
-            }
-          },
-          obscureText: inputType == InputType.password || inputType == InputType.passwordCh || inputType == InputType.passwordChRepeat
-              ? obscureText 
-              : false, // Hide text if password or confirmation
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            labelText: hint,
-            labelStyle: Theme.of(context).textTheme.labelMedium,
-            suffixIcon: inputType == InputType.password /* || inputType == InputType.passwordCh || inputType == InputType.passwordChRepeat */
-                ? IconButton(
-                    icon: Icon(
-                      obscureText ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: togglePasswordVisibility, // Toggle visibility
-                  )
-                : null,
-          ),
-          keyboardType: inputType == InputType.email
-              ? TextInputType.emailAddress
-              : TextInputType.text, // Set keyboard type for email
-        ),
+        inputType == InputType.multipleChoice
+            ? DropdownButtonFormField<String>(
+                items: options
+                    ?.map((option) => DropdownMenuItem<String>(
+                          value: option,
+                          child: Text(option),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  textEditingController?.text = value ?? '';
+                },
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  labelText: hint,
+                  labelStyle: Theme.of(context).textTheme.labelMedium,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please select an option";
+                  }
+                  return null;
+                },
+              )
+            : TextFormField(
+                controller: textEditingController,
+                validator: (value) {
+                  switch (inputType) {
+                    case InputType.password:
+                      return Validator.validatePassword(value);
+                    case InputType.email:
+                      return Validator.validateEmail(value);
+                    case InputType.name:
+                      return Validator.validateName(value);
+                    case InputType.number:
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a valid number";
+                      }
+                      if (double.tryParse(value) == null) {
+                        return "Only numeric values are allowed";
+                      }
+                      break;
+                    case InputType.passwordCh:
+                      return Validator.validatePassword(value);
+                    case InputType.passwordChRepeat:
+                      if (value != passwordController?.text) {
+                        return "Passwords do not match";
+                      }
+                      break;
+                    default:
+                      return null;
+                  }
+                },
+                obscureText: inputType == InputType.password ||
+                        inputType == InputType.passwordCh ||
+                        inputType == InputType.passwordChRepeat
+                    ? obscureText
+                    : false,
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  labelText: hint,
+                  labelStyle: Theme.of(context).textTheme.labelMedium,
+                  suffixIcon: inputType == InputType.password
+                      ? IconButton(
+                          icon: Icon(
+                            obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: togglePasswordVisibility,
+                        )
+                      : null,
+                ),
+                keyboardType: inputType == InputType.email
+                    ? TextInputType.emailAddress
+                    : inputType == InputType.number
+                        ? TextInputType.number // Set numeric keyboard
+                        : TextInputType.text,
+              ),
       ],
     );
   }
