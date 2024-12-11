@@ -1,4 +1,5 @@
 import 'package:arraid/config/colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProjectsActionTable extends StatelessWidget {
@@ -89,7 +90,10 @@ class ProjectsActionTable extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8), // Rounded corners
                                   image: DecorationImage(
-                                    image: NetworkImage(user.imagePath,  ),onError: ( error, stackTrace) {
+                                    image:
+                                     CachedNetworkImageProvider(user.imagePath,  )
+                                     
+                                     ,onError: ( error, stackTrace) {
            Container(
            
             alignment: Alignment.center,

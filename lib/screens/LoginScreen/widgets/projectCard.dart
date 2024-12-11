@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:arraid/config/colors.dart';
 import 'package:get/get.dart';
@@ -36,25 +37,41 @@ class ProjectCard extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-            child: Image.network(
-              imageUrl,
-              height: 150,
+             child: 
+            //  Image.network(
+        //       imageUrl,
+        //       height: 150,
+        //       width: double.infinity,
+        //       fit: BoxFit.cover,
+        //        errorBuilder: (context, error, stackTrace) {
+        //   return Container(
+           
+        //     alignment: Alignment.center,
+        //    child: Image.asset("assets/images/default.png")
+        //   );
+        // },
+   
+        //     ),
+            CachedNetworkImage(
+                         height: 150,
               width: double.infinity,
               fit: BoxFit.cover,
-               errorBuilder: (context, error, stackTrace) {
-          return Container(
+        imageUrl: imageUrl,
+        placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => Container(
            
             alignment: Alignment.center,
            child: Image.asset("assets/images/default.png")
-          );
-        },
-            ),
           ),
+     ),
+          ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                     
                 // Title and Subtitle
                 Expanded(
                   child: Column(

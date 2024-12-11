@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 
 class companyTableRow extends StatelessWidget {
   const companyTableRow({
-    super.key, required this.organization, required this.title,
+    super.key,
+    required this.organization,
+    required this.title,
   });
-  final String organization,title;
+  final String organization, title;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-          padding: EdgeInsets.only(left:  18.0,top: 10,bottom: 10),
+      padding: EdgeInsets.only(left: 18.0, top: 10, bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,9 +23,6 @@ class companyTableRow extends StatelessWidget {
               color: ColorManager.primary,
             ),
           ),
-        
-                        
-                      
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(

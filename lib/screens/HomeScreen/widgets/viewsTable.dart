@@ -45,17 +45,7 @@ class ViewsTable extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    'Date',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: ColorManager.greyText,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                
                 Expanded(
                   child: Text(
                     'Actions',
@@ -86,7 +76,7 @@ class ViewsTable extends StatelessWidget {
                   columnWidths: const {
                     0: FlexColumnWidth(3), // Fixed width for view name column
                     1: FlexColumnWidth(2),
-                    2: FlexColumnWidth(2), // Flexible width for actions column
+                     // Flexible width for actions column
                   },
                   children: [
                     TableRow(
@@ -119,28 +109,9 @@ class ViewsTable extends StatelessWidget {
                           ),
                         ),
                         // Column 2: Description
+                        
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 23.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  view.date,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorManager.TextColor,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Column 3: Actions (Edit, Delete)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
